@@ -1,0 +1,28 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"module": "commonjs",
+		"outDir": "../../dist/out-tsc",
+		"declaration": true,
+		"types": [
+			"node"
+		],
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"strictNullChecks": true,
+		"noImplicitAny": true,
+		"noImplicitOverride": true,
+		"noPropertyAccessFromIndexSignature": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"strictPropertyInitialization": false,
+		"paths": {
+			"@/*": [
+				"libs/sca-utils/src/*"
+			]
+		}
+	},
+	"include": [
+		"**/*.ts"
+	]
+}

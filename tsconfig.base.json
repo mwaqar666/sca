@@ -1,20 +1,26 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "rootDir": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "lib": ["es2017", "dom"],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "baseUrl": ".",
-    "paths": {}
-  },
-  "exclude": ["node_modules", "tmp"]
+	"compileOnSave": false,
+	"compilerOptions": {
+		"rootDir": ".",
+		"sourceMap": true,
+		"declaration": false,
+		"moduleResolution": "Node",
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"importHelpers": true,
+		"target": "ES2015",
+		"module": "ESNext",
+		"lib": ["ES2017", "DOM"],
+		"skipLibCheck": true,
+		"skipDefaultLibCheck": true,
+		"baseUrl": ".",
+		"paths": {
+			"@sca/command": ["libs/sca-command/src/index.ts"],
+			"@sca/config": ["libs/sca-config/src/index.ts"],
+			"@sca/db": ["libs/sca-db/src/index.ts"],
+			"@sca/redis": ["libs/sca-redis/src/index.ts"],
+			"@sca/utils": ["libs/sca-utils/src/index.ts"]
+		}
+	},
+	"exclude": ["node_modules", "tmp"]
 }

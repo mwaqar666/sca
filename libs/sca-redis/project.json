@@ -1,0 +1,35 @@
+{
+	"name": "sca-redis",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/sca-redis/src",
+	"projectType": "library",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"outputs": [
+				"{options.outputPath}"
+			],
+			"options": {
+				"outputPath": "dist/libs/sca-redis",
+				"tsConfig": "libs/sca-redis/tsconfig.json",
+				"packageJson": "libs/sca-redis/package.json",
+				"main": "libs/sca-redis/src/index.ts",
+				"assets": [
+					"libs/sca-redis/*.md"
+				]
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"libs/sca-redis/**/*.ts"
+				]
+			}
+		}
+	},
+	"tags": []
+}

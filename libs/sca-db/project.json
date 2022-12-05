@@ -1,0 +1,35 @@
+{
+	"name": "sca-db",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/sca-db/src",
+	"projectType": "library",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"outputs": [
+				"{options.outputPath}"
+			],
+			"options": {
+				"outputPath": "dist/libs/sca-db",
+				"tsConfig": "libs/sca-db/tsconfig.json",
+				"packageJson": "libs/sca-db/package.json",
+				"main": "libs/sca-db/src/index.ts",
+				"assets": [
+					"libs/sca-db/*.md"
+				]
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"libs/sca-db/**/*.ts"
+				]
+			}
+		}
+	},
+	"tags": []
+}
