@@ -18,7 +18,7 @@
 		"strictPropertyInitialization": false,
 		"paths": {
 			"@/*": [
-				"libs/sca-be/src/*"
+				"apps/sca-be/src/*"
 			],
 			"@sca/utils": [
 				"libs/sca-utils/src/index.ts"
