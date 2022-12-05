@@ -1,4 +1,4 @@
-import { EntityScope } from "@/entity/types";
+import { EntityScope } from "~/entity/types";
 import { Key } from "@sca/utils";
 import { ModelStatic } from "sequelize";
 import { Model } from "sequelize-typescript";

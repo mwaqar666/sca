@@ -1,4 +1,4 @@
-import { EntityType, Relationship, SequelizeBaseEntity } from "@/entity";
+import { EntityType, Relationship, SequelizeBaseEntity } from "~/entity";
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common";
 import { Key } from "@sca/utils";
 import { map, Observable } from "rxjs";

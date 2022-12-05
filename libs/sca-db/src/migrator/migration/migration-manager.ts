@@ -1,7 +1,7 @@
-import { MigrationCommandProvider } from "@/migrator/command-provider";
-import { MigrationConfigFactory, SequelizeConfig } from "@/migrator/config";
-import { BaseMigration } from "@/migrator/migration/base.migration";
-import { SequelizeQueryInterface } from "@/migrator/types";
+import { MigrationCommandProvider } from "~/migrator/command-provider";
+import { MigrationConfigFactory, SequelizeConfig } from "~/migrator/config";
+import { BaseMigration } from "~/migrator/migration/base.migration";
+import { SequelizeQueryInterface } from "~/migrator/types";
 import { Constructable, FileHelpers } from "@sca/utils";
 import { Sequelize } from "sequelize";
 import { InputMigrations, MigrationParams, Umzug } from "umzug";

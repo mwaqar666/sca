@@ -1,4 +1,4 @@
-import { MigrationCommandProviderData } from "@/migrator/types";
+import { MigrationCommandProviderData } from "~/migrator/types";
 import { BaseCommand, CommandArgumentDetails, CommandArguments, KeyValueArgument } from "@sca/command";
 import { DateHelpers, FileHelpers, Optional, PathHelpers } from "@sca/utils";
 

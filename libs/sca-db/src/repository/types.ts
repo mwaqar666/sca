@@ -1,4 +1,4 @@
-import { EntityScope, EntityTableColumnProperties, SequelizeBaseEntity } from "@/entity";
+import { EntityScope, EntityTableColumnProperties, SequelizeBaseEntity } from "~/entity";
 import { FindOptions, Transaction } from "sequelize";
 
 export type EntityResolution<TEntity extends SequelizeBaseEntity<TEntity>> = TEntity | string | number;

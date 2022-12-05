@@ -1,6 +1,6 @@
-import { DefaultScopedFindOptions } from "@/const";
-import { EntityKeyValues, EntityScope, EntityType, SequelizeBaseEntity } from "@/entity";
-import { EntityCreateOptions, EntityCreateOrUpdateOptions, EntityDeleteOptions, EntityFindOrCreateOptions, EntityResolution, EntityUpdateOptions, ScopedFindOptions } from "@/repository/types";
+import { DefaultScopedFindOptions } from "~/const";
+import { EntityKeyValues, EntityScope, EntityType, SequelizeBaseEntity } from "~/entity";
+import { EntityCreateOptions, EntityCreateOrUpdateOptions, EntityDeleteOptions, EntityFindOrCreateOptions, EntityResolution, EntityUpdateOptions, ScopedFindOptions } from "~/repository/types";
 import { NotFoundException } from "@nestjs/common";
 import { Nullable } from "@sca/utils";
 import { CreationAttributes, WhereOptions } from "sequelize";

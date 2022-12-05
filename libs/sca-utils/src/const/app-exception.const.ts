@@ -1,4 +1,4 @@
-import { AppExceptionDto } from "@/dto";
+import { AppExceptionDto } from "~/dto";
 import { HttpStatus } from "@nestjs/common";
 
 export const AppDefaultException: AppExceptionDto = {

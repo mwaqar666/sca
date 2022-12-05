@@ -1,5 +1,5 @@
-import { AppDefaultException } from "@/const";
-import { AppExceptionDto } from "@/dto";
+import { AppDefaultException } from "~/const";
+import { AppExceptionDto } from "~/dto";
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from "@nestjs/common";
 import { Response } from "express";
 

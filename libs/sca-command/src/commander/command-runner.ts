@@ -1,6 +1,6 @@
-import { BaseCommand } from "@/base";
-import { HelpFlagArgument } from "@/const";
-import { CommandArguments, KeyValueArgument, LoadedCommandArguments } from "@/type";
+import { BaseCommand } from "~/base";
+import { HelpFlagArgument } from "~/const";
+import { CommandArguments, KeyValueArgument, LoadedCommandArguments } from "~/type";
 import * as process from "process";
 
 export class CommandRunner {

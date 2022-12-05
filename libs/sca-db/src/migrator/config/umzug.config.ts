@@ -1,4 +1,4 @@
-import { SequelizeQueryInterface } from "@/migrator/types";
+import { SequelizeQueryInterface } from "~/migrator/types";
 import { DB_SCHEMA } from "@sca/config";
 import { DateHelpers } from "@sca/utils";
 import { DataTypes, Sequelize } from "sequelize";

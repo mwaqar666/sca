@@ -1,6 +1,6 @@
-import { Development, NODE_ENV } from "@/const";
-import { ConfigFactory } from "@/factory";
-import { ConfigValidation } from "@/validation";
+import { Development, NODE_ENV } from "~/const";
+import { ConfigFactory } from "~/factory";
+import { ConfigValidation } from "~/validation";
 import { ConfigModuleOptions } from "@nestjs/config";
 
 const nodeEnvironment = process.env[NODE_ENV] ?? Development;

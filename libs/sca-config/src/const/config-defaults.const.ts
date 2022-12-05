@@ -1,5 +1,5 @@
-import { APP_HOST, APP_PORT, DB_DIALECT, DB_HOST, DB_PORT, REDIS_HOST, REDIS_PORT } from "@/const/config.const";
-import { Development } from "@/const/env.const";
+import { APP_HOST, APP_PORT, DB_DIALECT, DB_HOST, DB_PORT, REDIS_HOST, REDIS_PORT } from "~/const/config.const";
+import { Development } from "~/const/env.const";
 
 export const ConfigDefaultsConst = {
 	Environment: Development,

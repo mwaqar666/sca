@@ -8,7 +8,7 @@ dotenv.config({ path: `${process.cwd()}/.env.${nodeEnvironment}` });
 
 export class Commander {
 	public static async start() {
-		const { CommandManager } = await import("@/commander/command-manager");
+		const { CommandManager } = await import("~/commander/command-manager");
 
 		return CommandManager.getInstance();
 	}

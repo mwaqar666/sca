@@ -1,4 +1,4 @@
-import { CommandArguments, KeyValueArgument } from "@/type";
+import { CommandArguments, KeyValueArgument } from "~/type";
 import { Optional } from "@sca/utils";
 import * as process from "process";
 

@@ -1,4 +1,4 @@
-import { KeyValueArgument, LoadedCommandArguments } from "@/type";
+import { KeyValueArgument, LoadedCommandArguments } from "~/type";
 import * as process from "process";
 
 export class ArgumentsLoader {

@@ -1,4 +1,4 @@
-import { RedisService } from "@/services";
+import { RedisService } from "~/services";
 import { Module } from "@nestjs/common";
 import { BaseModule } from "@sca/utils";
 

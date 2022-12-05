@@ -1,4 +1,4 @@
-import { BaseCommand, BaseCommandProvider } from "@/base";
+import { BaseCommand, BaseCommandProvider } from "~/base";
 
 export type CommandType<T = any> = new (data: T) => BaseCommand<T>;
 

@@ -1,4 +1,4 @@
-import { SequelizeQueryInterface } from "@/migrator/types";
+import { SequelizeQueryInterface } from "~/migrator/types";
 
 export abstract class BaseMigration {
 	public abstract up(queryInterface: SequelizeQueryInterface): Promise<void>;

@@ -1,7 +1,7 @@
-import { ArgumentsLoader } from "@/commander/arguments-loader";
-import { CommandLoader } from "@/commander/command-loader";
-import { CommandRunner } from "@/commander/command-runner";
-import { LoadableCommands } from "@/type";
+import { ArgumentsLoader } from "~/commander/arguments-loader";
+import { CommandLoader } from "~/commander/command-loader";
+import { CommandRunner } from "~/commander/command-runner";
+import { LoadableCommands } from "~/type";
 
 export class CommandManager {
 	private static instance: CommandManager;

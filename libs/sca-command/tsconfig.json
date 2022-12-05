@@ -1,9 +1,7 @@
 {
 	"extends": "../../tsconfig.base.json",
 	"compilerOptions": {
-		"module": "commonjs",
 		"outDir": "../../dist/out-tsc",
-		"declaration": true,
 		"types": [
 			"node"
 		],
@@ -17,7 +15,7 @@
 		"noFallthroughCasesInSwitch": true,
 		"strictPropertyInitialization": false,
 		"paths": {
-			"@/*": [
+			"~/*": [
 				"libs/sca-command/src/*"
 			],
 			"@sca/utils": [

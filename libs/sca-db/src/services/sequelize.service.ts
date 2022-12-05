@@ -1,4 +1,4 @@
-import { RunningTransaction, TransactionalOperation, TransactionStore } from "@/types";
+import { RunningTransaction, TransactionalOperation, TransactionStore } from "~/types";
 import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { HttpException } from "@nestjs/common/exceptions/http.exception";
 import { AppDefaultException, AppExceptionDto } from "@sca/utils";

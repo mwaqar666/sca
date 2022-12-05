@@ -1,5 +1,5 @@
-import { SequelizeNestConfig } from "@/config";
-import { SequelizeConfig } from "@/migrator";
+import { SequelizeNestConfig } from "~/config";
+import { SequelizeConfig } from "~/migrator";
 import { Module } from "@nestjs/common";
 import { SequelizeModule } from "@nestjs/sequelize";
 import { BaseModule } from "@sca/utils";

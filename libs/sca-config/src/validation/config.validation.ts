@@ -1,5 +1,38 @@
-import { ACCESS_TOKEN_EXPIRY, ACCESS_TOKEN_SECRET, APP_HOST, APP_NAME, APP_PORT, APP_VERSION, ConfigDefaultsConst, Db2, DB_DATABASE, DB_DIALECT, DB_HOST, DB_PASSWORD, DB_PORT, DB_SCHEMA, DB_USERNAME, Development, MariaDb, MsSQL, MySQL, NODE_ENV, Postgres, Production, QualityAssurance, REDIS_HOST, REDIS_PASSWORD, REDIS_PORT, REDIS_USERNAME, REFRESH_TOKEN_EXPIRY, REFRESH_TOKEN_SECRET, Snowflake, Sqlite, UserAcceptanceTesting } from "@/const";
-import { ConfigValidationType } from "@/types";
+import {
+	ACCESS_TOKEN_EXPIRY,
+	ACCESS_TOKEN_SECRET,
+	APP_HOST,
+	APP_NAME,
+	APP_PORT,
+	APP_VERSION,
+	ConfigDefaultsConst,
+	Db2,
+	DB_DATABASE,
+	DB_DIALECT,
+	DB_HOST,
+	DB_PASSWORD,
+	DB_PORT,
+	DB_SCHEMA,
+	DB_USERNAME,
+	Development,
+	MariaDb,
+	MsSQL,
+	MySQL,
+	NODE_ENV,
+	Postgres,
+	Production,
+	QualityAssurance,
+	REDIS_HOST,
+	REDIS_PASSWORD,
+	REDIS_PORT,
+	REDIS_USERNAME,
+	REFRESH_TOKEN_EXPIRY,
+	REFRESH_TOKEN_SECRET,
+	Snowflake,
+	Sqlite,
+	UserAcceptanceTesting,
+} from "~/const";
+import { ConfigValidationType } from "~/types";
 import * as Joi from "joi";
 
 export const ConfigValidation: Joi.ObjectSchema<ConfigValidationType> = Joi.object<ConfigValidationType>({

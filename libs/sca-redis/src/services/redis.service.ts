@@ -1,4 +1,4 @@
-import { IRedisConnection, IRedisConnections } from "@/types";
+import { IRedisConnection, IRedisConnections } from "~/types";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from "@redis/client";

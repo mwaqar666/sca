@@ -1,4 +1,4 @@
-import { Key } from "@/types";
+import { Key } from "~/types";
 import { Type } from "@nestjs/common";
 
 export type TInjectable = {

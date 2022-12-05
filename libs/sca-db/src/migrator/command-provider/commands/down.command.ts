@@ -1,4 +1,4 @@
-import { MigrationCommandProviderData } from "@/migrator/types";
+import { MigrationCommandProviderData } from "~/migrator/types";
 import { BaseCommand } from "@sca/command";
 
 export class DownCommand extends BaseCommand<MigrationCommandProviderData> {

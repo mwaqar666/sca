@@ -1,7 +1,7 @@
-import { BaseModule } from "@/base";
-import { ControlDbService, ControlService } from "@/control-flow/aggregate";
-import { TInjectable, TInjectableRegister, TInjectableToken, TResolvedInjectable, TResolvedInjectableToken } from "@/control-flow/types";
-import { Key } from "@/types";
+import { BaseModule } from "~/base";
+import { ControlDbService, ControlService } from "~/control-flow/aggregate";
+import { TInjectable, TInjectableRegister, TInjectableToken, TResolvedInjectable, TResolvedInjectableToken } from "~/control-flow/types";
+import { Key } from "~/types";
 import { DynamicModule, FactoryProvider, Global, Module } from "@nestjs/common";
 
 @Global()

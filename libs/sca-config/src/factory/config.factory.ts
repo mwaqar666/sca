@@ -19,9 +19,9 @@ import {
 	REDIS_USERNAME,
 	REFRESH_TOKEN_EXPIRY,
 	REFRESH_TOKEN_SECRET,
-} from "@/const";
-import { EnvExtractorHelper } from "@/helpers";
-import { ConfigType } from "@/types";
+} from "~/const";
+import { EnvExtractorHelper } from "~/helpers";
+import { ConfigType } from "~/types";
 import { ConfigFactory as NestConfigFactory } from "@nestjs/config";
 
 export const ConfigFactory: NestConfigFactory<ConfigType> = () => {

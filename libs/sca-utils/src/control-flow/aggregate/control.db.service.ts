@@ -1,4 +1,4 @@
-import { TInjectable, TResolvedInjectable } from "@/control-flow";
+import { TInjectable, TResolvedInjectable } from "~/control-flow";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
