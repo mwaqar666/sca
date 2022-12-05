@@ -1,0 +1,52 @@
+{
+	"name": "sca-be",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/sca-be/src",
+	"projectType": "application",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/webpack:webpack",
+			"outputs": ["{options.outputPath}"],
+			"options": {
+				"target": "node",
+				"compiler": "tsc",
+				"outputPath": "dist/apps/sca-be",
+				"main": "apps/sca-be/src/main.ts",
+				"tsConfig": "apps/sca-be/tsconfig.app.json",
+				"assets": ["apps/sca-be/src/assets"]
+			},
+			"configurations": {
+				"production": {
+					"optimization": true,
+					"extractLicenses": true,
+					"inspect": false,
+					"fileReplacements": [
+						{
+							"replace": "apps/sca-be/src/environments/environment.ts",
+							"with": "apps/sca-be/src/environments/environment.prod.ts"
+						}
+					]
+				}
+			}
+		},
+		"serve": {
+			"executor": "@nrwl/js:node",
+			"options": {
+				"buildTarget": "sca-be:build"
+			},
+			"configurations": {
+				"production": {
+					"buildTarget": "sca-be:build:production"
+				}
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": ["{options.outputFile}"],
+			"options": {
+				"lintFilePatterns": ["apps/sca-be/**/*.ts"]
+			}
+		}
+	},
+	"tags": []
+}
