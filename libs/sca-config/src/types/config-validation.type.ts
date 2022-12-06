@@ -1,3 +1,4 @@
+import * as Joi from "joi";
 import {
 	ACCESS_TOKEN_EXPIRY,
 	ACCESS_TOKEN_SECRET,
@@ -19,9 +20,8 @@ import {
 	REDIS_USERNAME,
 	REFRESH_TOKEN_EXPIRY,
 	REFRESH_TOKEN_SECRET,
-} from "~/const";
-import { Dialect, Env } from "~/types/config.type";
-import * as Joi from "joi";
+} from "../const";
+import { Dialect, Env } from "./config.type";
 
 export interface ConfigValidationType {
 	[NODE_ENV]: Joi.StringSchema<Env>;

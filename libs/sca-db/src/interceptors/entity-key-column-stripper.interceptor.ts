@@ -1,8 +1,8 @@
-import { EntityType, Relationship, SequelizeBaseEntity } from "~/entity";
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common";
 import { Key } from "@sca/utils";
 import { map, Observable } from "rxjs";
 import { Association as AssociationType } from "sequelize-typescript";
+import { EntityType, Relationship, SequelizeBaseEntity } from "../entity";
 
 @Injectable()
 export class EntityKeyColumnStripperInterceptor implements NestInterceptor {

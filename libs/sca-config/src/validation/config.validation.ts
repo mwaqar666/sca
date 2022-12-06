@@ -1,3 +1,4 @@
+import * as Joi from "joi";
 import {
 	ACCESS_TOKEN_EXPIRY,
 	ACCESS_TOKEN_SECRET,
@@ -31,13 +32,11 @@ import {
 	Snowflake,
 	Sqlite,
 	UserAcceptanceTesting,
-} from "~/const";
-import { ConfigValidationType } from "~/types";
-import * as Joi from "joi";
+} from "../const";
+import { ConfigValidationType } from "../types";
 
 export const ConfigValidation: Joi.ObjectSchema<ConfigValidationType> = Joi.object<ConfigValidationType>({
 	[NODE_ENV]: Joi.string().required().valid(Development, QualityAssurance, UserAcceptanceTesting, Production).default(ConfigDefaultsConst.Environment),
-
 	[ACCESS_TOKEN_SECRET]: Joi.string().required(),
 	[ACCESS_TOKEN_EXPIRY]: Joi.string().required(),
 	[REFRESH_TOKEN_SECRET]: Joi.string().required(),

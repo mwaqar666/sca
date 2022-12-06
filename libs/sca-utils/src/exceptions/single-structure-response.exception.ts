@@ -1,7 +1,7 @@
-import { AppDefaultException } from "~/const";
-import { AppExceptionDto } from "~/dto";
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from "@nestjs/common";
 import { Response } from "express";
+import { AppDefaultException } from "../const";
+import { AppExceptionDto } from "../dto";
 
 @Catch()
 export class SingleStructureResponseException implements ExceptionFilter<unknown> {

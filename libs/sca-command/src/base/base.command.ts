@@ -1,8 +1,8 @@
-import { CommandArguments, KeyValueArgument } from "~/type";
 import { Optional } from "@sca/utils";
 import * as process from "process";
+import { CommandArguments, KeyValueArgument } from "../type";
 
-export abstract class BaseCommand<T = any> {
+export abstract class BaseCommand<T = unknown> {
 	public constructor(protected readonly data: T) {}
 
 	public commandArguments(): Optional<CommandArguments> {

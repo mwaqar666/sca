@@ -1,4 +1,4 @@
-import { Db2, Development, MariaDb, MsSQL, MySQL, Postgres, Production, QualityAssurance, Snowflake, Sqlite, UserAcceptanceTesting } from "~/const";
+import { Db2, Development, MariaDb, MsSQL, MySQL, Postgres, Production, QualityAssurance, Snowflake, Sqlite, UserAcceptanceTesting } from "../const";
 
 export type Env = typeof Development | typeof QualityAssurance | typeof UserAcceptanceTesting | typeof Production;
 

@@ -1,5 +1,5 @@
-import { MigrationCommandProviderData } from "~/migrator/types";
 import { BaseCommand } from "@sca/command";
+import { MigrationCommandProviderData } from "../../types";
 
 export class UpCommand extends BaseCommand<MigrationCommandProviderData> {
 	public override commandHelp(): string {

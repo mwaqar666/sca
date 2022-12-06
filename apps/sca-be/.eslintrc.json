@@ -13,11 +13,6 @@
 				"*.js",
 				"*.jsx"
 			],
-			"parserOptions": {
-				"project": [
-					"apps/sca-be/tsconfig.json"
-				]
-			},
 			"rules": {}
 		},
 		{

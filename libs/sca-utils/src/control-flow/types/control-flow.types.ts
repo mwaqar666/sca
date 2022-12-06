@@ -1,5 +1,5 @@
-import { Key } from "~/types";
 import { Type } from "@nestjs/common";
+import { Key } from "../../types";
 
 export type TInjectable = {
 	[injectableName: string]: Type;

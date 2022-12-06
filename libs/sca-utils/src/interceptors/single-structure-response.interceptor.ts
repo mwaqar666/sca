@@ -1,6 +1,6 @@
-import { AppSuccessfulResponseDto } from "~/dto";
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common";
 import { map, Observable } from "rxjs";
+import { AppSuccessfulResponseDto } from "../dto";
 
 @Injectable()
 export class SingleStructureResponseInterceptor<T> implements NestInterceptor<T, AppSuccessfulResponseDto<T>> {

@@ -1,5 +1,5 @@
-import { Optional } from "~/types";
 import * as path from "path";
+import { Optional } from "../types";
 
 export abstract class PathHelpers {
 	public static migrationsPath(moduleName: string, migrationFileName: string): string {

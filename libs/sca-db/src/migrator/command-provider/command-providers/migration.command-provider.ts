@@ -1,6 +1,6 @@
-import { MigrationCommandProviderData, SequelizeQueryInterface } from "~/migrator/types";
 import { BaseCommandProvider, CommandType } from "@sca/command";
 import { Umzug } from "umzug";
+import { MigrationCommandProviderData, SequelizeQueryInterface } from "../../types";
 
 export class MigrationCommandProvider extends BaseCommandProvider<MigrationCommandProviderData> {
 	public constructor(public readonly umzug: Umzug<SequelizeQueryInterface>) {
@@ -8,7 +8,7 @@ export class MigrationCommandProvider extends BaseCommandProvider<MigrationComma
 	}
 
 	public override provide(): Array<Promise<CommandType<MigrationCommandProviderData>>> {
-		const commandsDirectory = import("~/migrator/command-provider/commands");
+		const commandsDirectory = import("../commands");
 
 		return [
 			// Register migrator commands here

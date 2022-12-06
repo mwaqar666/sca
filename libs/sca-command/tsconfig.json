@@ -13,18 +13,7 @@
 		"noPropertyAccessFromIndexSignature": true,
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true,
-		"strictPropertyInitialization": false,
-		"paths": {
-			"~/*": [
-				"libs/sca-command/src/*"
-			],
-			"@sca/utils": [
-				"libs/sca-utils/src/index.ts"
-			],
-			"@sca/config": [
-				"libs/sca-config/src/index.ts"
-			]
-		}
+		"strictPropertyInitialization": false
 	},
 	"include": [
 		"**/*.ts"

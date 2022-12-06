@@ -14,10 +14,7 @@
 				"compiler": "tsc",
 				"outputPath": "dist/apps/sca-be",
 				"main": "apps/sca-be/src/main.ts",
-				"tsConfig": "apps/sca-be/tsconfig.json",
-				"assets": [
-					"apps/sca-be/src/assets"
-				]
+				"tsConfig": "apps/sca-be/tsconfig.json"
 			},
 			"configurations": {
 				"production": {
@@ -35,6 +32,16 @@
 			"configurations": {
 				"production": {
 					"buildTarget": "sca-be:build:production"
+				}
+			}
+		},
+		"sca": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "node dist/apps/sca-be"
+			},
+			"configurations": {
+				"dev": {
 				}
 			}
 		},

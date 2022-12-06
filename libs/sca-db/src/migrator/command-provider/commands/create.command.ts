@@ -1,6 +1,6 @@
-import { MigrationCommandProviderData } from "~/migrator/types";
 import { BaseCommand, CommandArgumentDetails, CommandArguments, KeyValueArgument } from "@sca/command";
 import { DateHelpers, FileHelpers, Optional, PathHelpers } from "@sca/utils";
+import { MigrationCommandProviderData } from "../../types";
 
 export class CreateCommand extends BaseCommand<MigrationCommandProviderData> {
 	public override commandArguments(): Optional<CommandArguments> {

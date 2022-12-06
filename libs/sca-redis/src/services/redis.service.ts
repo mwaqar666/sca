@@ -1,10 +1,10 @@
-import { IRedisConnection, IRedisConnections } from "~/types";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from "@redis/client";
 import { ConfigType, RedisConfig } from "@sca/config";
 import { createClient, RedisDefaultModules } from "redis";
 import { Client } from "redis-om";
+import { IRedisConnection, IRedisConnections } from "../types";
 
 @Injectable()
 export class RedisService {

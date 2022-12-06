@@ -1,5 +1,5 @@
-import { KeyValueArgument, LoadedCommandArguments } from "~/type";
 import * as process from "process";
+import { KeyValueArgument, LoadedCommandArguments } from "../type";
 
 export class ArgumentsLoader {
 	private nodeExecutablePath: string;
