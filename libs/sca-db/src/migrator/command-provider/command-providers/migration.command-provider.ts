@@ -8,12 +8,14 @@ export class MigrationCommandProvider extends BaseCommandProvider<MigrationComma
 	}
 
 	public override provide(): Array<Promise<CommandType<MigrationCommandProviderData>>> {
+		const commandsDirectory = import("~/migrator/command-provider/commands");
+
 		return [
 			// Register migrator commands here
 
-			import("~/migrator/command-provider/commands/up.command").then(({ UpCommand }) => UpCommand),
-			import("~/migrator/command-provider/commands/down.command").then(({ DownCommand }) => DownCommand),
-			import("~/migrator/command-provider/commands/create.command").then(({ CreateCommand }) => CreateCommand),
+			commandsDirectory.then(({ UpCommand }) => UpCommand),
+			commandsDirectory.then(({ DownCommand }) => DownCommand),
+			commandsDirectory.then(({ CreateCommand }) => CreateCommand),
 		];
 	}
 }

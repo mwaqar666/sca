@@ -1,1 +1,2 @@
-export * from "./migration.command-provider";
+export * from "./commands";
+export * from "./command-providers";
