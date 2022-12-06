@@ -1,5 +1,5 @@
-import { AppModule } from "@/app-module/app.module";
-import { AppService } from "@/app-module/services";
+import { AppModule } from "~/app-module/app.module";
+import { AppService } from "~/app-module/services";
 import { NestFactory } from "@nestjs/core";
 
 export class Application {

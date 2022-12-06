@@ -1,5 +1,5 @@
-import { ControlDbServiceConfig, ControlServiceConfig } from "@/app-module/config/control-config";
-import * as Services from "@/app-module/services";
+import { ControlDbServiceConfig, ControlServiceConfig } from "~/app-module/config/control-config";
+import * as Services from "~/app-module/services";
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@sca/config";
 import { DbModule } from "@sca/db";

@@ -5,6 +5,9 @@
 	"projectType": "library",
 	"targets": {
 		"build": {
+			"executor": "nx:noop"
+		},
+		"build-project": {
 			"executor": "@nrwl/js:tsc",
 			"outputs": [
 				"{options.outputPath}"
@@ -17,6 +20,12 @@
 				"assets": [
 					"libs/sca-command/*.md"
 				]
+			}
+		},
+		"build-paths": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "tsc-alias -p libs/sca-command/tsconfig.json"
 			}
 		},
 		"lint": {
