@@ -18,20 +18,23 @@
 		"skipDefaultLibCheck": true,
 		"baseUrl": ".",
 		"paths": {
+			"@sca/auth": [
+				"libs/backend/auth/src/index.ts"
+			],
 			"@sca/command": [
-				"libs/backend/sca-command/src/index.ts"
+				"libs/backend/command/src/index.ts"
 			],
 			"@sca/config": [
-				"libs/backend/sca-config/src/index.ts"
+				"libs/backend/config/src/index.ts"
 			],
 			"@sca/db": [
-				"libs/backend/sca-db/src/index.ts"
+				"libs/backend/db/src/index.ts"
 			],
 			"@sca/redis": [
-				"libs/backend/sca-redis/src/index.ts"
+				"libs/backend/redis/src/index.ts"
 			],
 			"@sca/utils": [
-				"libs/backend/sca-utils/src/index.ts"
+				"libs/backend/utils/src/index.ts"
 			]
 		}
 	},
