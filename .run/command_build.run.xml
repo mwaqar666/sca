@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-	<configuration default="false" name="sca-redis:build" type="js.build_tools.nx">
+	<configuration default="false" name="command:build" type="js.build_tools.nx">
 		<node-interpreter value="project"/>
 		<nxfile value="$PROJECT_DIR$/nx.json"/>
 		<tasks>
-			<task value="sca-redis:build"/>
+			<task value="command:build"/>
 		</tasks>
 		<arguments value="--verbose"/>
 		<envs/>

@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-	<configuration default="false" name="sca-utils:build" type="js.build_tools.nx">
+	<configuration default="false" name="config:build" type="js.build_tools.nx">
 		<node-interpreter value="project"/>
 		<nxfile value="$PROJECT_DIR$/nx.json"/>
 		<tasks>
-			<task value="sca-utils:build"/>
+			<task value="config:build"/>
 		</tasks>
 		<arguments value="--verbose"/>
 		<envs/>
