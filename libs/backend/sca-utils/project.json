@@ -1,0 +1,44 @@
+{
+	"name": "sca-utils",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "src",
+	"projectType": "library",
+	"targets": {
+		"build": {
+			"executor": "nx:noop"
+		},
+		"build-project": {
+			"executor": "@nrwl/js:tsc",
+			"outputs": [
+				"{options.outputPath}"
+			],
+			"options": {
+				"outputPath": "dist/libs/backend/sca-utils",
+				"tsConfig": "libs/backend/sca-utils/tsconfig.json",
+				"packageJson": "libs/backend/sca-utils/package.json",
+				"main": "libs/backend/sca-utils/src/index.ts",
+				"assets": [
+					"libs/backend/sca-utils/*.md"
+				]
+			}
+		},
+		"build-paths": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "tsc-alias -p libs/backend/sca-utils/tsconfig.json"
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"libs/backend/sca-utils/**/*.ts"
+				]
+			}
+		}
+	},
+	"tags": []
+}

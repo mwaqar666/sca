@@ -1,0 +1,71 @@
+{
+	"name": "sca-cmd",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/sca-cmd/src",
+	"projectType": "application",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/webpack:webpack",
+			"outputs": [
+				"{options.outputPath}"
+			],
+			"options": {
+				"target": "node",
+				"compiler": "tsc",
+				"outputPath": "dist/apps/sca-cmd",
+				"main": "apps/sca-cmd/src/main.ts",
+				"tsConfig": "apps/sca-cmd/tsconfig.json"
+			},
+			"configurations": {
+				"production": {
+					"optimization": true,
+					"extractLicenses": true,
+					"inspect": false
+				}
+			}
+		},
+		"serve": {
+			"executor": "@nrwl/js:node",
+			"options": {
+				"buildTarget": "sca-cmd:build"
+			},
+			"configurations": {
+				"production": {
+					"buildTarget": "sca-cmd:build:production"
+				}
+			}
+		},
+		"run": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "NODE_ENV=dev node dist/apps/sca-cmd/main.js"
+			},
+			"configurations": {
+				"dev": {
+					"command": "NODE_ENV=dev node dist/apps/sca-cmd/main.js"
+				},
+				"qa": {
+					"command": "NODE_ENV=qa node dist/apps/sca-cmd/main.js"
+				},
+				"uat": {
+					"command": "NODE_ENV=uat node dist/apps/sca-cmd/main.js"
+				},
+				"prod": {
+					"command": "NODE_ENV=prod node dist/apps/sca-cmd/main.js"
+				}
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"apps/sca-cmd/**/*.ts"
+				]
+			}
+		}
+	},
+	"tags": []
+}

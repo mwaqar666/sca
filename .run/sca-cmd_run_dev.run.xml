@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+	<configuration default="false" name="sca-cmd:run:dev" type="js.build_tools.nx">
+		<node-interpreter value="project"/>
+		<nxfile value="$PROJECT_DIR$/nx.json"/>
+		<tasks>
+			<task value="sca-cmd:run:dev"/>
+		</tasks>
+		<envs/>
+		<method v="2"/>
+	</configuration>
+</component>

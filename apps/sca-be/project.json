@@ -35,16 +35,6 @@
 				}
 			}
 		},
-		"sca": {
-			"executor": "nx:run-commands",
-			"options": {
-				"command": "node dist/apps/sca-be"
-			},
-			"configurations": {
-				"dev": {
-				}
-			}
-		},
 		"lint": {
 			"executor": "@nrwl/linter:eslint",
 			"outputs": [

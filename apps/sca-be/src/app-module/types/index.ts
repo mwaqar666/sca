@@ -1,1 +1,1 @@
-export * from "./control-types";
+export * from "./aggregate.types";

@@ -19,19 +19,19 @@
 		"baseUrl": ".",
 		"paths": {
 			"@sca/command": [
-				"libs/sca-command/src/index.ts"
+				"libs/backend/sca-command/src/index.ts"
 			],
 			"@sca/config": [
-				"libs/sca-config/src/index.ts"
+				"libs/backend/sca-config/src/index.ts"
 			],
 			"@sca/db": [
-				"libs/sca-db/src/index.ts"
+				"libs/backend/sca-db/src/index.ts"
 			],
 			"@sca/redis": [
-				"libs/sca-redis/src/index.ts"
+				"libs/backend/sca-redis/src/index.ts"
 			],
 			"@sca/utils": [
-				"libs/sca-utils/src/index.ts"
+				"libs/backend/sca-utils/src/index.ts"
 			]
 		}
 	},
