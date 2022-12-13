@@ -6,6 +6,14 @@ import {
 	APP_NAME,
 	APP_PORT,
 	APP_VERSION,
+	CRYPT_APP_KEY,
+	CRYPT_AUTH_TAG_BYTE_LEN,
+	CRYPT_BLOCK_CIPHER,
+	CRYPT_ENCRYPTION_KEY_BYTE_LENGTH,
+	CRYPT_INITIALIZATION_VECTOR_BYTE_LEN,
+	CRYPT_SALT_BYTE_LEN,
+	CRYPT_SALT_ITERATIONS,
+	CRYPT_SALT_SCHEME,
 	DB_DATABASE,
 	DB_DIALECT,
 	DB_HOST,
@@ -50,6 +58,17 @@ export const ConfigFactory: NestConfigFactory<ConfigType> = () => {
 			port: parseInt(EnvExtractorHelper.env(REDIS_PORT), 10),
 			username: EnvExtractorHelper.env(REDIS_USERNAME),
 			password: EnvExtractorHelper.env(REDIS_PASSWORD),
+		},
+
+		crypt: {
+			appKey: EnvExtractorHelper.env(CRYPT_APP_KEY),
+			blockCipher: EnvExtractorHelper.env(CRYPT_BLOCK_CIPHER),
+			authTagByteLength: parseInt(EnvExtractorHelper.env(CRYPT_AUTH_TAG_BYTE_LEN), 10),
+			initializationVectorByteLength: parseInt(EnvExtractorHelper.env(CRYPT_INITIALIZATION_VECTOR_BYTE_LEN), 10),
+			encryptionKeyByteLength: parseInt(EnvExtractorHelper.env(CRYPT_ENCRYPTION_KEY_BYTE_LENGTH), 10),
+			saltByteLength: parseInt(EnvExtractorHelper.env(CRYPT_SALT_BYTE_LEN), 10),
+			saltIterations: parseInt(EnvExtractorHelper.env(CRYPT_SALT_ITERATIONS), 10),
+			saltScheme: EnvExtractorHelper.env(CRYPT_SALT_SCHEME),
 		},
 
 		app: {

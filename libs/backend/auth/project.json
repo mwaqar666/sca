@@ -5,9 +5,6 @@
 	"projectType": "library",
 	"targets": {
 		"build": {
-			"executor": "nx:noop"
-		},
-		"build-project": {
 			"executor": "@nrwl/js:tsc",
 			"outputs": [
 				"{options.outputPath}"
@@ -16,16 +13,7 @@
 				"outputPath": "dist/libs/backend/auth",
 				"tsConfig": "libs/backend/auth/tsconfig.json",
 				"packageJson": "libs/backend/auth/package.json",
-				"main": "libs/backend/auth/src/index.ts",
-				"assets": [
-					"libs/backend/auth/*.md"
-				]
-			}
-		},
-		"build-paths": {
-			"executor": "nx:run-commands",
-			"options": {
-				"command": "tsc-alias -p libs/backend/auth/tsconfig.json"
+				"main": "libs/backend/auth/src/index.ts"
 			}
 		},
 		"lint": {

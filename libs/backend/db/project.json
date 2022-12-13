@@ -1,13 +1,10 @@
 {
-	"name": "db",
+	"name": "backend-db",
 	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
 	"sourceRoot": "src",
 	"projectType": "library",
 	"targets": {
 		"build": {
-			"executor": "nx:noop"
-		},
-		"build-project": {
 			"executor": "@nrwl/js:tsc",
 			"outputs": [
 				"{options.outputPath}"
@@ -16,16 +13,7 @@
 				"outputPath": "dist/libs/backend/db",
 				"tsConfig": "libs/backend/db/tsconfig.json",
 				"packageJson": "libs/backend/db/package.json",
-				"main": "libs/backend/db/src/index.ts",
-				"assets": [
-					"libs/backend/db/*.md"
-				]
-			}
-		},
-		"build-paths": {
-			"executor": "nx:run-commands",
-			"options": {
-				"command": "tsc-alias -p libs/backend/db/tsconfig.json"
+				"main": "libs/backend/db/src/index.ts"
 			}
 		},
 		"lint": {

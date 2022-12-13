@@ -1,10 +1,18 @@
-import { Db2, Development, MariaDb, MsSQL, MySQL, Postgres, Production, QualityAssurance, Snowflake, Sqlite, UserAcceptanceTesting } from "../const";
+import { CipherGCMTypes } from "crypto";
+import { DB2, DEVELOPMENT, MARIA_DB, MS_SQL, MY_SQL, POSTGRES, PRODUCTION, QUALITY_ASSURANCE, SNOWFLAKE, SQLITE, USER_ACCEPTANCE_TESTING } from "../const";
 
-export type Env = typeof Development | typeof QualityAssurance | typeof UserAcceptanceTesting | typeof Production;
+export type Env = typeof DEVELOPMENT | typeof QUALITY_ASSURANCE | typeof USER_ACCEPTANCE_TESTING | typeof PRODUCTION;
 
-export type Dialect = typeof MySQL | typeof Postgres | typeof Sqlite | typeof MariaDb | typeof MsSQL | typeof Db2 | typeof Snowflake;
+export type Dialect = typeof MY_SQL | typeof POSTGRES | typeof SQLITE | typeof MARIA_DB | typeof MS_SQL | typeof DB2 | typeof SNOWFLAKE;
 
-export type DatabaseConfig = {
+export interface TokenConfig {
+	accessTokenSecret: string;
+	accessTokenExpiry: string;
+	refreshTokenSecret: string;
+	refreshTokenExpiry: string;
+}
+
+export interface DatabaseConfig {
 	dialect: Dialect;
 	username: string;
 	password: string;
@@ -12,30 +20,34 @@ export type DatabaseConfig = {
 	port: number;
 	database: string;
 	schema: string;
-};
+}
 
-export type AppConfig = {
-	host: string;
-	port: number;
-	name: string;
-	version: string;
-};
-
-export type TokenConfig = {
-	accessTokenSecret: string;
-	accessTokenExpiry: string;
-	refreshTokenSecret: string;
-	refreshTokenExpiry: string;
-};
-
-export type RedisConfig = {
+export interface RedisConfig {
 	hostname: string;
 	port: number;
 	username: string;
 	password: string;
-};
+}
 
-export type ConfigType = {
+export interface CryptConfig {
+	appKey: string;
+	blockCipher: CipherGCMTypes;
+	authTagByteLength: number;
+	initializationVectorByteLength: number;
+	encryptionKeyByteLength: number;
+	saltByteLength: number;
+	saltIterations: number;
+	saltScheme: string;
+}
+
+export interface AppConfig {
+	host: string;
+	port: number;
+	name: string;
+	version: string;
+}
+
+export interface ConfigType {
 	env: Env;
 
 	tokens: TokenConfig;
@@ -44,5 +56,7 @@ export type ConfigType = {
 
 	redis: RedisConfig;
 
+	crypt: CryptConfig;
+
 	app: AppConfig;
-};
+}

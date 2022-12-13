@@ -1,7 +1,7 @@
-import { Development, NODE_ENV } from "@sca/config";
+import { DEVELOPMENT, NODE_ENV } from "@sca/config";
 import * as dotenv from "dotenv";
 
-const nodeEnvironment = process.env[NODE_ENV] ?? Development;
+const nodeEnvironment = process.env[NODE_ENV] ?? DEVELOPMENT;
 dotenv.config({ path: `${process.cwd()}/.env.${nodeEnvironment}` });
 
 export class Commander {

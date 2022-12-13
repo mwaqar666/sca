@@ -1,10 +1,10 @@
 import { ConfigModuleOptions } from "@nestjs/config";
 import * as process from "process";
-import { Development, NODE_ENV } from "../const";
+import { DEVELOPMENT, NODE_ENV } from "../const";
 import { ConfigFactory } from "../factory";
 import { ConfigValidation } from "../validation";
 
-const nodeEnvironment = process.env[NODE_ENV] ?? Development;
+const nodeEnvironment = process.env[NODE_ENV] ?? DEVELOPMENT;
 const environmentFilePath = `${process.cwd()}/.env.${nodeEnvironment}`;
 
 export const NestConfigConfig: ConfigModuleOptions = {

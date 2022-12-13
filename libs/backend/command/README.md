@@ -1,7 +1,7 @@
-# sca-command
+# utilscommand
 
 This library was generated with [Nx](https://nx.dev).
 
 ## Running lint
 
-Run `nx lint sca-command` to execute the lint via [ESLint](https://eslint.org/).
+Run `nx lint utilscommand` to execute the lint via [ESLint](https://eslint.org/).

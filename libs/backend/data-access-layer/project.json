@@ -1,0 +1,32 @@
+{
+	"name": "backend-data-access-layer",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "/src",
+	"projectType": "library",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"outputs": [
+				"{options.outputPath}"
+			],
+			"options": {
+				"outputPath": "dist/libs/backend/data-access-layer",
+				"tsConfig": "libs/backend/data-access-layer/tsconfig.json",
+				"packageJson": "libs/backend/data-access-layer/package.json",
+				"main": "libs/backend/data-access-layer/src/index.ts"
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"libs/backend/data-access-layer/**/*.ts"
+				]
+			}
+		}
+	},
+	"tags": []
+}

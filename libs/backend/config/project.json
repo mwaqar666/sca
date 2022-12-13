@@ -1,13 +1,10 @@
 {
-	"name": "config",
+	"name": "backend-config",
 	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
 	"sourceRoot": "src",
 	"projectType": "library",
 	"targets": {
 		"build": {
-			"executor": "nx:noop"
-		},
-		"build-project": {
 			"executor": "@nrwl/js:tsc",
 			"outputs": [
 				"{options.outputPath}"
@@ -16,16 +13,7 @@
 				"outputPath": "dist/libs/backend/config",
 				"tsConfig": "libs/backend/config/tsconfig.json",
 				"packageJson": "libs/backend/config/package.json",
-				"main": "libs/backend/config/src/index.ts",
-				"assets": [
-					"libs/backend/config/*.md"
-				]
-			}
-		},
-		"build-paths": {
-			"executor": "nx:run-commands",
-			"options": {
-				"command": "tsc-alias -p libs/backend/config/tsconfig.json"
+				"main": "libs/backend/config/src/index.ts"
 			}
 		},
 		"lint": {

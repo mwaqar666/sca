@@ -1,4 +1,3 @@
-import { Key } from "@sca/utils";
 import { ModelStatic } from "sequelize";
 import { Model } from "sequelize-typescript";
 import { EntityScope } from "./types";
@@ -12,7 +11,7 @@ export abstract class BaseEntity<TEntity extends BaseEntity<TEntity>> extends Mo
 
 	// Column Exposure Information
 	public static exposePrimaryKey = false;
-	public static exposeForeignKeys: Array<Key<any>> = [];
+	public static exposeForeignKeys: Array<string> = [];
 
 	// Timestamps Information
 	public static createdAtColumnName: string;

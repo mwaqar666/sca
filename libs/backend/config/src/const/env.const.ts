@@ -1,12 +1,12 @@
-export const Development = "dev";
-export const QualityAssurance = "qa";
-export const UserAcceptanceTesting = "uat";
-export const Production = "prod";
+export const DEVELOPMENT = "dev";
+export const QUALITY_ASSURANCE = "qa";
+export const USER_ACCEPTANCE_TESTING = "uat";
+export const PRODUCTION = "prod";
 
-export const MySQL = "mysql";
-export const Postgres = "postgres";
-export const Sqlite = "sqlite";
-export const MariaDb = "mariadb";
-export const MsSQL = "mssql";
-export const Db2 = "db2";
-export const Snowflake = "snowflake";
+export const MY_SQL = "mysql";
+export const POSTGRES = "postgres";
+export const SQLITE = "sqlite";
+export const MARIA_DB = "mariadb";
+export const MS_SQL = "mssql";
+export const DB2 = "db2";
+export const SNOWFLAKE = "snowflake";

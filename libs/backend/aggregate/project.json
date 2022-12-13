@@ -1,0 +1,35 @@
+{
+	"name": "backend-aggregate",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/backend/aggregate/src",
+	"projectType": "library",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"outputs": [
+				"{options.outputPath}"
+			],
+			"options": {
+				"outputPath": "dist/libs/backend/aggregate",
+				"tsConfig": "libs/backend/aggregate/tsconfig.json",
+				"packageJson": "libs/backend/aggregate/package.json",
+				"main": "libs/backend/aggregate/src/index.ts",
+				"assets": [
+					"libs/backend/aggregate/*.md"
+				]
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"libs/backend/aggregate/**/*.ts"
+				]
+			}
+		}
+	},
+	"tags": []
+}

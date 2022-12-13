@@ -1,1 +1,3 @@
-export abstract class BaseModule {}
+export abstract class BaseModule {
+	//
+}

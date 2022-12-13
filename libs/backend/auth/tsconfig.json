@@ -1,7 +1,7 @@
 {
 	"extends": "../../../tsconfig.base.json",
 	"compilerOptions": {
-		"outDir": "../../../dist/libs/backend/sca-auth",
+		"outDir": "../../../dist/libs/backend/auth",
 		"types": [
 			"node"
 		],

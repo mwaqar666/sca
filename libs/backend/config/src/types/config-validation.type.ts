@@ -1,3 +1,4 @@
+import { CipherGCMTypes } from "crypto";
 import * as Joi from "joi";
 import {
 	ACCESS_TOKEN_EXPIRY,
@@ -6,6 +7,14 @@ import {
 	APP_NAME,
 	APP_PORT,
 	APP_VERSION,
+	CRYPT_APP_KEY,
+	CRYPT_AUTH_TAG_BYTE_LEN,
+	CRYPT_BLOCK_CIPHER,
+	CRYPT_ENCRYPTION_KEY_BYTE_LENGTH,
+	CRYPT_INITIALIZATION_VECTOR_BYTE_LEN,
+	CRYPT_SALT_BYTE_LEN,
+	CRYPT_SALT_ITERATIONS,
+	CRYPT_SALT_SCHEME,
 	DB_DATABASE,
 	DB_DIALECT,
 	DB_HOST,
@@ -43,6 +52,15 @@ export interface ConfigValidationType {
 	[REDIS_PORT]: Joi.NumberSchema;
 	[REDIS_USERNAME]: Joi.StringSchema;
 	[REDIS_PASSWORD]: Joi.StringSchema;
+
+	[CRYPT_APP_KEY]: Joi.StringSchema;
+	[CRYPT_BLOCK_CIPHER]: Joi.StringSchema<CipherGCMTypes>;
+	[CRYPT_AUTH_TAG_BYTE_LEN]: Joi.NumberSchema;
+	[CRYPT_INITIALIZATION_VECTOR_BYTE_LEN]: Joi.NumberSchema;
+	[CRYPT_ENCRYPTION_KEY_BYTE_LENGTH]: Joi.NumberSchema;
+	[CRYPT_SALT_BYTE_LEN]: Joi.NumberSchema;
+	[CRYPT_SALT_ITERATIONS]: Joi.NumberSchema;
+	[CRYPT_SALT_SCHEME]: Joi.StringSchema;
 
 	[APP_HOST]: Joi.StringSchema;
 	[APP_PORT]: Joi.NumberSchema;

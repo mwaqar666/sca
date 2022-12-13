@@ -1,4 +1,4 @@
-import { BaseMigration, SequelizeQueryInterface } from "sca-db";
+import { BaseMigration, SequelizeQueryInterface } from "@sca/db";
 
 export default class extends BaseMigration {
 	public async up(queryInterface: SequelizeQueryInterface): Promise<void> {

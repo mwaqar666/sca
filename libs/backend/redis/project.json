@@ -1,13 +1,10 @@
 {
-	"name": "redis",
+	"name": "backend-redis",
 	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
 	"sourceRoot": "src",
 	"projectType": "library",
 	"targets": {
 		"build": {
-			"executor": "nx:noop"
-		},
-		"build-project": {
 			"executor": "@nrwl/js:tsc",
 			"outputs": [
 				"{options.outputPath}"
@@ -16,16 +13,7 @@
 				"outputPath": "dist/libs/backend/redis",
 				"tsConfig": "libs/backend/redis/tsconfig.json",
 				"packageJson": "libs/backend/redis/package.json",
-				"main": "libs/backend/redis/src/index.ts",
-				"assets": [
-					"libs/backend/redis/*.md"
-				]
-			}
-		},
-		"build-paths": {
-			"executor": "nx:run-commands",
-			"options": {
-				"command": "tsc-alias -p libs/backend/redis/tsconfig.json"
+				"main": "libs/backend/redis/src/index.ts"
 			}
 		},
 		"lint": {

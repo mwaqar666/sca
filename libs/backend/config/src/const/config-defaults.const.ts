@@ -1,17 +1,52 @@
-import { APP_HOST, APP_PORT, DB_DIALECT, DB_HOST, DB_PORT, REDIS_HOST, REDIS_PORT } from "./config.const";
-import { Development } from "./env.const";
+import {
+	ACCESS_TOKEN_EXPIRY,
+	APP_HOST,
+	APP_PORT,
+	CRYPT_AUTH_TAG_BYTE_LEN,
+	CRYPT_BLOCK_CIPHER,
+	CRYPT_ENCRYPTION_KEY_BYTE_LENGTH,
+	CRYPT_INITIALIZATION_VECTOR_BYTE_LEN,
+	CRYPT_SALT_BYTE_LEN,
+	CRYPT_SALT_ITERATIONS,
+	CRYPT_SALT_SCHEME,
+	DB_DIALECT,
+	DB_HOST,
+	DB_PORT,
+	REDIS_HOST,
+	REDIS_PORT,
+	REFRESH_TOKEN_EXPIRY,
+} from "./config.const";
+import { DEVELOPMENT } from "./env.const";
 
 export const ConfigDefaultsConst = {
-	Environment: Development,
+	Environment: DEVELOPMENT,
+
+	Token: {
+		[ACCESS_TOKEN_EXPIRY]: "5m",
+		[REFRESH_TOKEN_EXPIRY]: "24hr",
+	},
+
 	Database: {
 		[DB_HOST]: "localhost",
 		[DB_DIALECT]: "mysql",
 		[DB_PORT]: 3306,
 	},
+
 	Redis: {
 		[REDIS_HOST]: "localhost",
 		[REDIS_PORT]: 6379,
 	},
+
+	Crypt: {
+		[CRYPT_BLOCK_CIPHER]: "aes-256-gcm",
+		[CRYPT_AUTH_TAG_BYTE_LEN]: 16,
+		[CRYPT_INITIALIZATION_VECTOR_BYTE_LEN]: 16,
+		[CRYPT_ENCRYPTION_KEY_BYTE_LENGTH]: 32,
+		[CRYPT_SALT_BYTE_LEN]: 64,
+		[CRYPT_SALT_ITERATIONS]: 100000,
+		[CRYPT_SALT_SCHEME]: "sha512",
+	},
+
 	App: {
 		[APP_HOST]: "localhost",
 		[APP_PORT]: 3000,

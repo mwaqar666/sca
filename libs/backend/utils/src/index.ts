@@ -1,7 +1,6 @@
 export * from "./base";
 export * from "./config";
 export * from "./const";
-export * from "./aggregate-module";
 export * from "./dto";
 export * from "./exceptions";
 export * from "./helpers";

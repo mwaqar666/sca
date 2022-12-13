@@ -1,5 +1,4 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common";
-import { Key } from "@sca/utils";
 import { map, Observable } from "rxjs";
 import { Association as AssociationType } from "sequelize-typescript";
 import { EntityType, Relationship, SequelizeBaseEntity } from "../entity";
@@ -80,13 +79,13 @@ export class EntityKeyColumnStripperInterceptor implements NestInterceptor {
 
 	private stripPrimaryAndForeignKeysFromEntity(data: SequelizeBaseEntity<any>): SequelizeBaseEntity<any> {
 		const sequelizeEntityModel = data.constructor as EntityType<SequelizeBaseEntity<any>>;
-		const primaryKeyColumnName = sequelizeEntityModel.primaryKeyAttribute as Key<SequelizeBaseEntity<any>>;
+		const primaryKeyColumnName = sequelizeEntityModel.primaryKeyAttribute;
 
 		const [foreignKeys, relationShips] = this.extractRelationShipEntitiesAndForeignKeys(data, sequelizeEntityModel);
 
 		if (!sequelizeEntityModel.exposePrimaryKey) data.removeDataValue(primaryKeyColumnName);
 
-		foreignKeys.forEach((foreignKey: Key<SequelizeBaseEntity<any>>) => {
+		foreignKeys.forEach((foreignKey: string) => {
 			if (sequelizeEntityModel.exposeForeignKeys.includes(foreignKey)) return;
 
 			data.removeDataValue(foreignKey);
@@ -103,17 +102,14 @@ export class EntityKeyColumnStripperInterceptor implements NestInterceptor {
 		return data;
 	}
 
-	private extractRelationShipEntitiesAndForeignKeys(
-		data: SequelizeBaseEntity<any>,
-		concreteEntity: EntityType<SequelizeBaseEntity<any>>,
-	): [Array<Key<SequelizeBaseEntity<any>>>, Array<Relationship<any>>] {
-		const foreignKeys: Array<Key<SequelizeBaseEntity<any>>> = [];
+	private extractRelationShipEntitiesAndForeignKeys(data: SequelizeBaseEntity<any>, concreteEntity: EntityType<SequelizeBaseEntity<any>>): [Array<string>, Array<Relationship<any>>] {
+		const foreignKeys: Array<string> = [];
 
 		const relationShipData: Array<Relationship<any>> = [];
 
 		for (const { associationType, as: propertyKey, foreignKey } of Object.values(concreteEntity.associations)) {
 			if (associationType.toUpperCase() === AssociationType.BelongsTo.toUpperCase()) {
-				foreignKeys.push(foreignKey as Key<SequelizeBaseEntity<any>>);
+				foreignKeys.push(foreignKey);
 			}
 
 			const entityOrEntities = data.getDataValue(propertyKey);

@@ -18,6 +18,9 @@
 		"skipDefaultLibCheck": true,
 		"baseUrl": ".",
 		"paths": {
+			"@sca/aggregate": [
+				"libs/backend/aggregate/src/index.ts"
+			],
 			"@sca/auth": [
 				"libs/backend/auth/src/index.ts"
 			],
@@ -27,11 +30,20 @@
 			"@sca/config": [
 				"libs/backend/config/src/index.ts"
 			],
+			"@sca/data-access-layer": [
+				"libs/backend/data-access-layer/src/index.ts"
+			],
 			"@sca/db": [
 				"libs/backend/db/src/index.ts"
 			],
+			"@sca/dto": [
+				"libs/shared/dto/src/index.ts"
+			],
 			"@sca/redis": [
 				"libs/backend/redis/src/index.ts"
+			],
+			"@sca/security": [
+				"libs/backend/security/src/index.ts"
 			],
 			"@sca/utils": [
 				"libs/backend/utils/src/index.ts"
