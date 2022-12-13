@@ -1,5 +1,5 @@
 import * as process from "process";
-import { KeyValueArgument, LoadedCommandArguments } from "../type";
+import { LoadedCommandArguments } from "../type";
 
 export class ArgumentsLoader {
 	private nodeExecutablePath: string;
@@ -8,7 +8,7 @@ export class ArgumentsLoader {
 	private commandName: string;
 
 	private argumentList: Array<string>;
-	private keyValueArguments: Array<KeyValueArgument> = [];
+	private keyValueArguments: Record<string, string> = {};
 	private flagArguments: Array<string> = [];
 
 	public constructor(private readonly commandLineArgumentList: Array<string>) {
@@ -57,11 +57,11 @@ export class ArgumentsLoader {
 	private loadKeyValueArguments(argument: string): void {
 		const [key, value] = argument.split("=");
 		if (key && value) {
-			this.keyValueArguments.push({ key, value });
+			this.keyValueArguments[key] = value;
 			return;
 		}
 
-		console.error("Command arguments should be [key]=[value] pairs");
+		console.error("Commander: Command arguments should be [key]=[value] pairs");
 		process.exit(1);
 	}
 
@@ -72,7 +72,7 @@ export class ArgumentsLoader {
 			return;
 		}
 
-		console.error("Command flag argument should be --[flag]");
+		console.error("Commander: Command flag argument should be --[flag]");
 		process.exit(1);
 	}
 }

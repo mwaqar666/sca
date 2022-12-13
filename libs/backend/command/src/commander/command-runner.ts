@@ -1,7 +1,7 @@
 import * as process from "process";
 import { BaseCommand } from "../base";
 import { HelpFlagArgument } from "../const";
-import { CommandArguments, KeyValueArgument, LoadedCommandArguments } from "../type";
+import { CommandArguments, FlagArguments, KeyValueArgument, LoadedCommandArguments, PossibleKeyValueArgumentTypes } from "../type";
 
 export class CommandRunner {
 	private loadedCommands: Array<BaseCommand>;
@@ -10,8 +10,8 @@ export class CommandRunner {
 	private commandToExecute: BaseCommand;
 	private shouldRunCommandHelp = false;
 
-	private verifiedCommandKeyValueArguments: Array<KeyValueArgument> = [];
-	private verifiedCommandFlagArguments: Array<string> = [];
+	private verifiedCommandKeyValueArguments: KeyValueArgument = {};
+	private verifiedCommandFlagArguments: FlagArguments = {};
 
 	public prepareCommand(loadedCommands: Array<BaseCommand>, loadedArguments: LoadedCommandArguments): void {
 		this.loadedCommands = loadedCommands;
@@ -43,7 +43,7 @@ export class CommandRunner {
 			return;
 		}
 
-		console.error(`Command with name ${this.loadedArguments.commandName} not found!`);
+		console.error(`Commander: Command with name ${this.loadedArguments.commandName} not found!`);
 		process.exit(1);
 	}
 
@@ -67,21 +67,21 @@ export class CommandRunner {
 		if (!commandArguments.keyValueArguments) return;
 
 		for (const [argumentName, argumentDetails] of Object.entries(commandArguments.keyValueArguments)) {
-			const foundLoadedKeyValueArgument = this.loadedArguments.keyValueArguments.find((keyValueArgument: KeyValueArgument) => {
-				return keyValueArgument.key === argumentName;
-			});
+			const foundArgument = this.loadedArguments.keyValueArguments[argumentName];
 
-			if (foundLoadedKeyValueArgument || argumentDetails.defaultValue !== undefined) {
-				const foundOrDefaultValue = foundLoadedKeyValueArgument ? foundLoadedKeyValueArgument : ({ key: argumentName, value: argumentDetails.defaultValue } as KeyValueArgument);
-				const parsedArgument = this.parseCommandKeyValueArgument(foundOrDefaultValue, argumentDetails.type);
-				this.verifiedCommandKeyValueArguments.push(parsedArgument);
+			if (foundArgument) {
+				this.verifiedCommandKeyValueArguments[argumentName] = this.parseCommandKeyValueArgument(foundArgument, argumentDetails.type);
 
 				continue;
 			}
 
-			if (!argumentDetails.required) continue;
+			if (!argumentDetails.required) {
+				if (argumentDetails.defaultValue) this.verifiedCommandKeyValueArguments[argumentName] = argumentDetails.defaultValue;
 
-			console.error(`Argument ${argumentName} is required!`);
+				continue;
+			}
+
+			console.error(`Commander: Argument ${argumentName} is required!`);
 			process.exit(1);
 		}
 	}
@@ -90,18 +90,9 @@ export class CommandRunner {
 		if (!commandArguments.flagArguments) return;
 
 		for (const flagArgument of commandArguments.flagArguments) {
-			if (flagArgument === HelpFlagArgument) {
-				console.error(`Cannot use "help" as flag argument as it is a reserved flag!`);
-				process.exit(1);
-			}
+			const foundArgument = this.loadedArguments.flagArguments.find((loadedFlag: string) => loadedFlag === flagArgument);
 
-			const foundFlagArgument = this.loadedArguments.flagArguments.find((loadedFlagArgument: string) => {
-				return loadedFlagArgument === flagArgument;
-			});
-
-			if (!foundFlagArgument) continue;
-
-			this.verifiedCommandFlagArguments.push(foundFlagArgument);
+			this.verifiedCommandFlagArguments[flagArgument] = !!foundArgument;
 		}
 	}
 
@@ -109,22 +100,22 @@ export class CommandRunner {
 		return this.loadedArguments.flagArguments.includes(HelpFlagArgument);
 	}
 
-	private parseCommandKeyValueArgument(loadedArgument: KeyValueArgument, argumentType: "string" | "number" | "boolean"): KeyValueArgument {
+	private parseCommandKeyValueArgument(loadedArgument: string, argumentType: "string" | "number" | "boolean"): PossibleKeyValueArgumentTypes {
 		if (argumentType === "number") {
-			loadedArgument.value = parseInt(loadedArgument.value as string, 10);
+			const parsedNumber = parseInt(loadedArgument, 10);
 
-			if (!Number.isNaN(loadedArgument.value)) return loadedArgument;
+			if (!Number.isNaN(parsedNumber)) return loadedArgument;
 
-			console.error(`Argument ${loadedArgument.key} is expected to be a number`);
+			console.error(`Commander: Argument ${loadedArgument} is expected to be a number`);
 			process.exit(1);
 		}
 
 		if (argumentType === "boolean") {
-			if (loadedArgument.value === "true" || loadedArgument.value === true) return { key: loadedArgument.key, value: true };
+			if (loadedArgument === "true") return true;
 
-			if (loadedArgument.value === "false" || loadedArgument.value === false) return { key: loadedArgument.key, value: false };
+			if (loadedArgument === "false") return false;
 
-			console.error(`Argument ${loadedArgument.key} is expected to be a boolean flag`);
+			console.error(`Commander: Argument ${loadedArgument} is expected to be a boolean`);
 			process.exit(1);
 		}
 

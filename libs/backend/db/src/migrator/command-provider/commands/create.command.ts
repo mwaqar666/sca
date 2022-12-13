@@ -18,7 +18,7 @@ export class CreateCommand extends BaseCommand<MigrationCommandProviderData> {
 	}
 
 	public override commandName(): string {
-		return "create";
+		return "migration:create";
 	}
 
 	public override async commandAction(): Promise<void> {

@@ -13,7 +13,7 @@ export class DownCommand extends BaseCommand<MigrationCommandProviderData> {
 	}
 
 	public override commandName(): string {
-		return "down";
+		return "migration:down";
 	}
 
 	public override async commandAction(): Promise<void> {
