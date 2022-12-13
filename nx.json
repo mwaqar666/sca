@@ -21,21 +21,14 @@
 	"targetDefaults": {
 		"build": {
 			"dependsOn": [
-				"build-paths"
+				{
+					"target": "build",
+					"projects": "dependencies"
+				}
 			],
 			"inputs": [
 				"production",
 				"^production"
-			]
-		},
-		"build-project": {
-			"dependsOn": [
-				"^build-paths"
-			]
-		},
-		"build-paths": {
-			"dependsOn": [
-				"build-project"
 			]
 		},
 		"lint": {
