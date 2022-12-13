@@ -1,5 +1,6 @@
 import { LoadableCommands } from "../type";
 import { ArgumentsLoader } from "./arguments-loader";
+import { CommandHelper } from "./command-helper";
 import { CommandLoader } from "./command-loader";
 import { CommandRunner } from "./command-runner";
 
@@ -9,13 +10,14 @@ export class CommandManager {
 	static {
 		const argumentsLoader = new ArgumentsLoader(process.argv);
 		const commandLoader = new CommandLoader();
-		const commandRunner = new CommandRunner();
+		const commandHelper = new CommandHelper();
+		const commandRunner = new CommandRunner(commandHelper);
 
 		CommandManager.instance = new CommandManager(argumentsLoader, commandLoader, commandRunner);
 	}
 
 	private constructor(
-		// Loaders
+		// Dependencies
 		private readonly argumentsLoader: ArgumentsLoader,
 		private readonly commandLoader: CommandLoader,
 		private readonly commandRunner: CommandRunner,
@@ -35,8 +37,6 @@ export class CommandManager {
 		const loadedCommands = this.commandLoader.getLoadedCommands();
 		const loadedArguments = this.argumentsLoader.getLoadedArguments();
 
-		this.commandRunner.prepareCommand(loadedCommands, loadedArguments);
-
-		await this.commandRunner.runCommand();
+		await this.commandRunner.prepareCommand(loadedCommands, loadedArguments).runCommand();
 	}
 }

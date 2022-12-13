@@ -14,7 +14,8 @@
 				"compiler": "tsc",
 				"outputPath": "dist/apps/sca-cmd",
 				"main": "apps/sca-cmd/src/main.ts",
-				"tsConfig": "apps/sca-cmd/tsconfig.json"
+				"tsConfig": "apps/sca-cmd/tsconfig.json",
+				"webpackConfig": "apps/sca-cmd/webpack.config.js"
 			},
 			"configurations": {
 				"production": {

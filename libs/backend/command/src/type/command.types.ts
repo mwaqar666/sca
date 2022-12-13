@@ -1,9 +1,14 @@
 import { BaseCommand, BaseCommandProvider } from "../base";
-import { CommandKeyValueArguments, KeyValueArgument } from "./argument.types";
+import { ArgumentsHelp, CommandKeyValueArguments, KeyValueArgument } from "./argument.types";
 
 export type CommandType<T = unknown, TArgs extends KeyValueArgument = KeyValueArgument> = new (data: T) => BaseCommand<T, TArgs>;
 
 export type LoadableCommands = Array<Promise<CommandType | BaseCommandProvider>>;
+
+export interface CommandHelp<TArgs extends KeyValueArgument = KeyValueArgument> {
+	commandDescription: string;
+	argumentDescription: ArgumentsHelp<TArgs>;
+}
 
 export interface LoadedCommandArguments {
 	commandName: string;

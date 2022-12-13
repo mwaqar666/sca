@@ -1,6 +1,5 @@
 import { Optional } from "@sca/utils";
-import * as process from "process";
-import { CommandArguments, FlagArguments, KeyValueArgument } from "../type";
+import { CommandArguments, CommandHelp, FlagArguments, KeyValueArgument } from "../type";
 
 export abstract class BaseCommand<T = unknown, TArgs extends KeyValueArgument = KeyValueArgument> {
 	public constructor(protected readonly data: T) {}
@@ -11,11 +10,7 @@ export abstract class BaseCommand<T = unknown, TArgs extends KeyValueArgument = 
 		return;
 	}
 
-	public commandHelp(): string {
-		console.error("Command help not specified!");
-
-		process.exit(1);
-	}
+	public abstract commandHelp(): CommandHelp<TArgs>;
 
 	public abstract commandName(): string;
 

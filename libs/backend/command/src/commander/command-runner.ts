@@ -2,33 +2,36 @@ import * as process from "process";
 import { BaseCommand } from "../base";
 import { HelpFlagArgument } from "../const";
 import { CommandArguments, FlagArguments, KeyValueArgument, LoadedCommandArguments, PossibleKeyValueArgumentTypes } from "../type";
+import { CommandHelper } from "./command-helper";
 
 export class CommandRunner {
 	private loadedCommands: Array<BaseCommand>;
 	private loadedArguments: LoadedCommandArguments;
 
 	private commandToExecute: BaseCommand;
-	private shouldRunCommandHelp = false;
 
 	private verifiedCommandKeyValueArguments: KeyValueArgument = {};
 	private verifiedCommandFlagArguments: FlagArguments = {};
 
-	public prepareCommand(loadedCommands: Array<BaseCommand>, loadedArguments: LoadedCommandArguments): void {
+	public constructor(
+		// Dependencies
+		private readonly commandHelper: CommandHelper,
+	) {}
+
+	public prepareCommand(loadedCommands: Array<BaseCommand>, loadedArguments: LoadedCommandArguments): CommandRunner {
 		this.loadedCommands = loadedCommands;
 		this.loadedArguments = loadedArguments;
 
 		this.filterRequestedCommand();
 
+		if (this.isHelpCommand()) this.commandHelper.showCommandHelp(this.commandToExecute);
+
 		this.verifyCommandArguments();
+
+		return this;
 	}
 
 	public async runCommand(): Promise<void> {
-		if (this.shouldRunCommandHelp) {
-			console.log(this.commandToExecute.commandHelp());
-
-			return;
-		}
-
 		await this.commandToExecute.commandAction(this.verifiedCommandKeyValueArguments, this.verifiedCommandFlagArguments);
 	}
 
@@ -48,12 +51,6 @@ export class CommandRunner {
 	}
 
 	private verifyCommandArguments(): void {
-		if (this.isHelpCommand()) {
-			this.shouldRunCommandHelp = true;
-
-			return;
-		}
-
 		const commandArguments = this.commandToExecute.commandArguments();
 
 		if (!commandArguments) return;

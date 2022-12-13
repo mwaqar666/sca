@@ -1,15 +1,12 @@
-import { BaseCommand } from "@sca/command";
+import { BaseCommand, CommandHelp } from "@sca/command";
 import { MigrationCommandProviderData } from "../../types";
 
 export class UpCommand extends BaseCommand<MigrationCommandProviderData> {
-	public override commandHelp(): string {
-		return `
-			Runs all migrations
-
-			Syntax:
-			=======
-			up
-		`;
+	public override commandHelp(): CommandHelp {
+		return {
+			commandDescription: "Runs all migrations",
+			argumentDescription: {},
+		};
 	}
 
 	public override commandName(): string {
