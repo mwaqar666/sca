@@ -1,17 +1,21 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from "@redis/client";
-import { ConfigType, RedisConfig } from "@sca/config";
-import { createClient, RedisDefaultModules } from "redis";
+import type { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from "@redis/client";
+import type { ConfigType, RedisConfig } from "@sca/config";
+import { createClient, type RedisDefaultModules } from "redis";
 import { Client } from "redis-om";
-import { IRedisConnection, IRedisConnections } from "../types";
+import type { IRedisConnection, IRedisConnections } from "../types";
 
 @Injectable()
 export class RedisService {
 	private connections: IRedisConnections = {};
 	private redisConfig: RedisConfig;
 
-	public constructor(private readonly configService: ConfigService<ConfigType, true>) {
+	public constructor(
+		// Dependencies
+
+		private readonly configService: ConfigService<ConfigType, true>,
+	) {
 		this.prepareConfiguration();
 	}
 

@@ -1,6 +1,6 @@
-import { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from "@redis/client";
-import { RedisDefaultModules } from "redis";
-import { Client } from "redis-om";
+import type { RedisClientType, RedisFunctions, RedisModules, RedisScripts } from "@redis/client";
+import type { RedisDefaultModules } from "redis";
+import type { Client } from "redis-om";
 
 export interface IRedisConnection {
 	client: Client;
