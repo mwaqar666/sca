@@ -1,9 +1,10 @@
 import type { CipherGCMTypes } from "crypto";
 import type { DB2, DEVELOPMENT, ENTITIES, MARIA_DB, MIGRATIONS, MS_SQL, MY_SQL, POSTGRES, PRODUCTION, QUALITY_ASSURANCE, SNOWFLAKE, SQLITE, USER_ACCEPTANCE_TESTING } from "../const";
+import { ORACLE } from "../const";
 
 export type Env = typeof DEVELOPMENT | typeof QUALITY_ASSURANCE | typeof USER_ACCEPTANCE_TESTING | typeof PRODUCTION;
 
-export type Dialect = typeof MY_SQL | typeof POSTGRES | typeof SQLITE | typeof MARIA_DB | typeof MS_SQL | typeof DB2 | typeof SNOWFLAKE;
+export type Dialect = typeof MY_SQL | typeof POSTGRES | typeof SQLITE | typeof MARIA_DB | typeof MS_SQL | typeof DB2 | typeof SNOWFLAKE | typeof ORACLE;
 
 export type DbGenerator = typeof MIGRATIONS | typeof ENTITIES;
 
