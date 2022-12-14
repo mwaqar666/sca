@@ -1,7 +1,7 @@
-import { Constructable, FilterWhereNot, Key, Nullable } from "@sca/utils";
-import { ScopeOptions } from "sequelize";
-import { ScopesOptions } from "sequelize-typescript";
-import { SequelizeScopeConst } from "../const";
+import type { Constructable, FilterWhereNot, Key, Nullable } from "@sca/utils";
+import type { ScopeOptions } from "sequelize";
+import type { ScopesOptions } from "sequelize-typescript";
+import type { SequelizeScopeConst } from "../const";
 import { BaseEntity } from "./base.entity";
 
 export class SequelizeBaseEntity<TEntity extends BaseEntity<TEntity>> extends BaseEntity<TEntity> {}

@@ -1,5 +1,5 @@
 import { DB_DATABASE, DB_DIALECT, DB_HOST, DB_PASSWORD, DB_PORT, DB_SCHEMA, DB_USERNAME, EnvExtractor } from "@sca/config";
-import { Options } from "sequelize";
+import type { Options } from "sequelize";
 
 export const SequelizeConfig: Options = {
 	dialect: EnvExtractor.env(DB_DIALECT),

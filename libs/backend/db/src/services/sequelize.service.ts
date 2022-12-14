@@ -1,13 +1,17 @@
 import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { HttpException } from "@nestjs/common/exceptions/http.exception";
-import { AppDefaultException, AppExceptionDto } from "@sca/utils";
-import { Transaction } from "sequelize";
+import { AppDefaultException, type AppExceptionDto } from "@sca/utils";
+import type { Transaction } from "sequelize";
 import { Sequelize } from "sequelize-typescript";
-import { RunningTransaction, TransactionalOperation, TransactionStore } from "../types";
+import type { RunningTransaction, TransactionalOperation, TransactionStore } from "../types";
 
 @Injectable()
 export class SequelizeService {
-	public constructor(protected readonly sequelizeInstance: Sequelize) {}
+	public constructor(
+		// Dependencies
+
+		private readonly sequelizeInstance: Sequelize,
+	) {}
 
 	public async executeTransactionalOperation<T, R = void>(transactionalOperation: TransactionalOperation<T, R>): Promise<T | R> {
 		const preparedTransaction = await this.prepareTransaction(transactionalOperation.withTransaction);

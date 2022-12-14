@@ -1,8 +1,8 @@
 import { DB_SCHEMA } from "@sca/config";
 import { DateHelpers } from "@sca/utils";
-import { DataTypes, Sequelize } from "sequelize";
-import { InputMigrations, RunnableMigration, SequelizeStorage, Umzug, UmzugOptions } from "umzug";
-import { SequelizeQueryInterface } from "../types";
+import { DataTypes, type Sequelize } from "sequelize";
+import { type InputMigrations, type RunnableMigration, SequelizeStorage, Umzug, type UmzugOptions } from "umzug";
+import type { SequelizeQueryInterface } from "../types";
 
 export class MigrationConfigFactory {
 	public static sequelizeStorageConfig(sequelize: Sequelize): SequelizeStorage {

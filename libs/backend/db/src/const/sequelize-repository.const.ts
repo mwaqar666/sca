@@ -1,4 +1,4 @@
-import { ScopedFindOptions } from "../repository";
+import type { ScopedFindOptions } from "../repository";
 
 export const DefaultScopedFindOptions: ScopedFindOptions<any> = {
 	findOptions: {},

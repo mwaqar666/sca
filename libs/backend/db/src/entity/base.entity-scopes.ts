@@ -1,5 +1,5 @@
 import { SequelizeScopeConst } from "../const";
-import { AvailableScopes, EntityType, SequelizeBaseEntity } from "./types";
+import type { AvailableScopes, EntityType, SequelizeBaseEntity } from "./types";
 
 export class BaseEntityScopes<TEntity extends SequelizeBaseEntity<TEntity>> {
 	private constructor(private entity: EntityType<TEntity>, private scopes: AvailableScopes = {}) {}

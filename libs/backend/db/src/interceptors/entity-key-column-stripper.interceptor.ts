@@ -1,4 +1,4 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common";
+import { type CallHandler, type ExecutionContext, Injectable, type NestInterceptor } from "@nestjs/common";
 import { map, Observable } from "rxjs";
 import { Association as AssociationType } from "sequelize-typescript";
 import { EntityType, Relationship, SequelizeBaseEntity } from "../entity";

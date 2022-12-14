@@ -1,9 +1,9 @@
 import { NotFoundException } from "@nestjs/common";
-import { Nullable } from "@sca/utils";
-import { CreationAttributes, WhereOptions } from "sequelize";
+import type { Nullable } from "@sca/utils";
+import type { CreationAttributes, WhereOptions } from "sequelize";
 import { DefaultScopedFindOptions } from "../const";
-import { EntityKeyValues, EntityScope, EntityType, SequelizeBaseEntity } from "../entity";
-import { EntityCreateOptions, EntityCreateOrUpdateOptions, EntityDeleteOptions, EntityFindOrCreateOptions, EntityResolution, EntityUpdateOptions, ScopedFindOptions } from "./types";
+import type { EntityKeyValues, EntityScope, EntityType, SequelizeBaseEntity } from "../entity";
+import type { EntityCreateOptions, EntityCreateOrUpdateOptions, EntityDeleteOptions, EntityFindOrCreateOptions, EntityResolution, EntityUpdateOptions, ScopedFindOptions } from "./types";
 
 export abstract class BaseRepository<TEntity extends SequelizeBaseEntity<TEntity>> {
 	protected constructor(protected entity: EntityType<TEntity>) {}

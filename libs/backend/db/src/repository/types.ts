@@ -1,5 +1,5 @@
-import { FindOptions, Transaction } from "sequelize";
-import { EntityScope, EntityTableColumnProperties, SequelizeBaseEntity } from "../entity";
+import type { FindOptions, Transaction } from "sequelize";
+import type { EntityScope, EntityTableColumnProperties, SequelizeBaseEntity } from "../entity";
 
 export type EntityResolution<TEntity extends SequelizeBaseEntity<TEntity>> = TEntity | string | number;
 

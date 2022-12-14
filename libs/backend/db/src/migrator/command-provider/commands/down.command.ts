@@ -1,5 +1,5 @@
-import { BaseCommand, CommandHelp } from "@sca/command";
-import { MigrationCommandProviderData } from "../../types";
+import { BaseCommand, type CommandHelp } from "@sca/command";
+import type { MigrationCommandProviderData } from "../../types";
 
 export class DownCommand extends BaseCommand<MigrationCommandProviderData> {
 	public override commandHelp(): CommandHelp {

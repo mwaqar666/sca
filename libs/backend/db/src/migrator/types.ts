@@ -1,6 +1,6 @@
-import { ModelAttributes, QueryInterface, QueryInterfaceCreateTableOptions, TableName } from "sequelize";
-import { Umzug } from "umzug";
-import { EntityTableColumnProperties, SequelizeBaseEntity } from "../entity";
+import { type ModelAttributes, QueryInterface, type QueryInterfaceCreateTableOptions, type TableName } from "sequelize";
+import type { Umzug } from "umzug";
+import type { EntityTableColumnProperties, SequelizeBaseEntity } from "../entity";
 
 export abstract class SequelizeQueryInterface extends QueryInterface {
 	public abstract override createTable<TEntity extends SequelizeBaseEntity<TEntity>>(

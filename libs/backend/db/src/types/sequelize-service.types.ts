@@ -1,4 +1,4 @@
-import { Transaction } from "sequelize";
+import type { Transaction } from "sequelize";
 
 export interface TransactionStore {
 	transaction: Transaction;

@@ -1,9 +1,13 @@
-import { BaseCommandProvider, CommandType } from "@sca/command";
-import { Umzug } from "umzug";
-import { MigrationCommandProviderData, SequelizeQueryInterface } from "../../types";
+import { BaseCommandProvider, type CommandType } from "@sca/command";
+import type { Umzug } from "umzug";
+import type { MigrationCommandProviderData, SequelizeQueryInterface } from "../../types";
 
 export class MigrationCommandProvider extends BaseCommandProvider<MigrationCommandProviderData> {
-	public constructor(public readonly umzug: Umzug<SequelizeQueryInterface>) {
+	public constructor(
+		// Dependencies
+
+		public readonly umzug: Umzug<SequelizeQueryInterface>,
+	) {
 		super({ umzug });
 	}
 

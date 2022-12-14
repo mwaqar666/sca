@@ -1,10 +1,10 @@
-import { Constructable, FileHelpers } from "@sca/utils";
+import { type Constructable, FileHelpers } from "@sca/utils";
 import { Sequelize } from "sequelize";
-import { InputMigrations, MigrationParams, Umzug } from "umzug";
+import { type InputMigrations, type MigrationParams, Umzug } from "umzug";
 import { MigrationCommandProvider } from "../command-provider";
 import { MigrationConfigFactory, SequelizeConfig } from "../config";
-import { SequelizeQueryInterface } from "../types";
-import { BaseMigration } from "./base.migration";
+import type { SequelizeQueryInterface } from "../types";
+import type { BaseMigration } from "./base.migration";
 
 export class MigrationManager {
 	private _umzug: Umzug<SequelizeQueryInterface>;

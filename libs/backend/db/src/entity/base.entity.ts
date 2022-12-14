@@ -1,6 +1,6 @@
-import { ModelStatic } from "sequelize";
+import type { ModelStatic } from "sequelize";
 import { Model } from "sequelize-typescript";
-import { EntityScope } from "./types";
+import type { EntityScope } from "./types";
 
 export abstract class BaseEntity<TEntity extends BaseEntity<TEntity>> extends Model<TEntity> {
 	// Table & Column Name Information

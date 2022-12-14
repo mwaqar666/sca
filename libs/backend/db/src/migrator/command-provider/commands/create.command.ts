@@ -1,7 +1,7 @@
-import { BaseCommand, CommandArguments, CommandHelp, OptionalStringArgumentDetails, RequiredStringArgumentDetails } from "@sca/command";
+import { BaseCommand, type CommandArguments, type CommandHelp, type OptionalStringArgumentDetails, type RequiredStringArgumentDetails } from "@sca/command";
 import { DateHelpers, FileHelpers, PathHelpers } from "@sca/utils";
-import { MigrationCommandProviderData } from "../../types";
-import { CreateArgument } from "../command-arguments";
+import type { MigrationCommandProviderData } from "../../types";
+import type { CreateArgument } from "../command-arguments";
 
 export class CreateCommand extends BaseCommand<MigrationCommandProviderData, CreateArgument> {
 	public override commandArguments(): CommandArguments<CreateArgument> {
