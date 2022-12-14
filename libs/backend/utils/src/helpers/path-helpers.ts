@@ -1,6 +1,5 @@
-import * as path from "path";
-import * as process from "process";
-import { Optional } from "../types";
+import { resolve } from "path";
+import type { Optional } from "../types";
 
 export abstract class PathHelpers {
 	public static libraryPath(pathSegments: string): string;
@@ -26,7 +25,7 @@ export abstract class PathHelpers {
 
 		pathSegments = this.preparePathSegments(pathSegments);
 
-		return path.resolve(process.cwd(), ...pathSegments);
+		return resolve(process.cwd(), ...pathSegments);
 	}
 
 	private static splitRawPath(rawPath: string): Array<string> {

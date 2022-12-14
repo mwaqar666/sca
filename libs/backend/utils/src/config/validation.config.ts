@@ -1,5 +1,5 @@
-import { ValidationPipeOptions } from "@nestjs/common";
-import { UseContainerOptions } from "class-validator";
+import type { ValidationPipeOptions } from "@nestjs/common";
+import type { UseContainerOptions } from "class-validator";
 
 export const ValidationConfig: ValidationPipeOptions = {
 	transform: true,

@@ -1,4 +1,4 @@
-import { TransformFnParams } from "class-transformer";
+import type { TransformFnParams } from "class-transformer";
 
 export const StringArrayTransformer: (params: TransformFnParams) => Array<string> = (params: TransformFnParams) => {
 	const filteredSegmentedStrings: string[] = [];

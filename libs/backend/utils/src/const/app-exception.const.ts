@@ -1,5 +1,5 @@
 import { HttpStatus } from "@nestjs/common";
-import { AppExceptionDto } from "../dto";
+import type { AppExceptionDto } from "../dto";
 
 export const AppDefaultException: AppExceptionDto = {
 	error: "Internal Server Error",

@@ -1,12 +1,12 @@
-import { createReadStream, existsSync, ReadStream } from "fs";
-import { copyFile as copyFileNode, mkdir } from "fs/promises";
+import { createReadStream, existsSync, type ReadStream } from "fs";
+import { copyFile, mkdir } from "fs/promises";
 import { dirname, extname } from "path";
 
 export abstract class FileHelpers {
 	public static async copyFile(fromFilePath: string, toFilePath: string): Promise<void> {
 		if (!existsSync(toFilePath)) await mkdir(dirname(toFilePath), { recursive: true });
 
-		return copyFileNode(fromFilePath, toFilePath);
+		return copyFile(fromFilePath, toFilePath);
 	}
 
 	public static extension(fileName: string): [string, string] {
