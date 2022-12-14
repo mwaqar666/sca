@@ -17,6 +17,7 @@ import {
 	CRYPT_SALT_SCHEME,
 	DB_DATABASE,
 	DB_DIALECT,
+	DB_GENERATOR,
 	DB_HOST,
 	DB_PASSWORD,
 	DB_PORT,
@@ -30,7 +31,7 @@ import {
 	REFRESH_TOKEN_EXPIRY,
 	REFRESH_TOKEN_SECRET,
 } from "../const";
-import { Dialect, Env } from "./config.type";
+import { DbGenerator, Dialect, Env } from "./config.type";
 
 export interface ConfigValidationType {
 	[NODE_ENV]: Joi.StringSchema<Env>;
@@ -47,6 +48,7 @@ export interface ConfigValidationType {
 	[DB_DIALECT]: Joi.StringSchema<Dialect>;
 	[DB_PORT]: Joi.NumberSchema;
 	[DB_SCHEMA]: Joi.StringSchema;
+	[DB_GENERATOR]: Joi.StringSchema<DbGenerator>;
 
 	[REDIS_HOST]: Joi.StringSchema;
 	[REDIS_PORT]: Joi.NumberSchema;

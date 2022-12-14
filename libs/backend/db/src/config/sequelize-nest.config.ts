@@ -1,12 +1,15 @@
 import { ConfigService } from "@nestjs/config";
 import { SequelizeModuleAsyncOptions, SequelizeModuleOptions } from "@nestjs/sequelize";
-import { ConfigType, DatabaseConfig } from "@sca/config";
+import { ConfigType, DatabaseConfig, ENTITIES } from "@sca/config";
 
 export const SequelizeNestConfig: SequelizeModuleAsyncOptions = {
 	useFactory: async (configService: ConfigService<ConfigType, true>): Promise<SequelizeModuleOptions> => {
+		const databaseConfig = configService.get<DatabaseConfig>("database");
+		const { generator, ...databaseConnectionConfig } = databaseConfig;
+
 		return {
-			...configService.get<DatabaseConfig>("database"),
-			synchronize: false,
+			...databaseConnectionConfig,
+			synchronize: generator === ENTITIES,
 			autoLoadModels: true,
 			minifyAliases: true,
 		};

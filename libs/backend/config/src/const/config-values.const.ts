@@ -10,3 +10,6 @@ export const MARIA_DB = "mariadb";
 export const MS_SQL = "mssql";
 export const DB2 = "db2";
 export const SNOWFLAKE = "snowflake";
+
+export const MIGRATIONS = "migrations";
+export const ENTITIES = "entities";

@@ -16,6 +16,7 @@ import {
 	CRYPT_SALT_SCHEME,
 	DB_DATABASE,
 	DB_DIALECT,
+	DB_GENERATOR,
 	DB_HOST,
 	DB_PASSWORD,
 	DB_PORT,
@@ -51,6 +52,7 @@ export const ConfigFactory: NestConfigFactory<ConfigType> = () => {
 			port: parseInt(EnvExtractorHelper.env(DB_PORT), 10),
 			database: EnvExtractorHelper.env(DB_DATABASE),
 			schema: EnvExtractorHelper.env(DB_SCHEMA),
+			generator: EnvExtractorHelper.env(DB_GENERATOR),
 		},
 
 		redis: {

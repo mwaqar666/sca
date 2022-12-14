@@ -1,9 +1,11 @@
 import { CipherGCMTypes } from "crypto";
-import { DB2, DEVELOPMENT, MARIA_DB, MS_SQL, MY_SQL, POSTGRES, PRODUCTION, QUALITY_ASSURANCE, SNOWFLAKE, SQLITE, USER_ACCEPTANCE_TESTING } from "../const";
+import { DB2, DEVELOPMENT, ENTITIES, MARIA_DB, MIGRATIONS, MS_SQL, MY_SQL, POSTGRES, PRODUCTION, QUALITY_ASSURANCE, SNOWFLAKE, SQLITE, USER_ACCEPTANCE_TESTING } from "../const";
 
 export type Env = typeof DEVELOPMENT | typeof QUALITY_ASSURANCE | typeof USER_ACCEPTANCE_TESTING | typeof PRODUCTION;
 
 export type Dialect = typeof MY_SQL | typeof POSTGRES | typeof SQLITE | typeof MARIA_DB | typeof MS_SQL | typeof DB2 | typeof SNOWFLAKE;
+
+export type DbGenerator = typeof MIGRATIONS | typeof ENTITIES;
 
 export interface TokenConfig {
 	accessTokenSecret: string;
@@ -20,6 +22,7 @@ export interface DatabaseConfig {
 	port: number;
 	database: string;
 	schema: string;
+	generator: DbGenerator;
 }
 
 export interface RedisConfig {

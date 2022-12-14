@@ -1,3 +1,4 @@
+import { DEVELOPMENT } from "./config-values.const";
 import {
 	ACCESS_TOKEN_EXPIRY,
 	APP_HOST,
@@ -10,13 +11,13 @@ import {
 	CRYPT_SALT_ITERATIONS,
 	CRYPT_SALT_SCHEME,
 	DB_DIALECT,
+	DB_GENERATOR,
 	DB_HOST,
 	DB_PORT,
 	REDIS_HOST,
 	REDIS_PORT,
 	REFRESH_TOKEN_EXPIRY,
 } from "./config.const";
-import { DEVELOPMENT } from "./env.const";
 
 export const ConfigDefaultsConst = {
 	Environment: DEVELOPMENT,
@@ -30,6 +31,7 @@ export const ConfigDefaultsConst = {
 		[DB_HOST]: "localhost",
 		[DB_DIALECT]: "mysql",
 		[DB_PORT]: 3306,
+		[DB_GENERATOR]: "migrations",
 	},
 
 	Redis: {

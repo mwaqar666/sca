@@ -12,6 +12,7 @@ export const DB_HOST = "DB_HOST";
 export const DB_DIALECT = "DB_DIALECT";
 export const DB_PORT = "DB_PORT";
 export const DB_SCHEMA = "DB_SCHEMA";
+export const DB_GENERATOR = "DB_GENERATOR";
 
 export const REDIS_HOST = "REDIS_HOST";
 export const REDIS_PORT = "REDIS_PORT";

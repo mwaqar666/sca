@@ -5,7 +5,7 @@ import { AllowNull, AutoIncrement, BelongsTo, Column, CreatedAt, DataType, Defau
 @Scopes(() => ({
 	...BaseEntityScopes.commonScopes(() => UserEntity),
 }))
-@Table({ tableName: UserEntity.tableName })
+@Table({ tableName: UserEntity.entityTableName })
 export class UserEntity extends SequelizeBaseEntity<UserEntity> {
 	public static override entityTableName = "users";
 	public static override uuidColumnName = "userUuid";
