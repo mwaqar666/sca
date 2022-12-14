@@ -1,7 +1,7 @@
-import { Key } from "@sca/utils";
-import { BooleanArgumentDetails } from "./boolean-argument.types";
-import { NumberArgumentDetails } from "./number-argument.types";
-import { StringArgumentDetails } from "./string-argument.types";
+import type { Key } from "@sca/utils";
+import type { BooleanArgumentDetails } from "./boolean-argument.types";
+import type { NumberArgumentDetails } from "./number-argument.types";
+import type { StringArgumentDetails } from "./string-argument.types";
 
 export type PossibleKeyValueArgumentTypes = string | number | boolean;
 

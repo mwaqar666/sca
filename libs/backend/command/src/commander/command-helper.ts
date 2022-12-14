@@ -1,7 +1,7 @@
 import { Optional } from "@sca/utils";
 import * as process from "process";
-import { BaseCommand } from "../base";
-import { ArgumentDetails, CommandArguments, CommandFlagArguments, CommandHelp, CommandKeyValueArguments } from "../type";
+import type { BaseCommand } from "../base";
+import type { ArgumentDetails, CommandArguments, CommandFlagArguments, CommandHelp, CommandKeyValueArguments } from "../type";
 
 export class CommandHelper {
 	private command: BaseCommand;

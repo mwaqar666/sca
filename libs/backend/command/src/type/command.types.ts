@@ -1,5 +1,5 @@
-import { BaseCommand, BaseCommandProvider } from "../base";
-import { ArgumentsHelp, CommandFlagArguments, CommandKeyValueArguments, FlagArgument, KeyValueArgument } from "./argument.types";
+import type { BaseCommand, BaseCommandProvider } from "../base";
+import type { ArgumentsHelp, CommandFlagArguments, CommandKeyValueArguments, FlagArgument, KeyValueArgument } from "./argument.types";
 
 export type CommandType<T = unknown, KVArgs extends KeyValueArgument = KeyValueArgument, FArgs extends FlagArgument = FlagArgument> = new (data: T) => BaseCommand<T, KVArgs, FArgs>;
 

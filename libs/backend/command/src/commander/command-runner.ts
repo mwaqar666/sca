@@ -1,8 +1,8 @@
 import * as process from "process";
-import { BaseCommand } from "../base";
+import type { BaseCommand } from "../base";
 import { HelpFlagArgument } from "../const";
-import { CommandArguments, FlagArgument, KeyValueArgument, LoadedCommandArguments, PossibleKeyValueArgumentTypes } from "../type";
-import { CommandHelper } from "./command-helper";
+import type { CommandArguments, FlagArgument, KeyValueArgument, LoadedCommandArguments, PossibleKeyValueArgumentTypes } from "../type";
+import type { CommandHelper } from "./command-helper";
 
 export class CommandRunner {
 	private loadedCommands: Array<BaseCommand>;

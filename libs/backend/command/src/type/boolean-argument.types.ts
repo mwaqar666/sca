@@ -1,4 +1,4 @@
-import { BaseArgumentDetails } from "./argument.types";
+import type { BaseArgumentDetails } from "./argument.types";
 
 export type BooleanArgumentDetails = RequiredBooleanArgumentDetails | OptionalBooleanArgumentDetails;
 

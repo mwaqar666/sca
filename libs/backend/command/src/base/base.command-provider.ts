@@ -1,4 +1,4 @@
-import { CommandType } from "../type";
+import type { CommandType } from "../type";
 
 export abstract class BaseCommandProvider<T = any> {
 	public constructor(public readonly data: T) {}

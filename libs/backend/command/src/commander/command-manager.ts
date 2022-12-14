@@ -1,4 +1,4 @@
-import { LoadableCommands } from "../type";
+import type { LoadableCommands } from "../type";
 import { ArgumentsLoader } from "./arguments-loader";
 import { CommandHelper } from "./command-helper";
 import { CommandLoader } from "./command-loader";

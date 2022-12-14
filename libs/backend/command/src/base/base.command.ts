@@ -1,5 +1,5 @@
-import { Optional } from "@sca/utils";
-import { CommandArguments, CommandHelp, FlagArgument, KeyValueArgument } from "../type";
+import type { Optional } from "@sca/utils";
+import type { CommandArguments, CommandHelp, FlagArgument, KeyValueArgument } from "../type";
 
 export abstract class BaseCommand<T = unknown, TArgs extends KeyValueArgument = KeyValueArgument, FArgs extends FlagArgument = FlagArgument> {
 	public constructor(protected readonly data: T) {}

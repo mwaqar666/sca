@@ -1,5 +1,5 @@
 import * as process from "process";
-import { LoadedCommandArguments } from "../type";
+import type { LoadedCommandArguments } from "../type";
 
 export class ArgumentsLoader {
 	private nodeExecutablePath: string;
