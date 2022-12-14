@@ -1,4 +1,4 @@
-import { Nullable } from "@sca/utils";
+import type { Nullable } from "@sca/utils";
 
 export class AccessTokenPayloadDto {
 	public tokenIdentity: string;
