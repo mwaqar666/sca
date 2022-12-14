@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { type EntityScope, SequelizeScopeConst } from "@sca/db";
-import { type Nullable } from "@sca/utils";
-import { type UserEntity } from "./user.entity";
+import type { Nullable } from "@sca/utils";
+import type { UserEntity } from "./user.entity";
 import { UserRepository } from "./user.repository";
 
 @Injectable()

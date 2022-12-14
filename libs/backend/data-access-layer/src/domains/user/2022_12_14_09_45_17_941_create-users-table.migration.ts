@@ -1,4 +1,4 @@
-import { BaseMigration, SequelizeQueryInterface, TableHelpers } from "@sca/db";
+import { BaseMigration, type SequelizeQueryInterface, TableHelpers } from "@sca/db";
 import { DataTypes } from "sequelize";
 import { UserEntity } from "./user.entity";
 

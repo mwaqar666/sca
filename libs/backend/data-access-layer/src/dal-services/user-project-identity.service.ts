@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { SequelizeScopeConst } from "@sca/db";
-import { type SignInRequestDto } from "@sca/dto";
-import { type Nullable } from "@sca/utils";
+import type { SignInRequestDto } from "@sca/dto";
+import type { Nullable } from "@sca/utils";
 import { type ProjectEntity, ProjectService, type UserEntity, UserService } from "../domains";
 
 @Injectable()
