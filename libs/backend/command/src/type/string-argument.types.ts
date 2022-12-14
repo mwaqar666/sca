@@ -4,7 +4,7 @@ export type StringArgumentDetails = RequiredStringArgumentDetails | OptionalStri
 
 export interface OptionalStringArgumentDetails extends BaseArgumentDetails<false> {
 	type: "string";
-	defaultValue?: string;
+	defaultValue: string;
 }
 
 export interface RequiredStringArgumentDetails extends BaseArgumentDetails<true> {

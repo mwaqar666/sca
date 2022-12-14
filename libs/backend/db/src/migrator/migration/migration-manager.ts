@@ -33,7 +33,7 @@ export class MigrationManager {
 
 	private createMigrationFilesResolver(): void {
 		this._migrations = {
-			glob: ["dist/**/*.migration.js", { cwd: process.cwd() }],
+			glob: ["dist/**/[0-9]*.migration.js", { cwd: process.cwd() }],
 			resolve: ({ name, path, context }: MigrationParams<SequelizeQueryInterface>) => {
 				const migrationImport: Promise<{ default: Constructable<BaseMigration> }> = import(`${path}`);
 				const [fileName] = FileHelpers.extension(name);

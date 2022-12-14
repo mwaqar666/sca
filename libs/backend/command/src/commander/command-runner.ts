@@ -1,7 +1,7 @@
 import * as process from "process";
 import { BaseCommand } from "../base";
 import { HelpFlagArgument } from "../const";
-import { CommandArguments, FlagArguments, KeyValueArgument, LoadedCommandArguments, PossibleKeyValueArgumentTypes } from "../type";
+import { CommandArguments, FlagArgument, KeyValueArgument, LoadedCommandArguments, PossibleKeyValueArgumentTypes } from "../type";
 import { CommandHelper } from "./command-helper";
 
 export class CommandRunner {
@@ -11,7 +11,7 @@ export class CommandRunner {
 	private commandToExecute: BaseCommand;
 
 	private verifiedCommandKeyValueArguments: KeyValueArgument = {};
-	private verifiedCommandFlagArguments: FlagArguments = {};
+	private verifiedCommandFlagArguments: FlagArgument = {};
 
 	public constructor(
 		// Dependencies
@@ -73,7 +73,7 @@ export class CommandRunner {
 			}
 
 			if (!argumentDetails.required) {
-				if (argumentDetails.defaultValue) this.verifiedCommandKeyValueArguments[argumentName] = argumentDetails.defaultValue;
+				this.verifiedCommandKeyValueArguments[argumentName] = argumentDetails.defaultValue;
 
 				continue;
 			}
@@ -86,15 +86,15 @@ export class CommandRunner {
 	private verifyCommandFlagArguments(commandArguments: CommandArguments): void {
 		if (!commandArguments.flagArguments) return;
 
-		for (const flagArgument of commandArguments.flagArguments) {
-			const foundArgument = this.loadedArguments.flagArguments.find((loadedFlag: string) => loadedFlag === flagArgument);
+		for (const [flagName, flagDefault] of Object.entries(commandArguments.flagArguments)) {
+			const foundArgument = this.loadedArguments.flagArguments[flagName];
 
-			this.verifiedCommandFlagArguments[flagArgument] = !!foundArgument;
+			this.verifiedCommandFlagArguments[flagName] = foundArgument ?? flagDefault;
 		}
 	}
 
 	private isHelpCommand(): boolean {
-		return this.loadedArguments.flagArguments.includes(HelpFlagArgument);
+		return this.loadedArguments.flagArguments[HelpFlagArgument];
 	}
 
 	private parseCommandKeyValueArgument(loadedArgument: string, argumentType: "string" | "number" | "boolean"): PossibleKeyValueArgumentTypes {

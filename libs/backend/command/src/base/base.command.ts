@@ -1,10 +1,10 @@
 import { Optional } from "@sca/utils";
-import { CommandArguments, CommandHelp, FlagArguments, KeyValueArgument } from "../type";
+import { CommandArguments, CommandHelp, FlagArgument, KeyValueArgument } from "../type";
 
-export abstract class BaseCommand<T = unknown, TArgs extends KeyValueArgument = KeyValueArgument> {
+export abstract class BaseCommand<T = unknown, TArgs extends KeyValueArgument = KeyValueArgument, FArgs extends FlagArgument = FlagArgument> {
 	public constructor(protected readonly data: T) {}
 
-	public commandArguments(): Optional<CommandArguments<TArgs>> {
+	public commandArguments(): Optional<CommandArguments<TArgs, FArgs>> {
 		// Override to specify command arguments
 
 		return;
@@ -14,5 +14,5 @@ export abstract class BaseCommand<T = unknown, TArgs extends KeyValueArgument = 
 
 	public abstract commandName(): string;
 
-	public abstract commandAction(commandArguments: TArgs, flags: FlagArguments): Promise<void> | void;
+	public abstract commandAction(commandArguments: TArgs, flags: FArgs): Promise<void> | void;
 }

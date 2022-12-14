@@ -9,7 +9,7 @@ export class ArgumentsLoader {
 
 	private argumentList: Array<string>;
 	private keyValueArguments: Record<string, string> = {};
-	private flagArguments: Array<string> = [];
+	private flagArguments: Record<string, boolean> = {};
 
 	public constructor(private readonly commandLineArgumentList: Array<string>) {
 		this.loadExecutablesPath();
@@ -68,7 +68,7 @@ export class ArgumentsLoader {
 	private loadFlagArguments(argument: string): void {
 		const flag = argument.slice(2);
 		if (flag) {
-			this.flagArguments.push(flag);
+			this.flagArguments[flag] = true;
 			return;
 		}
 

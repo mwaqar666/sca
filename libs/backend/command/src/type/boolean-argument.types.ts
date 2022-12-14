@@ -4,7 +4,7 @@ export type BooleanArgumentDetails = RequiredBooleanArgumentDetails | OptionalBo
 
 export interface OptionalBooleanArgumentDetails extends BaseArgumentDetails<false> {
 	type: "boolean";
-	defaultValue?: boolean;
+	defaultValue: boolean;
 }
 
 export interface RequiredBooleanArgumentDetails extends BaseArgumentDetails<true> {

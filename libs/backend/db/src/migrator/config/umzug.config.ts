@@ -24,6 +24,8 @@ export class MigrationConfigFactory {
 			migrations: async (context: SequelizeQueryInterface) => {
 				const migrations = (await initialUmzugInstance.migrations(context)).concat();
 
+				console.log(migrations);
+
 				return migrations.sort((a: RunnableMigration<SequelizeQueryInterface>, b: RunnableMigration<SequelizeQueryInterface>) => {
 					const [timeStampSegmentA, timeStampSegmentB] = [a.name.slice(0, 23), b.name.slice(0, 23)];
 

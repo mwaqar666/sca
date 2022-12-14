@@ -1,22 +1,22 @@
 import { BaseCommand, BaseCommandProvider } from "../base";
-import { ArgumentsHelp, CommandKeyValueArguments, KeyValueArgument } from "./argument.types";
+import { ArgumentsHelp, CommandFlagArguments, CommandKeyValueArguments, FlagArgument, KeyValueArgument } from "./argument.types";
 
-export type CommandType<T = unknown, TArgs extends KeyValueArgument = KeyValueArgument> = new (data: T) => BaseCommand<T, TArgs>;
+export type CommandType<T = unknown, KVArgs extends KeyValueArgument = KeyValueArgument, FArgs extends FlagArgument = FlagArgument> = new (data: T) => BaseCommand<T, KVArgs, FArgs>;
 
 export type LoadableCommands = Array<Promise<CommandType | BaseCommandProvider>>;
 
-export interface CommandHelp<TArgs extends KeyValueArgument = KeyValueArgument> {
+export interface CommandHelp<KVArgs extends KeyValueArgument = KeyValueArgument> {
 	commandDescription: string;
-	argumentDescription: ArgumentsHelp<TArgs>;
+	argumentDescription?: ArgumentsHelp<KVArgs>;
 }
 
 export interface LoadedCommandArguments {
 	commandName: string;
 	keyValueArguments: Record<string, string>;
-	flagArguments: Array<string>;
+	flagArguments: Record<string, boolean>;
 }
 
-export interface CommandArguments<TArgs extends KeyValueArgument = KeyValueArgument> {
-	keyValueArguments?: CommandKeyValueArguments<TArgs>;
-	flagArguments?: Array<string>;
+export interface CommandArguments<KVArgs extends KeyValueArgument = KeyValueArgument, FArgs extends FlagArgument = FlagArgument> {
+	keyValueArguments?: CommandKeyValueArguments<KVArgs>;
+	flagArguments?: CommandFlagArguments<FArgs>;
 }

@@ -4,7 +4,7 @@ export type NumberArgumentDetails = RequiredNumberArgumentDetails | OptionalNumb
 
 export interface OptionalNumberArgumentDetails extends BaseArgumentDetails<false> {
 	type: "number";
-	defaultValue?: number;
+	defaultValue: number;
 }
 
 export interface RequiredNumberArgumentDetails extends BaseArgumentDetails<true> {

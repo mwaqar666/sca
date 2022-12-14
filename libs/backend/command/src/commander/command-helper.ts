@@ -1,20 +1,22 @@
 import { Optional } from "@sca/utils";
 import * as process from "process";
 import { BaseCommand } from "../base";
-import { ArgumentDetails, CommandArguments, CommandHelp, CommandKeyValueArguments } from "../type";
+import { ArgumentDetails, CommandArguments, CommandFlagArguments, CommandHelp, CommandKeyValueArguments } from "../type";
 
 export class CommandHelper {
 	private command: BaseCommand;
 	private name: string;
 	private args: Optional<CommandArguments>;
 	private help: CommandHelp;
-	private sectionSeparator = "\n\n";
+	private sectionSeparator = "\n \n \n";
 	private headingUnderLineStyle = "=";
 
 	public showCommandHelp(command: BaseCommand): never {
 		this.command = command;
 
 		this.extractCommandHelpData();
+
+		console.clear();
 
 		console.log(this.generateHelpText());
 
@@ -50,46 +52,12 @@ export class CommandHelper {
 		return `${heading}${commandSyntax}${argumentSyntax}`;
 	}
 
-	private generateArgumentDetails(): string {
-		const heading = this.generateHeading("Arguments");
-		if (!this.args) return `${heading}\nNo arguments`;
-
-		const argumentDescription = this.generateKeyValueArgumentDetails(this.args.keyValueArguments);
-
-		return `${heading}${argumentDescription}`;
-	}
-
-	private generateKeyValueArgumentDetails(keyValueArguments: Optional<CommandKeyValueArguments>): string {
-		if (!keyValueArguments) return "";
-
-		return Object.entries(keyValueArguments).reduce((argumentDescriptionString: string, [argumentName, argumentDescription]: [string, ArgumentDetails]) => {
-			const argumentInfo = this.help.argumentDescription[argumentName];
-			const requiredOrOptional = `[${argumentDescription.required ? "required" : "optional"}]`;
-			const argumentType = `[type: ${argumentDescription.type}]`;
-			const argumentDefault = "defaultValue" in argumentDescription ? `[default: ${argumentDescription.defaultValue}]` : "";
-
-			const argumentDetailString = `${argumentName}: ${argumentInfo} ${requiredOrOptional}${argumentType}${argumentDefault}`;
-
-			return `${argumentDescriptionString}\n${argumentDetailString}`;
-		}, "");
-	}
-
-	private generateHeading(heading: string): string {
-		const headingUnderLine = this.generateUnderLine(heading);
-
-		return `${heading}\n${headingUnderLine}`;
-	}
-
-	private generateUnderLine(forText: string): string {
-		return this.headingUnderLineStyle.repeat(forText.length);
-	}
-
 	private generateArgumentSyntax(): string {
 		let [flagNames, argumentNames]: [Array<string>, Array<string>] = [[], []];
 
 		if (!this.args) return "";
 
-		if (this.args.flagArguments) flagNames = this.args.flagArguments;
+		if (this.args.flagArguments) flagNames = Object.keys(this.args.flagArguments);
 
 		if (this.args.keyValueArguments) argumentNames = Object.keys(this.args.keyValueArguments);
 
@@ -98,6 +66,66 @@ export class CommandHelper {
 		const flagSyntax = flagNames.reduce((flagSyntaxString: string, flagName: string) => `${flagSyntaxString} [--${flagName}]`, "");
 
 		return argumentSyntax.concat(flagSyntax);
+	}
+
+	private generateArgumentDetails(): string {
+		const keyValueArgumentDetails = this.generateGeneralizedArgumentDetails("Key=Value Arguments", "KVArgs");
+		const flagArgumentDetails = this.generateGeneralizedArgumentDetails("--Flag Arguments", "FArgs");
+
+		return this.generateConcatenatedSections(keyValueArgumentDetails, flagArgumentDetails);
+	}
+
+	private generateGeneralizedArgumentDetails(heading: string, argumentType: "KVArgs" | "FArgs"): string {
+		heading = this.generateHeading(heading);
+		if (!this.args) return `${heading}\nNo arguments`;
+
+		const argumentDescription = argumentType === "KVArgs" ? this.generateKeyValueArgumentDescription(this.args.keyValueArguments) : this.generateFlagArgumentDescription(this.args.flagArguments);
+
+		return `${heading}${argumentDescription}`;
+	}
+
+	private generateKeyValueArgumentDescription(keyValueArguments: Optional<CommandKeyValueArguments>): string {
+		if (!keyValueArguments || !this.help.argumentDescription || !this.help.argumentDescription.keyValueArguments) return "\nNo Arguments";
+
+		const keyValueArgumentDescription = this.help.argumentDescription.keyValueArguments;
+
+		return Object.entries(keyValueArguments).reduce((argumentDescriptionString: string, [argumentName, argumentDescription]: [string, ArgumentDetails]) => {
+			const argumentInfo = keyValueArgumentDescription[argumentName];
+			const requiredOrOptional = `[${argumentDescription.required ? "required" : "optional"}]`;
+			const argumentType = `[type: ${argumentDescription.type}]`;
+			const argumentDefault = !argumentDescription.required ? `[default: ${argumentDescription.defaultValue}]` : "";
+
+			const argumentDetailString = `${argumentName}: ${argumentInfo} ${requiredOrOptional}${argumentType}${argumentDefault}`;
+
+			return `${argumentDescriptionString}\n${argumentDetailString}`;
+		}, "");
+	}
+
+	private generateFlagArgumentDescription(flagArguments: Optional<CommandFlagArguments>): string {
+		if (!flagArguments || !this.help.argumentDescription || !this.help.argumentDescription.flagArguments) return "\nNo Arguments";
+
+		const flagArgumentDescription = this.help.argumentDescription.flagArguments;
+
+		return Object.entries(flagArguments).reduce((argumentDescriptionString: string, [argumentName, defaultFlag]: [string, boolean]) => {
+			const argumentInfo = flagArgumentDescription[argumentName];
+			const argumentDefault = `[default: ${defaultFlag}]`;
+
+			const argumentDetailString = `--${argumentName}: ${argumentInfo} ${argumentDefault}`;
+
+			return `${argumentDescriptionString}\n${argumentDetailString}`;
+		}, "");
+	}
+
+	private generateHeading(heading: string): string {
+		heading = `${heading}:`;
+
+		const headingUnderLine = this.generateUnderLine(heading);
+
+		return `${heading}\n${headingUnderLine}`;
+	}
+
+	private generateUnderLine(forText: string): string {
+		return this.headingUnderLineStyle.repeat(forText.length);
 	}
 
 	private generateConcatenatedSections(...sections: Array<string>): string {

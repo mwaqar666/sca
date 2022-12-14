@@ -5,16 +5,33 @@ import { StringArgumentDetails } from "./string-argument.types";
 
 export type PossibleKeyValueArgumentTypes = string | number | boolean;
 
-export type ArgumentsHelp<TArgs extends KeyValueArgument = KeyValueArgument> = {
-	[Argument in Key<TArgs>]: string;
+export type ArgumentsHelp<KVArgs extends KeyValueArgument = KeyValueArgument, FArgs extends FlagArgument = FlagArgument> = {
+	keyValueArguments?: KeyValueArgumentsHelp<KVArgs>;
+	flagArguments?: FlagArgumentsHelp<FArgs>;
+};
+
+export type KeyValueArgumentsHelp<KVArgs extends KeyValueArgument = KeyValueArgument> = {
+	[KVArgument in Key<KVArgs>]: string;
+};
+
+export type FlagArgumentsHelp<FArgs extends FlagArgument = FlagArgument> = {
+	[KVArgument in Key<FArgs>]: string;
 };
 
 export interface KeyValueArgument {
-	[argumentKey: string]: PossibleKeyValueArgumentTypes;
+	[argumentName: string]: PossibleKeyValueArgumentTypes;
 }
 
-export type CommandKeyValueArguments<TArgs extends KeyValueArgument = KeyValueArgument> = {
-	[ArgumentName in Key<TArgs>]: ArgumentDetails<TArgs[ArgumentName]>;
+export interface FlagArgument {
+	[argumentName: string]: boolean;
+}
+
+export type CommandKeyValueArguments<KVArgs extends KeyValueArgument = KeyValueArgument> = {
+	[ArgumentName in Key<KVArgs>]: ArgumentDetails<KVArgs[ArgumentName]>;
+};
+
+export type CommandFlagArguments<FArgs extends FlagArgument = FlagArgument> = {
+	[ArgumentName in Key<FArgs>]: FArgs[ArgumentName];
 };
 
 export interface BaseArgumentDetails<TRequired extends boolean> {
@@ -28,7 +45,3 @@ export type ArgumentDetails<TValue extends PossibleKeyValueArgumentTypes = Possi
 	: TValue extends boolean
 	? BooleanArgumentDetails
 	: never;
-
-export interface FlagArguments {
-	[flagName: string]: boolean;
-}
