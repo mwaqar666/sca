@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { SignInResponseDto, UserCredentialsDto } from "@sca/dto";
+import { SignInRequestDto, SignInResponseDto } from "@sca/dto";
 import { BaseController } from "@sca/utils";
 import { AuthService } from "../services";
 
@@ -10,7 +10,7 @@ export class AuthController extends BaseController {
 	}
 
 	@Post("/sign-in")
-	public async signIn(@Body() userCredentialsDto: UserCredentialsDto): Promise<SignInResponseDto> {
-		return this.authService.signIn(userCredentialsDto);
+	public async signIn(@Body() signInRequestDto: SignInRequestDto): Promise<SignInResponseDto> {
+		return this.authService.signIn(signInRequestDto);
 	}
 }
