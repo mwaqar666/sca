@@ -1,4 +1,4 @@
-import { DB_SCHEMA, EnvExtractorHelper } from "@sca/config";
+import { DB_SCHEMA, EnvExtractor } from "@sca/config";
 import { TableName } from "sequelize";
 import { EntityType, SequelizeBaseEntity } from "../../entity";
 
@@ -100,6 +100,6 @@ export class TableHelpers {
 	}
 
 	private static schemaNameOrDefault(schema?: string): string {
-		return schema ?? EnvExtractorHelper.env(DB_SCHEMA);
+		return schema ?? EnvExtractor.env(DB_SCHEMA);
 	}
 }

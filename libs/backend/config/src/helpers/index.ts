@@ -1,1 +1,1 @@
-export * from "./env-extractor.helper";
+export * from "./env-extractor";

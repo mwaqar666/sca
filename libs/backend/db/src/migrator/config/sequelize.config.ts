@@ -1,12 +1,12 @@
-import { DB_DATABASE, DB_DIALECT, DB_HOST, DB_PASSWORD, DB_PORT, DB_SCHEMA, DB_USERNAME, EnvExtractorHelper } from "@sca/config";
+import { DB_DATABASE, DB_DIALECT, DB_HOST, DB_PASSWORD, DB_PORT, DB_SCHEMA, DB_USERNAME, EnvExtractor } from "@sca/config";
 import { Options } from "sequelize";
 
 export const SequelizeConfig: Options = {
-	dialect: EnvExtractorHelper.env(DB_DIALECT),
-	username: EnvExtractorHelper.env(DB_USERNAME),
-	password: EnvExtractorHelper.env(DB_PASSWORD),
-	host: EnvExtractorHelper.env(DB_HOST),
-	port: parseInt(EnvExtractorHelper.env(DB_PORT), 10),
-	database: EnvExtractorHelper.env(DB_DATABASE),
-	schema: EnvExtractorHelper.env(DB_SCHEMA),
+	dialect: EnvExtractor.env(DB_DIALECT),
+	username: EnvExtractor.env(DB_USERNAME),
+	password: EnvExtractor.env(DB_PASSWORD),
+	host: EnvExtractor.env(DB_HOST),
+	port: parseInt(EnvExtractor.env(DB_PORT), 10),
+	database: EnvExtractor.env(DB_DATABASE),
+	schema: EnvExtractor.env(DB_SCHEMA),
 };

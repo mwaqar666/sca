@@ -1,6 +1,6 @@
-import { CipherGCMTypes } from "crypto";
+import type { CipherGCMTypes } from "crypto";
 import * as Joi from "joi";
-import {
+import type {
 	ACCESS_TOKEN_EXPIRY,
 	ACCESS_TOKEN_SECRET,
 	APP_HOST,

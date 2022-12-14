@@ -1,4 +1,4 @@
-import { CipherGCMTypes } from "crypto";
+import type { CipherGCMTypes } from "crypto";
 import * as Joi from "joi";
 import {
 	ACCESS_TOKEN_EXPIRY,
@@ -45,10 +45,10 @@ import {
 	SQLITE,
 	USER_ACCEPTANCE_TESTING,
 } from "../const";
-import { ConfigValidationType, Dialect } from "../types";
+import type { ConfigValidationType, DbGenerator, Dialect, Env } from "../types";
 
 export const ConfigValidation: Joi.ObjectSchema<ConfigValidationType> = Joi.object<ConfigValidationType>({
-	[NODE_ENV]: Joi.string().required().valid(DEVELOPMENT, QUALITY_ASSURANCE, USER_ACCEPTANCE_TESTING, PRODUCTION).default(ConfigDefaultsConst.Environment),
+	[NODE_ENV]: Joi.string<Env>().required().valid(DEVELOPMENT, QUALITY_ASSURANCE, USER_ACCEPTANCE_TESTING, PRODUCTION).default(ConfigDefaultsConst.Environment),
 
 	[ACCESS_TOKEN_SECRET]: Joi.string().required(),
 	[ACCESS_TOKEN_EXPIRY]: Joi.string().optional().default(ConfigDefaultsConst.Token[ACCESS_TOKEN_EXPIRY]),
@@ -62,7 +62,7 @@ export const ConfigValidation: Joi.ObjectSchema<ConfigValidationType> = Joi.obje
 	[DB_DIALECT]: Joi.string<Dialect>().optional().valid(MY_SQL, POSTGRES, SQLITE, MARIA_DB, MS_SQL, DB2, SNOWFLAKE).default(ConfigDefaultsConst.Database[DB_DIALECT]),
 	[DB_PORT]: Joi.number().optional().default(ConfigDefaultsConst.Database[DB_PORT]),
 	[DB_SCHEMA]: Joi.string().required(),
-	[DB_GENERATOR]: Joi.string().optional().valid(MIGRATIONS, ENTITIES).default(ConfigDefaultsConst.Database[DB_GENERATOR]),
+	[DB_GENERATOR]: Joi.string<DbGenerator>().optional().valid(MIGRATIONS, ENTITIES).default(ConfigDefaultsConst.Database[DB_GENERATOR]),
 
 	[REDIS_HOST]: Joi.string().optional().default(ConfigDefaultsConst.Redis[REDIS_HOST]),
 	[REDIS_PORT]: Joi.number().optional().default(ConfigDefaultsConst.Redis[REDIS_PORT]),

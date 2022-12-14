@@ -1,4 +1,4 @@
-import { ConfigModuleOptions } from "@nestjs/config";
+import type { ConfigModuleOptions } from "@nestjs/config";
 import * as process from "process";
 import { DEVELOPMENT, NODE_ENV } from "../const";
 import { ConfigFactory } from "../factory";

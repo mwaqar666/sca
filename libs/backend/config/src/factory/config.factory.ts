@@ -1,4 +1,4 @@
-import { ConfigFactory as NestConfigFactory } from "@nestjs/config";
+import { type ConfigFactory as NestConfigFactory } from "@nestjs/config";
 import {
 	ACCESS_TOKEN_EXPIRY,
 	ACCESS_TOKEN_SECRET,
@@ -30,54 +30,54 @@ import {
 	REFRESH_TOKEN_EXPIRY,
 	REFRESH_TOKEN_SECRET,
 } from "../const";
-import { EnvExtractorHelper } from "../helpers";
-import { ConfigType } from "../types";
+import { EnvExtractor } from "../helpers";
+import type { ConfigType } from "../types";
 
 export const ConfigFactory: NestConfigFactory<ConfigType> = () => {
 	return {
-		env: EnvExtractorHelper.env(NODE_ENV),
+		env: EnvExtractor.env(NODE_ENV),
 
 		tokens: {
-			accessTokenSecret: EnvExtractorHelper.env(ACCESS_TOKEN_SECRET),
-			accessTokenExpiry: EnvExtractorHelper.env(ACCESS_TOKEN_EXPIRY),
-			refreshTokenSecret: EnvExtractorHelper.env(REFRESH_TOKEN_SECRET),
-			refreshTokenExpiry: EnvExtractorHelper.env(REFRESH_TOKEN_EXPIRY),
+			accessTokenSecret: EnvExtractor.env(ACCESS_TOKEN_SECRET),
+			accessTokenExpiry: EnvExtractor.env(ACCESS_TOKEN_EXPIRY),
+			refreshTokenSecret: EnvExtractor.env(REFRESH_TOKEN_SECRET),
+			refreshTokenExpiry: EnvExtractor.env(REFRESH_TOKEN_EXPIRY),
 		},
 
 		database: {
-			dialect: EnvExtractorHelper.env(DB_DIALECT),
-			username: EnvExtractorHelper.env(DB_USERNAME),
-			password: EnvExtractorHelper.env(DB_PASSWORD),
-			host: EnvExtractorHelper.env(DB_HOST),
-			port: parseInt(EnvExtractorHelper.env(DB_PORT), 10),
-			database: EnvExtractorHelper.env(DB_DATABASE),
-			schema: EnvExtractorHelper.env(DB_SCHEMA),
-			generator: EnvExtractorHelper.env(DB_GENERATOR),
+			dialect: EnvExtractor.env(DB_DIALECT),
+			username: EnvExtractor.env(DB_USERNAME),
+			password: EnvExtractor.env(DB_PASSWORD),
+			host: EnvExtractor.env(DB_HOST),
+			port: parseInt(EnvExtractor.env(DB_PORT), 10),
+			database: EnvExtractor.env(DB_DATABASE),
+			schema: EnvExtractor.env(DB_SCHEMA),
+			generator: EnvExtractor.env(DB_GENERATOR),
 		},
 
 		redis: {
-			hostname: EnvExtractorHelper.env(REDIS_HOST),
-			port: parseInt(EnvExtractorHelper.env(REDIS_PORT), 10),
-			username: EnvExtractorHelper.env(REDIS_USERNAME),
-			password: EnvExtractorHelper.env(REDIS_PASSWORD),
+			hostname: EnvExtractor.env(REDIS_HOST),
+			port: parseInt(EnvExtractor.env(REDIS_PORT), 10),
+			username: EnvExtractor.env(REDIS_USERNAME),
+			password: EnvExtractor.env(REDIS_PASSWORD),
 		},
 
 		crypt: {
-			appKey: EnvExtractorHelper.env(CRYPT_APP_KEY),
-			blockCipher: EnvExtractorHelper.env(CRYPT_BLOCK_CIPHER),
-			authTagByteLength: parseInt(EnvExtractorHelper.env(CRYPT_AUTH_TAG_BYTE_LEN), 10),
-			initializationVectorByteLength: parseInt(EnvExtractorHelper.env(CRYPT_INITIALIZATION_VECTOR_BYTE_LEN), 10),
-			encryptionKeyByteLength: parseInt(EnvExtractorHelper.env(CRYPT_ENCRYPTION_KEY_BYTE_LENGTH), 10),
-			saltByteLength: parseInt(EnvExtractorHelper.env(CRYPT_SALT_BYTE_LEN), 10),
-			saltIterations: parseInt(EnvExtractorHelper.env(CRYPT_SALT_ITERATIONS), 10),
-			saltScheme: EnvExtractorHelper.env(CRYPT_SALT_SCHEME),
+			appKey: EnvExtractor.env(CRYPT_APP_KEY),
+			blockCipher: EnvExtractor.env(CRYPT_BLOCK_CIPHER),
+			authTagByteLength: parseInt(EnvExtractor.env(CRYPT_AUTH_TAG_BYTE_LEN), 10),
+			initializationVectorByteLength: parseInt(EnvExtractor.env(CRYPT_INITIALIZATION_VECTOR_BYTE_LEN), 10),
+			encryptionKeyByteLength: parseInt(EnvExtractor.env(CRYPT_ENCRYPTION_KEY_BYTE_LENGTH), 10),
+			saltByteLength: parseInt(EnvExtractor.env(CRYPT_SALT_BYTE_LEN), 10),
+			saltIterations: parseInt(EnvExtractor.env(CRYPT_SALT_ITERATIONS), 10),
+			saltScheme: EnvExtractor.env(CRYPT_SALT_SCHEME),
 		},
 
 		app: {
-			host: EnvExtractorHelper.env(APP_HOST),
-			port: parseInt(EnvExtractorHelper.env(APP_PORT), 10),
-			name: EnvExtractorHelper.env(APP_NAME),
-			version: EnvExtractorHelper.env(APP_VERSION),
+			host: EnvExtractor.env(APP_HOST),
+			port: parseInt(EnvExtractor.env(APP_PORT), 10),
+			name: EnvExtractor.env(APP_NAME),
+			version: EnvExtractor.env(APP_VERSION),
 		},
 	};
 };
