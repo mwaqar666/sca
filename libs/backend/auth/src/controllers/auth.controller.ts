@@ -1,11 +1,15 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { SignInRequestDto, SignInResponseDto } from "@sca/dto";
+import { SignInRequestDto, type SignInResponseDto } from "@sca/dto";
 import { BaseController } from "@sca/utils";
 import { AuthService } from "../services";
 
 @Controller("auth")
 export class AuthController extends BaseController {
-	public constructor(private readonly authService: AuthService) {
+	public constructor(
+		// Dependencies
+
+		private readonly authService: AuthService,
+	) {
 		super();
 	}
 

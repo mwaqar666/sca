@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { UserEntity } from "@sca/data-access-layer";
-import { AccessTokenPayloadDto, RefreshTokenPayloadDto } from "@sca/dto";
+import { type ProjectEntity, type UserEntity } from "@sca/data-access-layer";
+import { type AccessTokenPayloadDto, type AuthenticatedProject, type RefreshTokenPayloadDto } from "@sca/dto";
 import { AccessToken, RefreshToken } from "../const";
 import { CryptService } from "./crypt.service";
 
@@ -9,6 +9,7 @@ import { CryptService } from "./crypt.service";
 export class TokenService {
 	public constructor(
 		// Dependencies
+
 		private readonly jwtService: JwtService,
 		private readonly cryptService: CryptService,
 	) {}
@@ -21,9 +22,8 @@ export class TokenService {
 			userMiddleName: userWithProject.userMiddleName,
 			userLastName: userWithProject.userLastName,
 			userEmail: userWithProject.userEmail,
-			projectUuid: userWithProject.userAuthenticatedProject.projectUuid,
-			projectName: userWithProject.userAuthenticatedProject.projectName,
-			projectDomain: userWithProject.userAuthenticatedProject.projectDomain,
+			userDefaultProject: this.prepareSingleProjectStructure(userWithProject.userDefaultProject),
+			userProjects: this.prepareAllProjectStructure(userWithProject.userProjects),
 		};
 
 		return this.jwtService.signAsync(accessTokenPayload);
@@ -33,9 +33,21 @@ export class TokenService {
 		const refreshTokenPayload: RefreshTokenPayloadDto = {
 			tokenIdentity: this.cryptService.encrypt(RefreshToken),
 			userUuid: userWithProject.userUuid,
-			projectUuid: userWithProject.userAuthenticatedProject.projectUuid,
+			projectUuid: userWithProject.userDefaultProject.projectUuid,
 		};
 
 		return this.jwtService.signAsync(refreshTokenPayload);
+	}
+
+	private prepareAllProjectStructure(projects: Array<ProjectEntity>): Array<AuthenticatedProject> {
+		return projects.map((project: ProjectEntity) => this.prepareSingleProjectStructure(project));
+	}
+
+	private prepareSingleProjectStructure(project: ProjectEntity): AuthenticatedProject {
+		return {
+			projectUuid: project.projectUuid,
+			projectName: project.projectName,
+			projectDomain: project.projectDomain,
+		};
 	}
 }

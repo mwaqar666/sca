@@ -1,7 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import { SignInRequestDto } from "@sca/dto";
-import { Nullable } from "@sca/utils";
-import { ProjectService, UserEntity, UserService } from "../domains";
+import { SequelizeScopeConst } from "@sca/db";
+import { type SignInRequestDto } from "@sca/dto";
+import { type Nullable } from "@sca/utils";
+import { type ProjectEntity, ProjectService, type UserEntity, UserService } from "../domains";
 
 @Injectable()
 export class UserProjectIdentityService {
@@ -12,16 +13,17 @@ export class UserProjectIdentityService {
 		private readonly projectService: ProjectService,
 	) {}
 
-	public async authenticateUserWithProject(signInRequestDto: SignInRequestDto): Promise<Nullable<UserEntity>> {
-		const user = await this.userService.findUser(signInRequestDto.userEmail);
-
+	public async authenticateUserWithAllAndDefaultProjects(signInRequestDto: SignInRequestDto): Promise<Nullable<UserEntity>> {
+		const user = await this.userService.findUser(signInRequestDto.userEmail, SequelizeScopeConst.withoutTimestamps);
 		if (!user) return null;
 
-		const project = await this.projectService.findProject(user.userId, signInRequestDto.projectDomain);
+		const projects = await this.projectService.findUserProjects(user.userId, SequelizeScopeConst.withoutTimestamps);
+		const defaultProjectIndex = projects.findIndex((project: ProjectEntity) => project.projectIsDefault);
+		if (projects.length === 0 || defaultProjectIndex === -1) return null;
 
-		if (!project) return null;
-
-		user.userAuthenticatedProject = project;
+		user.userDefaultProject = projects[defaultProjectIndex];
+		projects.splice(defaultProjectIndex, 1);
+		user.userProjects = projects;
 
 		return user;
 	}

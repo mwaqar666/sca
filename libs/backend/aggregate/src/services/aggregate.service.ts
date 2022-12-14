@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { TResolvedInjectable } from "../types";
+import { type TResolvedInjectable } from "../types";
 
 @Injectable()
 export class AggregateService<TServices extends TResolvedInjectable> {

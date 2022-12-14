@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import { SequelizeScopeConst } from "@sca/db";
-import { Nullable } from "@sca/utils";
-import { UserEntity } from "./user.entity";
+import { type EntityScope, SequelizeScopeConst } from "@sca/db";
+import { type Nullable } from "@sca/utils";
+import { type UserEntity } from "./user.entity";
 import { UserRepository } from "./user.repository";
 
 @Injectable()
@@ -12,9 +12,9 @@ export class UserService {
 		private readonly userRepository: UserRepository,
 	) {}
 
-	public async findUser(userEmail: string): Promise<Nullable<UserEntity>> {
+	public async findUser(userEmail: string, ...scopes: EntityScope): Promise<Nullable<UserEntity>> {
 		return await this.userRepository.findEntity({
-			scopes: [SequelizeScopeConst.isActive],
+			scopes: [SequelizeScopeConst.isActive, ...scopes],
 			findOptions: { where: { userEmail } },
 		});
 	}

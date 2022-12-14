@@ -39,6 +39,11 @@ export class ProjectEntity extends SequelizeBaseEntity<ProjectEntity> {
 	@Column({ type: DataType.STRING })
 	public projectDomain: string;
 
+	@Default(false)
+	@AllowNull(false)
+	@Column({ type: DataType.BOOLEAN })
+	public projectIsDefault: boolean;
+
 	@Default(true)
 	@AllowNull(false)
 	@Column({ type: DataType.BOOLEAN })

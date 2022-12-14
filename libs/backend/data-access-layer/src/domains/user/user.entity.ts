@@ -82,11 +82,11 @@ export class UserEntity extends SequelizeBaseEntity<UserEntity> {
 	public userParent: Nullable<UserEntity>;
 
 	@HasOne(() => ProjectEntity, {
-		as: "userAuthenticatedProject",
+		as: "userDefaultProject",
 		foreignKey: "projectUserId",
 		sourceKey: "userId",
 	})
-	public userAuthenticatedProject: ProjectEntityType;
+	public userDefaultProject: ProjectEntityType;
 
 	@HasMany(() => ProjectEntity, {
 		as: "userProjects",

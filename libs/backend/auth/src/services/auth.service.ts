@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { UserEntity, UserProjectIdentityService } from "@sca/data-access-layer";
-import { SignInRequestDto, SignInResponseDto } from "@sca/dto";
+import { type UserEntity, UserProjectIdentityService } from "@sca/data-access-layer";
+import { type SignInRequestDto, type SignInResponseDto } from "@sca/dto";
 import { PasswordService, TokenService } from "@sca/security";
 import { UnauthorizedExceptionMessage } from "../const";
 
@@ -15,23 +15,23 @@ export class AuthService {
 	) {}
 
 	public async signIn(signInRequestDto: SignInRequestDto): Promise<SignInResponseDto> {
-		const userWithProject = await this.authenticate(signInRequestDto);
+		const userWithProjects = await this.authenticate(signInRequestDto);
 
-		const accessToken = this.tokenService.createAccessToken(userWithProject);
-		const refreshToken = this.tokenService.createRefreshToken(userWithProject);
+		const accessToken = this.tokenService.createAccessToken(userWithProjects);
+		const refreshToken = this.tokenService.createRefreshToken(userWithProjects);
 
 		return { accessToken: await accessToken, refreshToken: await refreshToken };
 	}
 
 	private async authenticate(signInRequestDto: SignInRequestDto): Promise<UserEntity> {
-		const userEntity = await this.identityService.authenticateUserWithProject(signInRequestDto);
+		const userWithProjects = await this.identityService.authenticateUserWithAllAndDefaultProjects(signInRequestDto);
 
-		if (!userEntity) throw new UnauthorizedException(UnauthorizedExceptionMessage);
+		if (!userWithProjects) throw new UnauthorizedException(UnauthorizedExceptionMessage);
 
-		const passwordIsSame = await this.passwordService.verifyPassword(signInRequestDto.userPassword, userEntity.userPassword);
+		const passwordIsSame = await this.passwordService.verifyPassword(signInRequestDto.userPassword, userWithProjects.userPassword);
 
 		if (!passwordIsSame) throw new UnauthorizedException(UnauthorizedExceptionMessage);
 
-		return userEntity;
+		return userWithProjects;
 	}
 }

@@ -7,6 +7,11 @@ export class AccessTokenPayloadDto {
 	public userMiddleName: Nullable<string>;
 	public userLastName: string;
 	public userEmail: string;
+	public userDefaultProject: AuthenticatedProject;
+	public userProjects: Array<AuthenticatedProject>;
+}
+
+export class AuthenticatedProject {
 	public projectUuid: string;
 	public projectName: string;
 	public projectDomain: string;

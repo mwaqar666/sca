@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { SequelizeScopeConst } from "@sca/db";
-import { Nullable } from "@sca/utils";
+import { EntityScope, SequelizeScopeConst } from "@sca/db";
 import { ProjectEntity } from "./project.entity";
 import { ProjectRepository } from "./project.repository";
 
@@ -12,10 +11,10 @@ export class ProjectService {
 		private readonly projectRepository: ProjectRepository,
 	) {}
 
-	public async findProject(projectUserId: number, projectDomain: string): Promise<Nullable<ProjectEntity>> {
-		return await this.projectRepository.findEntity({
-			scopes: [SequelizeScopeConst.isActive],
-			findOptions: { where: { projectUserId, projectDomain } },
+	public async findUserProjects(projectUserId: number, ...scopes: EntityScope): Promise<Array<ProjectEntity>> {
+		return await this.projectRepository.findEntities({
+			scopes: [SequelizeScopeConst.isActive, ...scopes],
+			findOptions: { where: { projectUserId, projectIsDefault: true } },
 		});
 	}
 }
