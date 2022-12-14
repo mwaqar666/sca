@@ -13,21 +13,27 @@ export class TokenService {
 		private readonly cryptService: CryptService,
 	) {}
 
-	public async createAccessToken(userEntity: UserEntity): Promise<string> {
+	public async createAccessToken(userWithProject: UserEntity): Promise<string> {
 		const accessTokenPayload: AccessTokenPayloadDto = {
-			secretIdentity: this.cryptService.encrypt(AccessToken),
-			userUuid: userEntity.userUuid,
-			userFirstName: userEntity.userFirstName,
-			userMiddleName: userEntity.userMiddleName,
-			userLastName: userEntity.userLastName,
+			tokenIdentity: this.cryptService.encrypt(AccessToken),
+			userUuid: userWithProject.userUuid,
+			userFirstName: userWithProject.userFirstName,
+			userMiddleName: userWithProject.userMiddleName,
+			userLastName: userWithProject.userLastName,
+			userEmail: userWithProject.userEmail,
+			projectUuid: userWithProject.userAuthenticatedProject.projectUuid,
+			projectName: userWithProject.userAuthenticatedProject.projectName,
+			projectDomain: userWithProject.userAuthenticatedProject.projectDomain,
 		};
 
 		return this.jwtService.signAsync(accessTokenPayload);
 	}
 
-	public async createRefreshToken(): Promise<string> {
+	public async createRefreshToken(userWithProject: UserEntity): Promise<string> {
 		const refreshTokenPayload: RefreshTokenPayloadDto = {
-			secretIdentity: this.cryptService.encrypt(RefreshToken),
+			tokenIdentity: this.cryptService.encrypt(RefreshToken),
+			userUuid: userWithProject.userUuid,
+			projectUuid: userWithProject.userAuthenticatedProject.projectUuid,
 		};
 
 		return this.jwtService.signAsync(refreshTokenPayload);

@@ -1,3 +1,5 @@
 export class RefreshTokenPayloadDto {
-	public secretIdentity: string;
+	public tokenIdentity: string;
+	public userUuid: string;
+	public projectUuid: string;
 }

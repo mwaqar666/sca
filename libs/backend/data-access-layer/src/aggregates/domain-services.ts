@@ -1,7 +1,8 @@
-import { UserDomainService } from "../domains";
+import { ProjectService, UserService } from "../domains";
 
 export const DomainServices = [
 	// Register data services here
 
-	UserDomainService,
+	UserService,
+	ProjectService,
 ];
