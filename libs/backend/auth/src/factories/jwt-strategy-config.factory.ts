@@ -1,11 +1,15 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { ConfigType, TokenConfig } from "@sca/config";
-import { ExtractJwt, StrategyOptions } from "passport-jwt";
+import type { ConfigType, TokenConfig } from "@sca/config";
+import { ExtractJwt, type StrategyOptions } from "passport-jwt";
 
 @Injectable()
 export class JwtStrategyConfigFactory {
-	public constructor(private configService: ConfigService<ConfigType, true>) {}
+	public constructor(
+		// Dependencies
+
+		private configService: ConfigService<ConfigType, true>,
+	) {}
 
 	public get accessTokenStrategyConfig(): StrategyOptions {
 		const tokenConfig = this.tokenConfiguration();

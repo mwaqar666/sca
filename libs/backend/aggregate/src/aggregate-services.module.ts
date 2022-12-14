@@ -1,7 +1,7 @@
-import { DynamicModule, FactoryProvider, Global, Module, Type } from "@nestjs/common";
+import { type DynamicModule, type FactoryProvider, Global, Module, type Type } from "@nestjs/common";
 import { BaseModule } from "@sca/utils";
 import { AggregateService } from "./services";
-import { TInjectable, TInjectableAggregates, TResolvedInjectable } from "./types";
+import type { TInjectable, TInjectableAggregates, TResolvedInjectable } from "./types";
 
 @Global()
 @Module({})

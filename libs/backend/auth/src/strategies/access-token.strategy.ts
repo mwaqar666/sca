@@ -1,12 +1,16 @@
 import { Injectable } from "@nestjs/common";
-import { AccessTokenPayloadDto } from "@sca/dto";
+import { type AccessTokenPayloadDto } from "@sca/dto";
 import { BaseJwtStrategyFactory } from "../base";
 import { ACCESS_TOKEN_STRATEGY } from "../const";
 import { JwtStrategyConfigFactory } from "../factories";
 
 @Injectable()
 export class AccessTokenStrategy extends BaseJwtStrategyFactory(ACCESS_TOKEN_STRATEGY) {
-	public constructor(private readonly jwtStrategyConfig: JwtStrategyConfigFactory) {
+	public constructor(
+		// Dependencies
+
+		private readonly jwtStrategyConfig: JwtStrategyConfigFactory,
+	) {
 		super(jwtStrategyConfig.accessTokenStrategyConfig);
 	}
 
