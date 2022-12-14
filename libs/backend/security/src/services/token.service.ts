@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { type ProjectEntity, type UserEntity } from "@sca/data-access-layer";
+import type { ProjectEntity, UserEntity } from "@sca/data-access-layer";
 import { type AccessTokenPayloadDto, type AuthenticatedProject, type RefreshTokenPayloadDto } from "@sca/dto";
 import { AccessToken, RefreshToken } from "../const";
 import { CryptService } from "./crypt.service";
