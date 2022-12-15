@@ -1,0 +1,93 @@
+{
+	"name": "sca-fe",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "application",
+	"sourceRoot": "apps/sca-fe/src",
+	"prefix": "app",
+	"targets": {
+		"build": {
+			"executor": "@angular-devkit/build-angular:browser",
+			"outputs": [
+				"{options.outputPath}"
+			],
+			"options": {
+				"outputPath": "dist/apps/sca-fe",
+				"index": "apps/sca-fe/src/index.html",
+				"main": "apps/sca-fe/src/main.ts",
+				"polyfills": [
+					"zone.js"
+				],
+				"tsConfig": "apps/sca-fe/tsconfig.json",
+				"inlineStyleLanguage": "scss",
+				"assets": [
+					"apps/sca-fe/src/favicon.ico",
+					"apps/sca-fe/src/assets"
+				],
+				"styles": [
+					"apps/sca-fe/src/styles.scss"
+				],
+				"scripts": []
+			},
+			"configurations": {
+				"production": {
+					"budgets": [
+						{
+							"type": "initial",
+							"maximumWarning": "500kb",
+							"maximumError": "1mb"
+						},
+						{
+							"type": "anyComponentStyle",
+							"maximumWarning": "2kb",
+							"maximumError": "4kb"
+						}
+					],
+					"outputHashing": "all"
+				},
+				"development": {
+					"buildOptimizer": false,
+					"optimization": false,
+					"vendorChunk": true,
+					"extractLicenses": false,
+					"sourceMap": true,
+					"namedChunks": true
+				}
+			},
+			"defaultConfiguration": "production"
+		},
+		"serve": {
+			"executor": "@angular-devkit/build-angular:dev-server",
+			"configurations": {
+				"production": {
+					"browserTarget": "sca-fe:build:production"
+				},
+				"development": {
+					"browserTarget": "sca-fe:build:development"
+				}
+			},
+			"defaultConfiguration": "development",
+			"options": {
+				"port": 4200
+			}
+		},
+		"extract-i18n": {
+			"executor": "@angular-devkit/build-angular:extract-i18n",
+			"options": {
+				"browserTarget": "sca-fe:build"
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"apps/sca-fe/**/*.ts",
+					"apps/sca-fe/**/*.html"
+				]
+			}
+		}
+	},
+	"tags": []
+}
