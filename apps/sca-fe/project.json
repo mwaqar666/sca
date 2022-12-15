@@ -6,11 +6,14 @@
 	"prefix": "app",
 	"targets": {
 		"build": {
-			"executor": "@angular-devkit/build-angular:browser",
+			"executor": "@nrwl/angular:webpack-browser",
 			"outputs": [
 				"{options.outputPath}"
 			],
 			"options": {
+				"customWebpackConfig": {
+					"path": "apps/sca-fe/webpack.config.js"
+				},
 				"outputPath": "dist/apps/sca-fe",
 				"index": "apps/sca-fe/src/index.html",
 				"main": "apps/sca-fe/src/main.ts",
@@ -29,7 +32,15 @@
 				"scripts": []
 			},
 			"configurations": {
-				"production": {
+				"dev": {
+					"buildOptimizer": false,
+					"optimization": false,
+					"vendorChunk": true,
+					"extractLicenses": false,
+					"sourceMap": true,
+					"namedChunks": true
+				},
+				"qa": {
 					"budgets": [
 						{
 							"type": "initial",
@@ -44,31 +55,59 @@
 					],
 					"outputHashing": "all"
 				},
-				"development": {
-					"buildOptimizer": false,
-					"optimization": false,
-					"vendorChunk": true,
-					"extractLicenses": false,
-					"sourceMap": true,
-					"namedChunks": true
+				"uat": {
+					"budgets": [
+						{
+							"type": "initial",
+							"maximumWarning": "500kb",
+							"maximumError": "1mb"
+						},
+						{
+							"type": "anyComponentStyle",
+							"maximumWarning": "2kb",
+							"maximumError": "4kb"
+						}
+					],
+					"outputHashing": "all"
+				},
+				"prod": {
+					"budgets": [
+						{
+							"type": "initial",
+							"maximumWarning": "500kb",
+							"maximumError": "1mb"
+						},
+						{
+							"type": "anyComponentStyle",
+							"maximumWarning": "2kb",
+							"maximumError": "4kb"
+						}
+					],
+					"outputHashing": "all"
 				}
 			},
-			"defaultConfiguration": "production"
+			"defaultConfiguration": "prod"
 		},
 		"serve": {
-			"executor": "@angular-devkit/build-angular:dev-server",
-			"configurations": {
-				"production": {
-					"browserTarget": "sca-fe:build:production"
-				},
-				"development": {
-					"browserTarget": "sca-fe:build:development"
-				}
-			},
-			"defaultConfiguration": "development",
+			"executor": "@nrwl/angular:webpack-dev-server",
 			"options": {
 				"port": 4200
-			}
+			},
+			"configurations": {
+				"dev": {
+					"browserTarget": "sca-fe:build:dev"
+				},
+				"qa": {
+					"browserTarget": "sca-fe:build:qa"
+				},
+				"uat": {
+					"browserTarget": "sca-fe:build:uat"
+				},
+				"prod": {
+					"browserTarget": "sca-fe:build:prod"
+				}
+			},
+			"defaultConfiguration": "dev"
 		},
 		"extract-i18n": {
 			"executor": "@angular-devkit/build-angular:extract-i18n",

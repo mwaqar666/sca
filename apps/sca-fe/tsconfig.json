@@ -13,9 +13,11 @@
 		"strictPropertyInitialization": false
 	},
 	"include": [
-		"**/*.ts"
+		"src/**/*.ts"
 	],
 	"angularCompilerOptions": {
+		"target": "ES6",
+		"useDefineForClassFields": false,
 		"enableI18nLegacyMessageIdFormat": false,
 		"strictInjectionParameters": true,
 		"strictInputAccessModifiers": true,

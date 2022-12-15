@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="sca-fe:serve:qa" type="js.build_tools.nx">
+    <node-interpreter value="project" />
+    <nxfile value="$PROJECT_DIR$/nx.json" />
+    <tasks>
+      <task value="sca-fe:serve:qa" />
+    </tasks>
+    <arguments value="--verbose" />
+    <envs />
+    <method v="2" />
+  </configuration>
+</component>

@@ -1,4 +1,4 @@
-import { DB_SCHEMA } from "@sca/config";
+import { DB_SCHEMA, EnvExtractor } from "@sca/config";
 import { DateHelpers } from "@sca/utils";
 import { DataTypes, type Sequelize } from "sequelize";
 import { type InputMigrations, type RunnableMigration, SequelizeStorage, Umzug, type UmzugOptions } from "umzug";
@@ -8,7 +8,7 @@ export class MigrationConfigFactory {
 	public static sequelizeStorageConfig(sequelize: Sequelize): SequelizeStorage {
 		return new SequelizeStorage({
 			sequelize,
-			schema: process.env[DB_SCHEMA],
+			schema: EnvExtractor.env(DB_SCHEMA),
 			tableName: "migrations",
 			columnName: "migrationName",
 			columnType: DataTypes.STRING(100),
@@ -23,8 +23,6 @@ export class MigrationConfigFactory {
 			...initialUmzugInstance.options,
 			migrations: async (context: SequelizeQueryInterface) => {
 				const migrations = (await initialUmzugInstance.migrations(context)).concat();
-
-				console.log(migrations);
 
 				return migrations.sort((a: RunnableMigration<SequelizeQueryInterface>, b: RunnableMigration<SequelizeQueryInterface>) => {
 					const [timeStampSegmentA, timeStampSegmentB] = [a.name.slice(0, 23), b.name.slice(0, 23)];

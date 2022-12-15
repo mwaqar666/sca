@@ -2,6 +2,14 @@ import { resolve } from "path";
 import type { Optional } from "../types";
 
 export abstract class PathHelpers {
+	public static configPath(pathSegments: string): string;
+	public static configPath(pathSegments: Array<string>): string;
+	public static configPath(pathSegments: string | Array<string>): string {
+		if (typeof pathSegments === "string") pathSegments = this.splitRawPath(pathSegments);
+
+		return PathHelpers.rootPath(["config", ...pathSegments]);
+	}
+
 	public static libraryPath(pathSegments: string): string;
 	public static libraryPath(pathSegments: Array<string>): string;
 	public static libraryPath(pathSegments: string | Array<string>): string {
