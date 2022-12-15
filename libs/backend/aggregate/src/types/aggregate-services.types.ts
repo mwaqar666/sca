@@ -12,3 +12,7 @@ export type TInjectableAggregates = {
 export type TResolvedInjectable = {
 	[InjectableName in Key<TInjectable>]: InstanceType<TInjectable[InjectableName]>;
 };
+
+export type TResolvedInjectables<T extends TInjectable> = {
+	[InjectableName in Key<T>]: InstanceType<T[InjectableName]>;
+};

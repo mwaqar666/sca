@@ -1,14 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="sca-be:serve:dev" type="js.build_tools.nx">
+  <configuration default="false" name="backend-auth:build" type="js.build_tools.nx">
     <node-interpreter value="project" />
     <nxfile value="$PROJECT_DIR$/nx.json" />
     <tasks>
-      <task value="sca-be:serve" />
+      <task value="backend-auth:build" />
     </tasks>
     <arguments value="--verbose" />
-    <envs>
-      <env name="NODE_ENV" value="dev" />
-    </envs>
+    <envs />
     <method v="2" />
   </configuration>
 </component>

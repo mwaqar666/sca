@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { SequelizeScopeConst } from "@sca/db";
-import type { SignInRequestDto } from "@sca/dto";
-import type { Nullable } from "@sca/utils";
-import { type ProjectEntity, ProjectService, type UserEntity, UserService } from "../domains";
+import type { ProjectUserSignInRequestDto } from "@sca/dto";
+import { ProjectDefaultService, type ProjectUserEntity, ProjectUserService, UserService } from "../domains";
+import type { FailedAuthReasonProject, FailedAuthReasonUser, SuccessfulAuthWithUserAndProject } from "../dto";
 
 @Injectable()
 export class UserProjectIdentityService {
@@ -10,21 +10,28 @@ export class UserProjectIdentityService {
 		// Dependencies
 
 		private readonly userService: UserService,
-		private readonly projectService: ProjectService,
+		private readonly projectUserService: ProjectUserService,
+		private readonly projectDefaultService: ProjectDefaultService,
 	) {}
 
-	public async authenticateUserWithAllAndDefaultProjects(signInRequestDto: SignInRequestDto): Promise<Nullable<UserEntity>> {
-		const user = await this.userService.findUser(signInRequestDto.userEmail, SequelizeScopeConst.withoutTimestamps);
-		if (!user) return null;
+	public async authenticateProjectUserWithAllAndDefaultProjects(
+		projectUserSignInRequestDto: ProjectUserSignInRequestDto,
+	): Promise<FailedAuthReasonUser | FailedAuthReasonProject | SuccessfulAuthWithUserAndProject> {
+		const user = await this.userService.findUser(projectUserSignInRequestDto.userEmail, SequelizeScopeConst.withoutTimestamps);
+		if (!user) return { authUser: null, authErrorReason: "user" };
 
-		const projects = await this.projectService.findUserProjects(user.userId, SequelizeScopeConst.withoutTimestamps);
-		const defaultProjectIndex = projects.findIndex((project: ProjectEntity) => project.projectIsDefault);
-		if (projects.length === 0 || defaultProjectIndex === -1) return null;
+		const projectUsers = await this.projectUserService.findAllProjectsForUser(user.userId, SequelizeScopeConst.withoutTimestamps);
+		if (projectUsers.length === 0) return { authUser: null, authErrorReason: "project" };
 
-		user.userDefaultProject = projects[defaultProjectIndex];
-		projects.splice(defaultProjectIndex, 1);
-		user.userProjects = projects;
+		const userDefaultProjectConnection = await this.projectDefaultService.findOrCreateUserDefaultProjectConnection(user.userId, projectUsers[0].projectUserProjectId);
 
-		return user;
+		const defaultProjectIndex = projectUsers.findIndex((project: ProjectUserEntity) => project.projectUserProjectId === userDefaultProjectConnection.projectDefaultProjectId);
+		userDefaultProjectConnection.projectDefaultProject = projectUsers[defaultProjectIndex].projectUserProject;
+		const userNonDefaultProjects = projectUsers.slice(0, defaultProjectIndex).concat(projectUsers.slice(defaultProjectIndex + 1));
+
+		user.userDefaultProject = userDefaultProjectConnection;
+		user.userProjects = userNonDefaultProjects;
+
+		return { authUser: user, authErrorReason: null };
 	}
 }

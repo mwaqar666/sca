@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { type UserEntity, UserProjectIdentityService } from "@sca/data-access-layer";
-import { type SignInRequestDto, type SignInResponseDto } from "@sca/dto";
+import type { ProjectUserSignInRequestDto, ProjectUserSignInResponseDto } from "@sca/dto";
 import { PasswordService, TokenService } from "@sca/security";
-import { UnauthorizedExceptionMessage } from "../const";
+import { ProjectUnavailableExceptionMessage, UnauthorizedExceptionMessage } from "../const";
 
 @Injectable()
 export class AuthService {
@@ -14,24 +14,24 @@ export class AuthService {
 		private readonly passwordService: PasswordService,
 	) {}
 
-	public async signIn(signInRequestDto: SignInRequestDto): Promise<SignInResponseDto> {
-		const userWithProjects = await this.authenticate(signInRequestDto);
+	public async projectUserSignIn(projectUserSignInRequestDto: ProjectUserSignInRequestDto): Promise<ProjectUserSignInResponseDto> {
+		const authUserWithDefaultAndAllProjects = await this.authenticateProjectUser(projectUserSignInRequestDto);
 
-		const accessToken = this.tokenService.createAccessToken(userWithProjects);
-		const refreshToken = this.tokenService.createRefreshToken(userWithProjects);
+		const accessToken = this.tokenService.createAccessToken(authUserWithDefaultAndAllProjects);
+		const refreshToken = this.tokenService.createRefreshToken(authUserWithDefaultAndAllProjects);
 
 		return { accessToken: await accessToken, refreshToken: await refreshToken };
 	}
 
-	private async authenticate(signInRequestDto: SignInRequestDto): Promise<UserEntity> {
-		const userWithProjects = await this.identityService.authenticateUserWithAllAndDefaultProjects(signInRequestDto);
+	private async authenticateProjectUser(projectUserSignInRequestDto: ProjectUserSignInRequestDto): Promise<UserEntity> {
+		const { authUser, authErrorReason } = await this.identityService.authenticateProjectUserWithAllAndDefaultProjects(projectUserSignInRequestDto);
 
-		if (!userWithProjects) throw new UnauthorizedException(UnauthorizedExceptionMessage);
+		if (authErrorReason) throw new UnauthorizedException(authErrorReason === "user" ? UnauthorizedExceptionMessage : ProjectUnavailableExceptionMessage);
 
-		const passwordIsSame = await this.passwordService.verifyPassword(signInRequestDto.userPassword, userWithProjects.userPassword);
+		const passwordIsSame = await this.passwordService.verifyPassword(projectUserSignInRequestDto.userPassword, authUser.userPassword);
 
 		if (!passwordIsSame) throw new UnauthorizedException(UnauthorizedExceptionMessage);
 
-		return userWithProjects;
+		return authUser;
 	}
 }

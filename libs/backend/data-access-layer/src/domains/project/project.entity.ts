@@ -1,7 +1,8 @@
 import { BaseEntityScopes, SequelizeBaseEntity } from "@sca/db";
 import type { Nullable } from "@sca/utils";
-import { AllowNull, AutoIncrement, BelongsTo, Column, CreatedAt, DataType, Default, DeletedAt, ForeignKey, PrimaryKey, Scopes, Table, Unique, UpdatedAt } from "sequelize-typescript";
-import { UserEntity, type UserEntity as UserEntityType } from "../user";
+import { AllowNull, AutoIncrement, Column, CreatedAt, DataType, Default, DeletedAt, HasMany, PrimaryKey, Scopes, Table, Unique, UpdatedAt } from "sequelize-typescript";
+import { ProjectDefaultEntity } from "./project-default.entity";
+import { ProjectUserEntity, type ProjectUserEntity as ProjectUserEntityType } from "./project-user.entity";
 
 @Scopes(() => ({
 	...BaseEntityScopes.commonScopes(() => ProjectEntity),
@@ -26,17 +27,16 @@ export class ProjectEntity extends SequelizeBaseEntity<ProjectEntity> {
 	@Column({ type: DataType.UUID })
 	public readonly projectUuid: string;
 
-	@ForeignKey(() => UserEntity)
 	@AllowNull(false)
-	@Column({ type: DataType.INTEGER })
-	public projectUserId: number;
-
-	@AllowNull(false)
-	@Column({ type: DataType.STRING })
+	@Column({ type: DataType.STRING(100) })
 	public projectName: string;
 
-	@AllowNull(false)
+	@AllowNull(true)
 	@Column({ type: DataType.STRING })
+	public projectImage: Nullable<string>;
+
+	@AllowNull(false)
+	@Column({ type: DataType.STRING(100) })
 	public projectDomain: string;
 
 	@Default(false)
@@ -59,10 +59,17 @@ export class ProjectEntity extends SequelizeBaseEntity<ProjectEntity> {
 	public projectDeletedAt: Nullable<Date>;
 
 	// Relationships
-	@BelongsTo(() => UserEntity, {
-		as: "projectUser",
-		foreignKey: "projectUserId",
-		targetKey: "userId",
+	@HasMany(() => ProjectUserEntity, {
+		as: "projectUsers",
+		foreignKey: "projectUserProjectId",
+		sourceKey: "projectId",
 	})
-	public projectUser: UserEntityType;
+	public projectUsers: Array<ProjectUserEntityType>;
+
+	@HasMany(() => ProjectDefaultEntity, {
+		as: "projectDefaultUsers",
+		foreignKey: "projectDefaultProjectId",
+		sourceKey: "projectId",
+	})
+	public projectDefaultUsers: Array<ProjectDefaultEntity>;
 }

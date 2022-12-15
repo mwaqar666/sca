@@ -1,75 +1,77 @@
 import { BaseMigration, type SequelizeQueryInterface, TableHelpers } from "@sca/db";
 import { DataTypes } from "sequelize";
+import { UserTypeEntity } from "../user-type";
 import { UserEntity } from "./user.entity";
 
 export default class extends BaseMigration {
-	private usersTableName = TableHelpers.createTableName(UserEntity);
-	private usersParentForeignKey = TableHelpers.createForeignConstraintName(UserEntity, UserEntity, "userParentId", "userId");
+	private readonly usersTableName = TableHelpers.createTableName(UserEntity);
+	private readonly userTypesTableName = TableHelpers.createTableName(UserTypeEntity);
+	private readonly userUserTypeForeignKeyConstraint = TableHelpers.createForeignConstraintName(UserEntity, "userUserTypeId");
 
 	public async up(queryInterface: SequelizeQueryInterface): Promise<void> {
 		await queryInterface.createTable<UserEntity>(this.usersTableName, {
 			userId: {
-				type: DataTypes.INTEGER,
 				primaryKey: true,
 				autoIncrement: true,
+				type: DataTypes.INTEGER,
 			},
 			userUuid: {
-				type: DataTypes.UUID,
 				unique: true,
 				defaultValue: DataTypes.UUIDV4,
 				allowNull: false,
+				type: DataTypes.UUID,
 			},
-			userParentId: {
+			userUserTypeId: {
+				allowNull: false,
 				type: DataTypes.INTEGER,
-				allowNull: true,
 			},
 			userFirstName: {
-				type: DataTypes.STRING(100),
 				allowNull: false,
+				type: DataTypes.STRING(100),
 			},
 			userMiddleName: {
-				type: DataTypes.STRING(100),
 				allowNull: true,
+				type: DataTypes.STRING(100),
 			},
 			userLastName: {
-				type: DataTypes.STRING(100),
 				allowNull: false,
+				type: DataTypes.STRING(100),
 			},
 			userEmail: {
-				type: DataTypes.STRING(100),
 				unique: true,
 				allowNull: false,
+				type: DataTypes.STRING(100),
 			},
 			userPassword: {
-				type: DataTypes.STRING,
 				allowNull: false,
+				type: DataTypes.STRING,
 			},
 			userIsActive: {
-				type: DataTypes.BOOLEAN,
 				defaultValue: true,
 				allowNull: false,
+				type: DataTypes.BOOLEAN,
 			},
 			userCreatedAt: {
-				type: DataTypes.DATE,
 				allowNull: false,
+				type: DataTypes.DATE,
 			},
 			userUpdatedAt: {
-				type: DataTypes.DATE,
 				allowNull: false,
+				type: DataTypes.DATE,
 			},
 			userDeletedAt: {
-				type: DataTypes.DATE,
 				allowNull: true,
+				type: DataTypes.DATE,
 			},
 		});
 
 		await queryInterface.addConstraint(this.usersTableName, {
 			type: "foreign key",
-			name: this.usersParentForeignKey,
-			fields: ["userParentId"],
+			name: this.userUserTypeForeignKeyConstraint,
+			fields: ["userUserTypeId"],
 			references: {
-				table: this.usersTableName,
-				field: "userId",
+				table: this.userTypesTableName,
+				field: "userTypeId",
 			},
 			onUpdate: "cascade",
 			onDelete: "cascade",
@@ -77,7 +79,7 @@ export default class extends BaseMigration {
 	}
 
 	public async down(queryInterface: SequelizeQueryInterface): Promise<void> {
-		await queryInterface.removeConstraint(this.usersTableName, this.usersParentForeignKey);
+		await queryInterface.removeConstraint(this.usersTableName, this.userUserTypeForeignKeyConstraint);
 
 		await queryInterface.dropTable(this.usersTableName);
 	}

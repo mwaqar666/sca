@@ -1,7 +1,8 @@
 import { BaseEntityScopes, SequelizeBaseEntity } from "@sca/db";
 import type { Nullable } from "@sca/utils";
 import { AllowNull, AutoIncrement, BelongsTo, Column, CreatedAt, DataType, Default, DeletedAt, ForeignKey, HasMany, HasOne, PrimaryKey, Scopes, Table, Unique, UpdatedAt } from "sequelize-typescript";
-import { ProjectEntity, type ProjectEntity as ProjectEntityType } from "../project";
+import { ProjectDefaultEntity, type ProjectDefaultEntity as ProjectDefaultEntityType, ProjectUserEntity, type ProjectUserEntity as ProjectUserEntityType } from "../project";
+import { UserTypeEntity, type UserTypeEntity as UserTypeEntityType } from "../user-type";
 
 @Scopes(() => ({
 	...BaseEntityScopes.commonScopes(() => UserEntity),
@@ -26,10 +27,10 @@ export class UserEntity extends SequelizeBaseEntity<UserEntity> {
 	@Column({ type: DataType.UUID })
 	public readonly userUuid: string;
 
-	@AllowNull(true)
-	@ForeignKey(() => UserEntity)
+	@ForeignKey(() => UserTypeEntity)
+	@AllowNull(false)
 	@Column({ type: DataType.INTEGER })
-	public userParentId: Nullable<number>;
+	public userUserTypeId: number;
 
 	@AllowNull(false)
 	@Column({ type: DataType.STRING(100) })
@@ -67,31 +68,24 @@ export class UserEntity extends SequelizeBaseEntity<UserEntity> {
 	public userDeletedAt: Nullable<Date>;
 
 	// Relationships
-	@HasMany(() => UserEntity, {
-		as: "userChildren",
-		foreignKey: "userParentId",
-		sourceKey: "userId",
-	})
-	public userChildren: Array<UserEntity>;
-
-	@BelongsTo(() => UserEntity, {
-		as: "userParent",
-		foreignKey: "userParentId",
-		targetKey: "userId",
-	})
-	public userParent: Nullable<UserEntity>;
-
-	@HasOne(() => ProjectEntity, {
-		as: "userDefaultProject",
-		foreignKey: "projectUserId",
-		sourceKey: "userId",
-	})
-	public userDefaultProject: ProjectEntityType;
-
-	@HasMany(() => ProjectEntity, {
+	@HasMany(() => ProjectUserEntity, {
 		as: "userProjects",
-		foreignKey: "projectUserId",
+		foreignKey: "projectUserUserId",
 		sourceKey: "userId",
 	})
-	public userProjects: Array<ProjectEntityType>;
+	public userProjects: Array<ProjectUserEntityType>;
+
+	@HasOne(() => ProjectDefaultEntity, {
+		as: "userDefaultProject",
+		foreignKey: "projectDefaultUserId",
+		sourceKey: "userId",
+	})
+	public userDefaultProject: ProjectDefaultEntityType;
+
+	@BelongsTo(() => UserTypeEntity, {
+		as: "userUserType",
+		foreignKey: "userUserTypeId",
+		targetKey: "userTypeId",
+	})
+	public userUserType: UserTypeEntityType;
 }

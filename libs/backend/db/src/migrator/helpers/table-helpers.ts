@@ -6,12 +6,14 @@ export class TableHelpers {
 	/**
 	 * Creates the `TableName` for the given table name in the provided schema
 	 * @param entity Table name to assign
+	 * @return TableName A TableName object with table information
 	 */
 	public static createTableName(entity: string): TableName;
 	/**
 	 * Creates the `TableName` for the given table name in the provided schema
 	 * @param entity Table name to assign
 	 * @param schema Schema in which to create table
+	 * @return TableName A TableName object with table information
 	 */
 	public static createTableName(entity: string, schema: string): TableName;
 	/**
@@ -30,64 +32,15 @@ export class TableHelpers {
 	/**
 	 * Creates the name to use on the foreign key constraint
 	 * @param targetTable Table name to which foreign key is applied
-	 * @param sourceTable Table name to which foreign key is referenced
 	 * @param targetTableColumnName Name of target table foreign key column name
-	 * @param sourceTableColumnName Name of source table foreign reference column name
 	 * @returns Unique foreign key constraint name
 	 */
-	public static createForeignConstraintName(targetTable: string, sourceTable: string, targetTableColumnName: string, sourceTableColumnName: string): string;
-	/**
-	 * Creates the name to use on the foreign key constraint
-	 * @param targetTable Table name to which foreign key is applied
-	 * @param sourceTable Entity to which foreign key is referenced
-	 * @param targetTableColumnName Name of target table foreign key column name
-	 * @param sourceTableColumnName Name of source table foreign reference column name
-	 * @returns Unique foreign key constraint name
-	 */
-	public static createForeignConstraintName<TSource extends SequelizeBaseEntity<TSource>>(
-		targetTable: string,
-		sourceTable: EntityType<TSource>,
-		targetTableColumnName: string,
-		sourceTableColumnName: keyof TSource,
-	): string;
-	/**
-	 * Creates the name to use on the foreign key constraint
-	 * @param targetTable Entity on which foreign key is applied
-	 * @param sourceTable Table name to which foreign key is referenced
-	 * @param targetTableColumnName Name of target table foreign key column name
-	 * @param sourceTableColumnName Name of source table foreign reference column name
-	 * @returns Unique foreign key constraint name
-	 */
-	public static createForeignConstraintName<TTarget extends SequelizeBaseEntity<TTarget>>(
-		targetTable: EntityType<TTarget>,
-		sourceTable: string,
-		targetTableColumnName: keyof TTarget,
-		sourceTableColumnName: string,
-	): string;
-	/**
-	 * Creates the name to use on the foreign key constraint
-	 * @param targetTable Entity on which foreign key is applied
-	 * @param sourceTable Entity to which foreign key is referenced
-	 * @param targetTableColumnName Name of target table foreign key column name
-	 * @param sourceTableColumnName Name of source table foreign reference column name
-	 * @return Unique foreign key constraint name
-	 */
-	public static createForeignConstraintName<TTarget extends SequelizeBaseEntity<TTarget>, TSource extends SequelizeBaseEntity<TSource>>(
-		targetTable: EntityType<TTarget>,
-		sourceTable: EntityType<TSource>,
-		targetTableColumnName: keyof TTarget,
-		sourceTableColumnName: keyof TSource,
-	): string;
-	public static createForeignConstraintName<TTarget extends SequelizeBaseEntity<TTarget>, TSource extends SequelizeBaseEntity<TSource>>(
-		targetTable: EntityType<TTarget> | string,
-		sourceTable: EntityType<TSource> | string,
-		targetTableColumnName: keyof TTarget | string,
-		sourceTableColumnName: keyof TSource | string,
-	): string {
+	public static createForeignConstraintName(targetTable: string, targetTableColumnName: string): string;
+	public static createForeignConstraintName<Target extends SequelizeBaseEntity<Target>>(targetTable: EntityType<Target>, targetTableColumnName: keyof Target): string;
+	public static createForeignConstraintName<Target extends SequelizeBaseEntity<Target>>(targetTable: EntityType<Target> | string, targetTableColumnName: keyof Target | string): string {
 		const targetTableName = typeof targetTable === "string" ? targetTable : targetTable.entityTableName;
-		const sourceTableName = typeof sourceTable === "string" ? sourceTable : sourceTable.entityTableName;
 
-		return `${targetTableName}_${targetTableColumnName as string}_${sourceTableName}_${sourceTableColumnName as string}_fkey`;
+		return `${targetTableName}_${targetTableColumnName.toString()}_fkey`;
 	}
 
 	/**

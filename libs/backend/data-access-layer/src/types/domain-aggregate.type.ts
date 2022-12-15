@@ -1,5 +1,4 @@
-import type { SequelizeService } from "@sca/db";
+import type { TResolvedInjectables } from "@sca/aggregate";
+import { DomainAggregateDependencies } from "../config";
 
-export interface IDomainAggregate {
-	sequelize: SequelizeService;
-}
+export type IDomainAggregate = TResolvedInjectables<typeof DomainAggregateDependencies>;

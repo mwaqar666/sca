@@ -1,6 +1,4 @@
-import { Injectable, InternalServerErrorException } from "@nestjs/common";
-import { HttpException } from "@nestjs/common/exceptions/http.exception";
-import { AppDefaultException, type AppExceptionDto } from "@sca/utils";
+import { Injectable } from "@nestjs/common";
 import type { Transaction } from "sequelize";
 import { Sequelize } from "sequelize-typescript";
 import type { RunningTransaction, TransactionalOperation, TransactionStore } from "../types";
@@ -27,9 +25,7 @@ export class SequelizeService {
 
 			if (error && transactionalOperation.failureCallback) return await transactionalOperation.failureCallback(error);
 
-			const exception: AppExceptionDto = error instanceof HttpException ? (error.getResponse() as AppExceptionDto) : AppDefaultException;
-
-			throw new InternalServerErrorException(exception);
+			throw new Error();
 		}
 	}
 

@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import type { ProjectEntity, UserEntity } from "@sca/data-access-layer";
-import { type AccessTokenPayloadDto, type AuthenticatedProject, type RefreshTokenPayloadDto } from "@sca/dto";
+import type { ProjectEntity, ProjectUserEntity, UserEntity } from "@sca/data-access-layer";
+import type { AccessTokenPayloadDto, AuthenticatedProject, RefreshTokenPayloadDto } from "@sca/dto";
 import { AccessToken, RefreshToken } from "../const";
 import { CryptService } from "./crypt.service";
 
@@ -22,7 +22,7 @@ export class TokenService {
 			userMiddleName: userWithProject.userMiddleName,
 			userLastName: userWithProject.userLastName,
 			userEmail: userWithProject.userEmail,
-			userDefaultProject: this.prepareSingleProjectStructure(userWithProject.userDefaultProject),
+			userDefaultProject: this.prepareSingleProjectStructure(userWithProject.userDefaultProject.projectDefaultProject),
 			userProjects: this.prepareAllProjectStructure(userWithProject.userProjects),
 		};
 
@@ -33,14 +33,14 @@ export class TokenService {
 		const refreshTokenPayload: RefreshTokenPayloadDto = {
 			tokenIdentity: this.cryptService.encrypt(RefreshToken),
 			userUuid: userWithProject.userUuid,
-			projectUuid: userWithProject.userDefaultProject.projectUuid,
+			projectUuid: userWithProject.userDefaultProject.projectDefaultProject.projectUuid,
 		};
 
 		return this.jwtService.signAsync(refreshTokenPayload);
 	}
 
-	private prepareAllProjectStructure(projects: Array<ProjectEntity>): Array<AuthenticatedProject> {
-		return projects.map((project: ProjectEntity) => this.prepareSingleProjectStructure(project));
+	private prepareAllProjectStructure(projects: Array<ProjectUserEntity>): Array<AuthenticatedProject> {
+		return projects.map((projectUser: ProjectUserEntity) => this.prepareSingleProjectStructure(projectUser.projectUserProject));
 	}
 
 	private prepareSingleProjectStructure(project: ProjectEntity): AuthenticatedProject {

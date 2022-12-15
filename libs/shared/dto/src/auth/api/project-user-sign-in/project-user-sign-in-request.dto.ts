@@ -1,4 +1,4 @@
-export class SignInRequestDto {
+export class ProjectUserSignInRequestDto {
 	public userEmail: string;
 	public userPassword: string;
 }

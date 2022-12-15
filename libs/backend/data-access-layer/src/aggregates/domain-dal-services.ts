@@ -1,7 +1,7 @@
 import { UserProjectIdentityService } from "../dal-services";
 
 export const DomainDalServices = [
-	// Register data services here
+	// Register domain access services here
 
 	UserProjectIdentityService,
 ];

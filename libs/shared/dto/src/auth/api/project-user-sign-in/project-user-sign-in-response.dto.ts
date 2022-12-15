@@ -1,4 +1,4 @@
-export class SignInResponseDto {
+export class ProjectUserSignInResponseDto {
 	public accessToken: string;
 	public refreshToken: string;
 }
