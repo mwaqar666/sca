@@ -8,7 +8,15 @@ const extractEnvFileVariables = async (configuration) => {
 	const environmentVariables = await readEnvFile({ envFile: { filePath: environmentFilePath } });
 	environmentVariables["NODE_ENV"] = configuration;
 
-	return { "process.env": environmentVariables };
+	const emptyFilteredEnvironmentVariables = {};
+
+	for (const [variableKey, variableValue] of Object.entries(environmentVariables)) {
+		if (variableValue === "") continue;
+
+		emptyFilteredEnvironmentVariables[variableKey] = JSON.stringify(variableValue);
+	}
+
+	return { "process.env": emptyFilteredEnvironmentVariables };
 };
 
 module.exports = async (config, options, context) => {

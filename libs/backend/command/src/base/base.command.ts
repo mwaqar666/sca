@@ -1,4 +1,4 @@
-import type { Optional } from "@sca-backend/utils";
+import type { Optional } from "@sca-shared/utils";
 import type { CommandArguments, CommandHelp, FlagArgument, KeyValueArgument } from "../type";
 
 export abstract class BaseCommand<T = unknown, TArgs extends KeyValueArgument = KeyValueArgument, FArgs extends FlagArgument = FlagArgument> {

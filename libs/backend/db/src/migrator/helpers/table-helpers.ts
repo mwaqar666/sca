@@ -1,4 +1,5 @@
-import { DB_SCHEMA, EnvExtractor } from "@sca-backend/config";
+import { DB_SCHEMA } from "@sca-backend/config";
+import { EnvExtractor } from "@sca-shared/utils";
 import type { TableName } from "sequelize";
 import type { EntityType, SequelizeBaseEntity } from "../../entity";
 

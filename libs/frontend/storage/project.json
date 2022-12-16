@@ -1,0 +1,33 @@
+{
+	"name": "frontend-storage",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "libs/frontend/storage/src",
+	"prefix": "storage",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/angular:package",
+			"outputs": [
+				"{workspaceRoot}/dist/{projectRoot}"
+			],
+			"options": {
+				"tsConfig": "libs/frontend/storage/tsconfig.json",
+				"project": "libs/frontend/storage/ng-package.json",
+				"tailwindConfig": "libs/frontend/storage/tailwind.config.js"
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"libs/frontend/storage/**/*.ts",
+					"libs/frontend/storage/**/*.html"
+				]
+			}
+		}
+	},
+	"tags": []
+}

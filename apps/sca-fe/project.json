@@ -22,6 +22,9 @@
 				],
 				"tsConfig": "apps/sca-fe/tsconfig.json",
 				"inlineStyleLanguage": "scss",
+				"allowedCommonJsDependencies": [
+					"joi"
+				],
 				"assets": [
 					"apps/sca-fe/src/favicon.ico",
 					"apps/sca-fe/src/assets"
@@ -41,19 +44,12 @@
 					"namedChunks": true
 				},
 				"qa": {
-					"budgets": [
-						{
-							"type": "initial",
-							"maximumWarning": "500kb",
-							"maximumError": "1mb"
-						},
-						{
-							"type": "anyComponentStyle",
-							"maximumWarning": "2kb",
-							"maximumError": "4kb"
-						}
-					],
-					"outputHashing": "all"
+					"buildOptimizer": false,
+					"optimization": false,
+					"vendorChunk": true,
+					"extractLicenses": false,
+					"sourceMap": true,
+					"namedChunks": true
 				},
 				"uat": {
 					"budgets": [
@@ -86,7 +82,7 @@
 					"outputHashing": "all"
 				}
 			},
-			"defaultConfiguration": "prod"
+			"defaultConfiguration": "dev"
 		},
 		"serve": {
 			"executor": "@nrwl/angular:webpack-dev-server",

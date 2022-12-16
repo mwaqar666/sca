@@ -1,5 +1,6 @@
-import { DB_SCHEMA, EnvExtractor } from "@sca-backend/config";
+import { DB_SCHEMA } from "@sca-backend/config";
 import { DateHelpers } from "@sca-backend/utils";
+import { EnvExtractor } from "@sca-shared/utils";
 import { DataTypes, type Sequelize } from "sequelize";
 import { type InputMigrations, type RunnableMigration, SequelizeStorage, Umzug, type UmzugOptions } from "umzug";
 import type { SequelizeQueryInterface } from "../types";

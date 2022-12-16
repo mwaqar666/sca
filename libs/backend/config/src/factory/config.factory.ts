@@ -1,4 +1,5 @@
 import { type ConfigFactory as NestConfigFactory } from "@nestjs/config";
+import { EnvExtractor } from "@sca-shared/utils";
 import {
 	ACCESS_TOKEN_EXPIRY,
 	ACCESS_TOKEN_SECRET,
@@ -30,7 +31,6 @@ import {
 	REFRESH_TOKEN_EXPIRY,
 	REFRESH_TOKEN_SECRET,
 } from "../const";
-import { EnvExtractor } from "../helpers";
 import type { ConfigType } from "../types";
 
 export const ConfigFactory: NestConfigFactory<ConfigType> = () => {

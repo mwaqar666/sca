@@ -1,0 +1,33 @@
+{
+	"name": "frontend-websocket",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "libs/frontend/websocket/src",
+	"prefix": "websocket",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/angular:package",
+			"outputs": [
+				"{workspaceRoot}/dist/{projectRoot}"
+			],
+			"options": {
+				"tsConfig": "libs/frontend/websocket/tsconfig.json",
+				"project": "libs/frontend/websocket/ng-package.json",
+				"tailwindConfig": "libs/frontend/websocket/tailwind.config.js"
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"libs/frontend/websocket/**/*.ts",
+					"libs/frontend/websocket/**/*.html"
+				]
+			}
+		}
+	},
+	"tags": []
+}

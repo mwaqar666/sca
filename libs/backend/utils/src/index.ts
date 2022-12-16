@@ -7,4 +7,3 @@ export * from "./helpers";
 export * from "./interceptors";
 export * from "./pipes";
 export * from "./transformers";
-export * from "./types";

@@ -1,0 +1,33 @@
+{
+	"name": "frontend-config",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "libs/frontend/config/src",
+	"prefix": "config",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/angular:package",
+			"outputs": [
+				"{workspaceRoot}/dist/{projectRoot}"
+			],
+			"options": {
+				"tsConfig": "libs/frontend/config/tsconfig.json",
+				"project": "libs/frontend/config/ng-package.json",
+				"tailwindConfig": "libs/frontend/config/tailwind.config.js"
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"libs/frontend/config/**/*.ts",
+					"libs/frontend/config/**/*.html"
+				]
+			}
+		}
+	},
+	"tags": []
+}

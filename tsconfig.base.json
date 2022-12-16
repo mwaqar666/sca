@@ -45,8 +45,23 @@
 			"@sca-backend/utils": [
 				"libs/backend/utils/src/index.ts"
 			],
+			"@sca-frontend/api": [
+				"libs/frontend/api/src/index.ts"
+			],
+			"@sca-frontend/config": [
+				"libs/frontend/config/src/index.ts"
+			],
+			"@sca-frontend/storage": [
+				"libs/frontend/storage/src/index.ts"
+			],
+			"@sca-frontend/websocket": [
+				"libs/frontend/websocket/src/index.ts"
+			],
 			"@sca-shared/dto": [
 				"libs/shared/dto/src/index.ts"
+			],
+			"@sca-shared/utils": [
+				"libs/shared/utils/src/index.ts"
 			]
 		}
 	},

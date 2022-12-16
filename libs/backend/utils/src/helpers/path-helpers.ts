@@ -1,5 +1,5 @@
+import type { Optional } from "@sca-shared/utils";
 import { resolve } from "path";
-import type { Optional } from "../types";
 
 export abstract class PathHelpers {
 	public static configPath(pathSegments: string): string;

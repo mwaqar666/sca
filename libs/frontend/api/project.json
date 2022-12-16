@@ -1,0 +1,33 @@
+{
+	"name": "frontend-api",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "libs/frontend/api/src",
+	"prefix": "api",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/angular:package",
+			"outputs": [
+				"{workspaceRoot}/dist/{projectRoot}"
+			],
+			"options": {
+				"tsConfig": "libs/frontend/api/tsconfig.json",
+				"project": "libs/frontend/api/ng-package.json",
+				"tailwindConfig": "libs/frontend/api/tailwind.config.js"
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"libs/frontend/api/**/*.ts",
+					"libs/frontend/api/**/*.html"
+				]
+			}
+		}
+	},
+	"tags": []
+}

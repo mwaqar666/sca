@@ -1,10 +1,20 @@
-import { Component } from "@angular/core";
+import { Component, type OnInit } from "@angular/core";
+import { ConfigService } from "@sca-frontend/config";
 
 @Component({
 	selector: "app-root",
 	templateUrl: "./app.component.html",
-	styleUrls: ["./app.component.scss"],
 })
-export class AppComponent {
-	public title = "sca-fe";
+export class AppComponent implements OnInit {
+	public constructor(
+		// Dependencies
+
+		private readonly configService: ConfigService,
+	) {}
+
+	public ngOnInit(): void {
+		const storageConfig = this.configService.get("storage");
+
+		console.log(storageConfig.driver);
+	}
 }

@@ -1,4 +1,4 @@
-import type { Optional } from "@sca-backend/utils";
+import type { Optional } from "@sca-shared/utils";
 import { type BaseCommand, BaseCommandProvider } from "../base";
 import type { CommandType, LoadableCommands } from "../type";
 

@@ -4,6 +4,8 @@ export type Optional<T> = undefined | T;
 
 export type Nullable<T> = null | T;
 
+export type AnyObject = { [key: string]: any };
+
 export type PositiveFilterCondition<T, P extends Key<T>, C> = T[P] extends C ? P : never;
 
 export type InverseFilterCondition<T, P extends Key<T>, C> = T[P] extends C ? never : P;
