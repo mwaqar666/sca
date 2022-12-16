@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { SequelizeScopeConst } from "@sca-backend/db";
-import type { ProjectUserSignInRequestDto } from "@sca-shared/dto";
+import type { IProjectUserSignInRequestDto } from "@sca-shared/dto";
 import { ProjectDefaultService, type ProjectUserEntity, ProjectUserService, UserService } from "../domains";
 import type { FailedAuthReasonProject, FailedAuthReasonUser, SuccessfulAuthWithUserAndProject } from "../dto";
 
@@ -15,7 +15,7 @@ export class UserProjectIdentityService {
 	) {}
 
 	public async authenticateProjectUserWithAllAndDefaultProjects(
-		projectUserSignInRequestDto: ProjectUserSignInRequestDto,
+		projectUserSignInRequestDto: IProjectUserSignInRequestDto,
 	): Promise<FailedAuthReasonUser | FailedAuthReasonProject | SuccessfulAuthWithUserAndProject> {
 		const user = await this.userService.findUser(projectUserSignInRequestDto.userEmail, SequelizeScopeConst.withoutTimestamps);
 		if (!user) return { authUser: null, authErrorReason: "user" };

@@ -2,6 +2,7 @@ export * from "./base";
 export * from "./config";
 export * from "./const";
 export * from "./controllers";
+export * from "./dto";
 export * from "./factories";
 export * from "./guards";
 export * from "./services";

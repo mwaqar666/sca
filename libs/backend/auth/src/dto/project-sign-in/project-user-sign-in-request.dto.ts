@@ -1,5 +1,5 @@
+import type { IProjectUserSignInRequestDto } from "@sca-shared/dto";
 import { IsEmail, IsNotEmpty, IsString } from "class-validator";
-import type { IProjectUserSignInRequestDto } from "./project-user-sign-in-request";
 
 export class ProjectUserSignInRequestDto implements IProjectUserSignInRequestDto {
 	@IsEmail()

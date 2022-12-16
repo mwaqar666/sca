@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { type UserEntity, UserProjectIdentityService } from "@sca-backend/data-access-layer";
-import type { ProjectUserSignInRequestDto, ProjectUserSignInResponseDto } from "@sca-shared/dto";
 import { PasswordService, TokenService } from "@sca-backend/security";
+import type { IProjectUserSignInRequestDto, IProjectUserSignInResponseDto } from "@sca-shared/dto";
 import { ProjectUnavailableExceptionMessage, UnauthorizedExceptionMessage } from "../const";
 
 @Injectable()
@@ -14,7 +14,7 @@ export class AuthService {
 		private readonly passwordService: PasswordService,
 	) {}
 
-	public async projectUserSignIn(projectUserSignInRequestDto: ProjectUserSignInRequestDto): Promise<ProjectUserSignInResponseDto> {
+	public async projectUserSignIn(projectUserSignInRequestDto: IProjectUserSignInRequestDto): Promise<IProjectUserSignInResponseDto> {
 		const authUserWithDefaultAndAllProjects = await this.authenticateProjectUser(projectUserSignInRequestDto);
 
 		const accessToken = this.tokenService.createAccessToken(authUserWithDefaultAndAllProjects);
@@ -23,7 +23,7 @@ export class AuthService {
 		return { accessToken: await accessToken, refreshToken: await refreshToken };
 	}
 
-	private async authenticateProjectUser(projectUserSignInRequestDto: ProjectUserSignInRequestDto): Promise<UserEntity> {
+	private async authenticateProjectUser(projectUserSignInRequestDto: IProjectUserSignInRequestDto): Promise<UserEntity> {
 		const { authUser, authErrorReason } = await this.identityService.authenticateProjectUserWithAllAndDefaultProjects(projectUserSignInRequestDto);
 
 		if (authErrorReason) throw new UnauthorizedException(authErrorReason === "user" ? UnauthorizedExceptionMessage : ProjectUnavailableExceptionMessage);

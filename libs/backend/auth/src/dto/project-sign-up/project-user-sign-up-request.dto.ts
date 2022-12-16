@@ -1,6 +1,6 @@
+import type { IProjectUserSignUpRequestDto } from "@sca-shared/dto";
 import type { Nullable } from "@sca-shared/utils";
 import { IsEmail, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from "class-validator";
-import type { IProjectUserSignUpRequestDto } from "./project-user-sign-up-request";
 
 export class ProjectUserSignUpRequestDto implements IProjectUserSignUpRequestDto {
 	@MaxLength(100)
