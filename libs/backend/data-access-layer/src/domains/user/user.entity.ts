@@ -1,5 +1,5 @@
-import { BaseEntityScopes, SequelizeBaseEntity } from "@sca/db";
-import type { Nullable } from "@sca/utils";
+import { BaseEntityScopes, SequelizeBaseEntity } from "@sca-backend/db";
+import type { Nullable } from "@sca-backend/utils";
 import { AllowNull, AutoIncrement, BelongsTo, Column, CreatedAt, DataType, Default, DeletedAt, ForeignKey, HasMany, HasOne, PrimaryKey, Scopes, Table, Unique, UpdatedAt } from "sequelize-typescript";
 import { ProjectDefaultEntity, type ProjectDefaultEntity as ProjectDefaultEntityType, ProjectUserEntity, type ProjectUserEntity as ProjectUserEntityType } from "../project";
 import { UserTypeEntity, type UserTypeEntity as UserTypeEntityType } from "../user-type";

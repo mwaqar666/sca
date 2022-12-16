@@ -1,4 +1,4 @@
-import type { Constructable, FilterWhereNot, Key, Nullable } from "@sca/utils";
+import type { Constructable, FilterWhereNot, Key, Nullable } from "@sca-backend/utils";
 import type { ScopeOptions } from "sequelize";
 import type { ScopesOptions } from "sequelize-typescript";
 import type { SequelizeScopeConst } from "../const";

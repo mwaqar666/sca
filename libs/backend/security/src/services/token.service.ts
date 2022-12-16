@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import type { ProjectEntity, ProjectUserEntity, UserEntity } from "@sca/data-access-layer";
-import type { AccessTokenPayloadDto, AuthenticatedProject, RefreshTokenPayloadDto } from "@sca/dto";
+import type { ProjectEntity, ProjectUserEntity, UserEntity } from "@sca-backend/data-access-layer";
+import type { AccessTokenPayloadDto, AuthenticatedProject, RefreshTokenPayloadDto } from "@sca-shared/dto";
 import { AccessToken, RefreshToken } from "../const";
 import { CryptService } from "./crypt.service";
 

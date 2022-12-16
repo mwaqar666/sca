@@ -1,4 +1,4 @@
-import { type Constructable, FileHelpers } from "@sca/utils";
+import { type Constructable, FileHelpers } from "@sca-backend/utils";
 import { Sequelize } from "sequelize";
 import { type InputMigrations, type MigrationParams, Umzug } from "umzug";
 import { MigrationCommandProvider } from "../command-provider";

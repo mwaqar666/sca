@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import type { ConfigType, CryptConfig } from "@sca/config";
+import type { ConfigType, CryptConfig } from "@sca-backend/config";
 import { compare, hash } from "bcrypt";
 
 @Injectable()

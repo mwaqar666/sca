@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { SequelizeModule } from "@nestjs/sequelize";
-import { BaseModule } from "@sca/utils";
+import { BaseModule } from "@sca-backend/utils";
 import { SequelizeNestConfig } from "./config";
 
 @Module({

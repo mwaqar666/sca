@@ -1,8 +1,8 @@
 import { ExceptionFilter, INestApplication, INestApplicationContext, Injectable, NestInterceptor, PipeTransform } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { AppConfig, ConfigType } from "@sca/config";
-import { EntityKeyColumnStripperInterceptor } from "@sca/db";
-import { Constructable, SingleStructureResponseException, SingleStructureResponseInterceptor, ValidationPipe, ValidatorContainerConfig } from "@sca/utils";
+import { AppConfig, ConfigType } from "@sca-backend/config";
+import { EntityKeyColumnStripperInterceptor } from "@sca-backend/db";
+import { Constructable, SingleStructureResponseException, SingleStructureResponseInterceptor, ValidationPipe, ValidatorContainerConfig } from "@sca-backend/utils";
 import { useContainer } from "class-validator";
 
 @Injectable()

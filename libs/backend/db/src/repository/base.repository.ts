@@ -1,5 +1,5 @@
 import { NotFoundException } from "@nestjs/common";
-import type { Nullable } from "@sca/utils";
+import type { Nullable } from "@sca-backend/utils";
 import type { CreationAttributes, WhereOptions } from "sequelize";
 import { DefaultScopedFindOptions } from "../const";
 import type { EntityKeyValues, EntityScope, EntityType, SequelizeBaseEntity } from "../entity";

@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { BaseModule } from "@sca/utils";
+import { BaseModule } from "@sca-backend/utils";
 import { RedisService } from "./services";
 
 @Module({

@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { type UserEntity, UserProjectIdentityService } from "@sca/data-access-layer";
-import type { ProjectUserSignInRequestDto, ProjectUserSignInResponseDto } from "@sca/dto";
-import { PasswordService, TokenService } from "@sca/security";
+import { type UserEntity, UserProjectIdentityService } from "@sca-backend/data-access-layer";
+import type { ProjectUserSignInRequestDto, ProjectUserSignInResponseDto } from "@sca-shared/dto";
+import { PasswordService, TokenService } from "@sca-backend/security";
 import { ProjectUnavailableExceptionMessage, UnauthorizedExceptionMessage } from "../const";
 
 @Injectable()

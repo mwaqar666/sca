@@ -1,4 +1,4 @@
-import { BaseCommand, type CommandHelp } from "@sca/command";
+import { BaseCommand, type CommandHelp } from "@sca-backend/command";
 import { type MigrationCommandProviderData } from "../../types";
 
 export class UpCommand extends BaseCommand<MigrationCommandProviderData> {

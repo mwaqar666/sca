@@ -1,4 +1,4 @@
-import { SequelizeService } from "@sca/db";
+import { SequelizeService } from "@sca-backend/db";
 import { DomainAggregateConst } from "../const";
 
 export const DomainAggregateDependencies = {

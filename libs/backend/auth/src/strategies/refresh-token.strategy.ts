@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { type RefreshTokenPayloadDto } from "@sca/dto";
+import { type RefreshTokenPayloadDto } from "@sca-shared/dto";
 import { BaseJwtStrategyFactory } from "../base";
 import { REFRESH_TOKEN_STRATEGY } from "../const";
 import { JwtStrategyConfigFactory } from "../factories";

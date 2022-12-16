@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import type { ConfigType, TokenConfig } from "@sca/config";
+import type { ConfigType, TokenConfig } from "@sca-backend/config";
 import { ExtractJwt, type StrategyOptions } from "passport-jwt";
 
 @Injectable()

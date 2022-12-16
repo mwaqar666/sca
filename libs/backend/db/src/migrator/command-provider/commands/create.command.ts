@@ -1,5 +1,5 @@
-import { BaseCommand, type CommandArguments, type CommandHelp, type OptionalStringArgumentDetails, type RequiredStringArgumentDetails } from "@sca/command";
-import { DateHelpers, FileHelpers, PathHelpers } from "@sca/utils";
+import { BaseCommand, type CommandArguments, type CommandHelp, type OptionalStringArgumentDetails, type RequiredStringArgumentDetails } from "@sca-backend/command";
+import { DateHelpers, FileHelpers, PathHelpers } from "@sca-backend/utils";
 import type { MigrationCommandProviderData } from "../../types";
 import type { CreateArgument } from "../command-arguments";
 

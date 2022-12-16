@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { BaseRepository, type EntityScope, type EntityType } from "@sca/db";
+import { BaseRepository, type EntityScope, type EntityType } from "@sca-backend/db";
 import type { Transaction } from "sequelize";
 import { ProjectDefaultEntity } from "./project-default.entity";
 

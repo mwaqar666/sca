@@ -1,4 +1,4 @@
-import type { Nullable } from "@sca/utils";
+import type { Nullable } from "@sca-backend/utils";
 import { IsEmail, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from "class-validator";
 import type { IProjectUserSignUpRequestDto } from "./project-user-sign-up-request";
 

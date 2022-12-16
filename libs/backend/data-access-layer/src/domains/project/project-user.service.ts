@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { EntityScope } from "@sca/db";
+import { EntityScope } from "@sca-backend/db";
 import type { ProjectUserEntity } from "./project-user.entity";
 import { ProjectUserRepository } from "./project-user.repository";
 

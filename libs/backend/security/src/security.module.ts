@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
-import { BaseModule } from "@sca/utils";
+import { BaseModule } from "@sca-backend/utils";
 import * as Services from "./services";
 
 @Module({

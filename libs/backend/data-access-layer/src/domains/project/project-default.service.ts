@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { AggregateService } from "@sca/aggregate";
-import type { RunningTransaction } from "@sca/db";
-import { SequelizeScopeConst } from "@sca/db";
+import { AggregateService } from "@sca-backend/aggregate";
+import type { RunningTransaction } from "@sca-backend/db";
+import { SequelizeScopeConst } from "@sca-backend/db";
 import { DomainAggregateConst } from "../../const";
 import type { IDomainAggregate } from "../../types";
 import type { ProjectDefaultEntity } from "./project-default.entity";

@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
 import { PassportModule } from "@nestjs/passport";
-import { DataAccessLayerModule } from "@sca/data-access-layer";
-import { SecurityModule } from "@sca/security";
-import { BaseModule } from "@sca/utils";
+import { DataAccessLayerModule } from "@sca-backend/data-access-layer";
+import { SecurityModule } from "@sca-backend/security";
+import { BaseModule } from "@sca-backend/utils";
 import { AuthController } from "./controllers";
 import * as Factories from "./factories";
 import * as Guards from "./guards";

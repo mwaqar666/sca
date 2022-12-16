@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { SequelizeScopeConst } from "@sca/db";
-import type { ProjectUserSignInRequestDto } from "@sca/dto";
+import { SequelizeScopeConst } from "@sca-backend/db";
+import type { ProjectUserSignInRequestDto } from "@sca-shared/dto";
 import { ProjectDefaultService, type ProjectUserEntity, ProjectUserService, UserService } from "../domains";
 import type { FailedAuthReasonProject, FailedAuthReasonUser, SuccessfulAuthWithUserAndProject } from "../dto";
 

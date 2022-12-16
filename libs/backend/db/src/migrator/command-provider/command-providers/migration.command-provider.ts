@@ -1,4 +1,4 @@
-import { BaseCommandProvider, type CommandType } from "@sca/command";
+import { BaseCommandProvider, type CommandType } from "@sca-backend/command";
 import type { Umzug } from "umzug";
 import type { MigrationCommandProviderData, SequelizeQueryInterface } from "../../types";
 

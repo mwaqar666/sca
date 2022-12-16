@@ -1,9 +1,9 @@
 import { Module } from "@nestjs/common";
-import { AuthModule } from "@sca/auth";
-import { ConfigModule } from "@sca/config";
-import { DbModule } from "@sca/db";
-import { RedisModule } from "@sca/redis";
-import { BaseModule } from "@sca/utils";
+import { AuthModule } from "@sca-backend/auth";
+import { ConfigModule } from "@sca-backend/config";
+import { DbModule } from "@sca-backend/db";
+import { RedisModule } from "@sca-backend/redis";
+import { BaseModule } from "@sca-backend/utils";
 import { AppService } from "./services";
 
 @Module({

@@ -1,5 +1,5 @@
 import type { ConfigModuleOptions } from "@nestjs/config";
-import { PathHelpers } from "@sca/utils";
+import { PathHelpers } from "@sca-backend/utils";
 import { DEVELOPMENT, NODE_ENV } from "../const";
 import { ConfigFactory } from "../factory";
 import { EnvExtractor } from "../helpers";

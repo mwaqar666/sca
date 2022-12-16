@@ -1,5 +1,5 @@
-import { DEVELOPMENT, EnvExtractor, NODE_ENV } from "@sca/config";
-import { PathHelpers } from "@sca/utils";
+import { DEVELOPMENT, EnvExtractor, NODE_ENV } from "@sca-backend/config";
+import { PathHelpers } from "@sca-backend/utils";
 import * as dotenv from "dotenv";
 
 const nodeEnvironment = EnvExtractor.env(NODE_ENV) ?? DEVELOPMENT;

@@ -1,6 +1,6 @@
 import { ConfigService } from "@nestjs/config";
 import type { SequelizeModuleAsyncOptions, SequelizeModuleOptions } from "@nestjs/sequelize";
-import { type ConfigType, type DatabaseConfig, ENTITIES } from "@sca/config";
+import { type ConfigType, type DatabaseConfig, ENTITIES } from "@sca-backend/config";
 
 export const SequelizeNestConfig: SequelizeModuleAsyncOptions = {
 	useFactory: async (configService: ConfigService<ConfigType, true>): Promise<SequelizeModuleOptions> => {

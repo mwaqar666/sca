@@ -1,4 +1,4 @@
-import { Optional } from "@sca/utils";
+import { Optional } from "@sca-backend/utils";
 import * as process from "process";
 import type { BaseCommand } from "../base";
 import type { ArgumentDetails, CommandArguments, CommandFlagArguments, CommandHelp, CommandKeyValueArguments } from "../type";

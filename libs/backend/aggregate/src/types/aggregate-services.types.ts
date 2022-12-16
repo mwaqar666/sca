@@ -1,5 +1,5 @@
-import { type Type } from "@nestjs/common";
-import { type Key } from "@sca/utils";
+import type { Type } from "@nestjs/common";
+import type { Key } from "@sca-backend/utils";
 
 export type TInjectable = {
 	[injectableName: string]: Type;

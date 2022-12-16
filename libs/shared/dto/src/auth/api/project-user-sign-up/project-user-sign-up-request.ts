@@ -1,4 +1,4 @@
-import type { Nullable } from "@sca/utils";
+import type { Nullable } from "@sca-backend/utils";
 
 export interface IProjectUserSignUpRequestDto {
 	userFirstName: string;

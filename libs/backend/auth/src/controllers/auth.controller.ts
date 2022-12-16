@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { ProjectUserSignInRequestDto, type ProjectUserSignInResponseDto } from "@sca/dto";
-import { BaseController } from "@sca/utils";
+import { ProjectUserSignInRequestDto, type ProjectUserSignInResponseDto } from "@sca-shared/dto";
+import { BaseController } from "@sca-backend/utils";
 import { AuthService } from "../services";
 
 @Controller("auth")

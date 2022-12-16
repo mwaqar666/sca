@@ -1,4 +1,4 @@
-import type { Key } from "@sca/utils";
+import type { Key } from "@sca-backend/utils";
 import type { BooleanArgumentDetails } from "./boolean-argument.types";
 import type { NumberArgumentDetails } from "./number-argument.types";
 import type { StringArgumentDetails } from "./string-argument.types";

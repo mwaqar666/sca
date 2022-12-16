@@ -1,4 +1,4 @@
-import { DB_DATABASE, DB_DIALECT, DB_HOST, DB_PASSWORD, DB_PORT, DB_SCHEMA, DB_USERNAME, EnvExtractor } from "@sca/config";
+import { DB_DATABASE, DB_DIALECT, DB_HOST, DB_PASSWORD, DB_PORT, DB_SCHEMA, DB_USERNAME, EnvExtractor } from "@sca-backend/config";
 import type { Options } from "sequelize";
 
 export const SequelizeConfig: Options = {
