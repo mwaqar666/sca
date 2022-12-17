@@ -13,10 +13,7 @@
 				"outputPath": "dist/libs/backend/aggregate",
 				"tsConfig": "libs/backend/aggregate/tsconfig.json",
 				"packageJson": "libs/backend/aggregate/package.json",
-				"main": "libs/backend/aggregate/src/index.ts",
-				"assets": [
-					"libs/backend/aggregate/*.md"
-				]
+				"main": "libs/backend/aggregate/src/index.ts"
 			}
 		},
 		"lint": {

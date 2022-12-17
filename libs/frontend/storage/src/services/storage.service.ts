@@ -1,9 +1,9 @@
 import { Inject, Injectable } from "@angular/core";
-import { StorageInjectionToken } from "./const";
-import type { StorageInterface } from "./interfaces";
+import { StorageInjectionToken } from "../const";
+import type { StorageInterface } from "../interfaces";
 
 @Injectable()
-export class StorageManager implements StorageInterface {
+export class StorageService implements StorageInterface {
 	constructor(@Inject(StorageInjectionToken) private storageService: StorageInterface) {}
 
 	public getItem(key: string): string | null {

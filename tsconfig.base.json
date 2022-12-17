@@ -54,6 +54,9 @@
 			"@sca-frontend/storage": [
 				"libs/frontend/storage/src/index.ts"
 			],
+			"@sca-frontend/auth": [
+				"libs/frontend/auth/src/index.ts"
+			],
 			"@sca-frontend/websocket": [
 				"libs/frontend/websocket/src/index.ts"
 			],

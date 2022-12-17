@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { ConfigModule } from "@sca-frontend/config";
 import { StorageModule } from "@sca-frontend/storage";
-import { AppComponent } from "./app.component";
+import { AppComponent } from "./components";
 
 @NgModule({
 	declarations: [AppComponent],

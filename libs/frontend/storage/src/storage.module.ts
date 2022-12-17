@@ -1,10 +1,10 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { StorageDriverProvider } from "./config";
-import { StorageManager } from "./storage.manager";
+import { StorageService } from "./services";
 
 @NgModule({
 	imports: [CommonModule],
-	providers: [StorageManager, StorageDriverProvider],
+	providers: [StorageService, StorageDriverProvider],
 })
 export class StorageModule {}
