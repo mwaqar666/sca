@@ -5,7 +5,6 @@
     <tasks>
       <task value="sca-fe:serve:dev" />
     </tasks>
-    <arguments value="--verbose" />
     <envs />
     <method v="2" />
   </configuration>

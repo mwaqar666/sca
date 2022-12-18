@@ -24,7 +24,6 @@ module.exports = async (config, options, context) => {
 	const definePlugin = new DefinePlugin(environmentVariables);
 
 	config.mode = "none";
-	config.stats.preset = "normal";
 	config.plugins.push(definePlugin);
 
 	return config;
