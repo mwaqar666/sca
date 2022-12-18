@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
-import { Nullable } from "@sca-shared/utils";
-import { RawAxiosRequestHeaders } from "axios";
+import type { Nullable } from "@sca-shared/utils";
+import type { RawAxiosRequestHeaders } from "axios";
+import { InvalidQueryParameterError, InvalidRouteParameterError, NotProvidedRouteParameterError, RouteNotFoundError } from "../const";
 import type { IApiRoute, IProcessedApiRoute, IRawApiRoute } from "../interfaces";
 import { ApiRouteLoaderService } from "./api-route-loader.service";
 
@@ -9,13 +10,6 @@ export class ApiRouteService {
 	private apiRoutes: Array<IApiRoute> = [];
 	private currentRoute: Nullable<IApiRoute>;
 	private currentProcessedRoute: Nullable<IProcessedApiRoute<any>>;
-	// Errors
-	private errors = {
-		notProvidedRouteParameterError: "A route parameter is not provided",
-		invalidRouteParameterError: "Invalid route parameters are provided which are not defined in the API route object",
-		invalidQueryParameterError: "Invalid query parameters are provided which are not defined in the API route object",
-		routeNotFoundError: "API route not set. Either route with the mentioned name not available or the findRoute method not called!",
-	};
 
 	public constructor(
 		// Dependencies
@@ -30,7 +24,7 @@ export class ApiRouteService {
 	}
 
 	public getProcessedRoute<T = any>(): IProcessedApiRoute<T> {
-		if (!this.currentProcessedRoute || !this.currentRoute) throw new Error(this.errors.routeNotFoundError);
+		if (!this.currentProcessedRoute || !this.currentRoute) throw new Error(RouteNotFoundError);
 
 		const routeToReturn = this.currentProcessedRoute;
 
@@ -44,7 +38,7 @@ export class ApiRouteService {
 
 		const apiRoute = this.apiRoutes.find((apiRoute: IApiRoute) => apiRoute.name === routeName);
 
-		if (!apiRoute) throw new Error(this.errors.routeNotFoundError);
+		if (!apiRoute) throw new Error(RouteNotFoundError);
 
 		this.currentRoute = { ...apiRoute };
 
@@ -53,19 +47,19 @@ export class ApiRouteService {
 	}
 
 	public withRouteParams(providedRouteParams: Record<string, string | number>): ApiRouteService {
-		if (!this.currentRoute || !this.currentProcessedRoute) throw new Error(this.errors.routeNotFoundError);
+		if (!this.currentRoute || !this.currentProcessedRoute) throw new Error(RouteNotFoundError);
 
 		const routeObject = this.currentProcessedRoute;
 
 		this.currentRoute.routeParams.forEach((routeParam: string): void => {
-			if (providedRouteParams[routeParam] === undefined || providedRouteParams[routeParam] === null) throw new Error(this.errors.notProvidedRouteParameterError);
+			if (providedRouteParams[routeParam] === undefined || providedRouteParams[routeParam] === null) throw new Error(NotProvidedRouteParameterError);
 
-			routeObject.routeUrl = routeObject.routeUrl.replace(`{${routeParam}}`, String(providedRouteParams[routeParam]));
+			routeObject.route = routeObject.route.replace(`{${routeParam}}`, String(providedRouteParams[routeParam]));
 
 			delete providedRouteParams[routeParam];
 		});
 
-		if (Object.keys(providedRouteParams).length > 0) throw new Error(this.errors.invalidRouteParameterError);
+		if (Object.keys(providedRouteParams).length > 0) throw new Error(InvalidRouteParameterError);
 
 		this.currentProcessedRoute = routeObject;
 
@@ -73,19 +67,19 @@ export class ApiRouteService {
 	}
 
 	public withQueryParams(providedQueryParams: Record<string, string | number | boolean>): ApiRouteService {
-		if (!this.currentRoute || !this.currentProcessedRoute) throw new Error(this.errors.routeNotFoundError);
+		if (!this.currentRoute || !this.currentProcessedRoute) throw new Error(RouteNotFoundError);
 
 		const routeObject = this.currentProcessedRoute;
 
 		this.currentRoute.queryParams.forEach((queryParam: string, currentIndex: number): void => {
 			if (providedQueryParams[queryParam] === undefined) return;
 
-			routeObject.routeUrl = `${routeObject.routeUrl}${currentIndex === 0 ? "?" : "&"}${queryParam}=${String(providedQueryParams[queryParam])}`;
+			routeObject.route = `${routeObject.route}${currentIndex === 0 ? "?" : "&"}${queryParam}=${String(providedQueryParams[queryParam])}`;
 
 			delete providedQueryParams[queryParam];
 		});
 
-		if (Object.keys(providedQueryParams).length > 0) throw new Error(this.errors.invalidQueryParameterError);
+		if (Object.keys(providedQueryParams).length > 0) throw new Error(InvalidQueryParameterError);
 
 		this.currentProcessedRoute = routeObject;
 
@@ -103,7 +97,7 @@ export class ApiRouteService {
 
 	public withRequestModel<T>(requestModel: T): ApiRouteService {
 		const currentProcessedRoute = this.getCurrentProcessedRouteOrThrow<T>();
-		currentProcessedRoute.requestModel = requestModel;
+		currentProcessedRoute.data = requestModel;
 
 		this.currentProcessedRoute = currentProcessedRoute;
 
@@ -118,17 +112,17 @@ export class ApiRouteService {
 	private setInitialProcessedRoute(): void {
 		const currentRoute = this.getCurrentRouteOrThrow();
 
-		this.currentProcessedRoute = { routeUrl: currentRoute.route, headers: {}, method: currentRoute.method };
+		this.currentProcessedRoute = { route: currentRoute.route, headers: {}, method: currentRoute.method };
 	}
 
 	private getCurrentRouteOrThrow(): IApiRoute {
-		if (!this.currentRoute) throw new Error(this.errors.routeNotFoundError);
+		if (!this.currentRoute) throw new Error(RouteNotFoundError);
 
 		return this.currentRoute;
 	}
 
 	private getCurrentProcessedRouteOrThrow<T>(): IProcessedApiRoute<T> {
-		if (!this.currentProcessedRoute) throw new Error(this.errors.routeNotFoundError);
+		if (!this.currentProcessedRoute) throw new Error(RouteNotFoundError);
 
 		return this.currentProcessedRoute;
 	}

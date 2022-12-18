@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { Optional } from "@sca-shared/utils";
-import { IApiRoute, IRawApiRoute } from "../interfaces";
+import type { Optional } from "@sca-shared/utils";
+import type { IApiRoute, IRawApiRoute } from "../interfaces";
 
 @Injectable()
 export class ApiRouteLoaderService {

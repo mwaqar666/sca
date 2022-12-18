@@ -1,7 +1,7 @@
 import { IException } from "@sca-shared/dto";
 
-export class AppExceptionDto implements IException {
+export class AppExceptionDto<TException = unknown> implements IException<TException> {
 	public error: string;
-	public message: unknown;
+	public message: TException;
 	public statusCode: number;
 }

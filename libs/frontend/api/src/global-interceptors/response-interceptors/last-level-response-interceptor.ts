@@ -1,8 +1,8 @@
 import { ResponseInterceptorException } from "../../exceptions";
-import type { ApiResponse, GlobalApiResponseInterceptor } from "../../interfaces";
+import type { GlobalApiResponseInterceptor, SuccessfulResponse } from "../../interfaces";
 
 export class LastLevelResponseInterceptor implements GlobalApiResponseInterceptor {
-	public async intercept(apiResponse: ApiResponse<any, any, any>): Promise<ApiResponse<any, any, any>> {
+	public async intercept(apiResponse: SuccessfulResponse<any, any>): Promise<SuccessfulResponse<any, any>> {
 		console.log("Last Level Response Interceptor");
 
 		return apiResponse;

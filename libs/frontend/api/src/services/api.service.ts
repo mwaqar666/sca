@@ -1,47 +1,72 @@
+import { ConfigService } from "@sca-frontend/config";
+import type { IUnsuccessfulResponse } from "@sca-shared/dto";
 import type { Constructable } from "@sca-shared/utils";
-import axios, { Axios, AxiosError, Method, RawAxiosRequestHeaders } from "axios";
+import type { Axios, AxiosError, Method, RawAxiosRequestHeaders } from "axios";
+import axios from "axios";
 import type {
 	ApiRequest,
 	ApiRequestInterceptor,
-	ApiResponse,
 	ApiResponseInterceptor,
 	BaseApiInterceptor,
-	DataStream,
 	GlobalApiRequestInterceptor,
 	GlobalApiResponseInterceptor,
-	GlobalStreamInterceptionCycle,
-	IApiGateway,
+	InterceptionCycle,
 	IProcessedApiRoute,
 	ResponseReturn,
-	StreamInterceptionCycle,
 	SuccessfulResponse,
 	UnSuccessfulResponse,
 } from "../interfaces";
 
-export abstract class ApiService<TApiGateway extends ApiService<TApiGateway, TRequest, TResponse, TException>, TRequest, TResponse, TException>
-	implements IApiGateway<TApiGateway, TRequest, TResponse, TException>
-{
-	// Api Life Cycle Streams - (Request / Response)
+export abstract class ApiService<TApiGateway extends ApiService<TApiGateway, TRequest, TResponse, TException>, TRequest, TResponse, TException = unknown> {
 	protected apiRequest: ApiRequest<TRequest>;
-	protected apiResponse: ApiResponse<TRequest, TResponse, TException>;
+	protected apiSuccessfulResponse: SuccessfulResponse<TRequest, TResponse>;
+	protected apiUnsuccessfulResponse: UnSuccessfulResponse<TRequest, TException>;
 
-	// Gateway Specific Stream Interceptors (Request / Response)
 	protected requestInterceptors: Array<Constructable<ApiRequestInterceptor<TRequest>>> = [];
 	protected responseInterceptors: Array<Constructable<ApiResponseInterceptor<TRequest, TResponse>>> = [];
 
-	// Axios Instance
 	private axiosInstance: Axios;
 
-	// Global Stream Interceptors (Request / Response)
 	private firstLevelGlobalRequestInterceptors: Array<Constructable<GlobalApiRequestInterceptor>> = [];
 	private lastLevelGlobalRequestInterceptors: Array<Constructable<GlobalApiRequestInterceptor>> = [];
 
 	private firstLevelGlobalResponseInterceptors: Array<Constructable<GlobalApiResponseInterceptor>> = [];
 	private lastLevelGlobalResponseInterceptors: Array<Constructable<GlobalApiResponseInterceptor>> = [];
 
-	public abstract execute(this: TApiGateway, routeModel: IProcessedApiRoute<TRequest>): Promise<ResponseReturn<TRequest, TResponse, TException>>;
+	protected constructor(
+		// Dependencies
 
-	public setRequestModel(this: TApiGateway, requestModel?: TRequest): TApiGateway {
+		private readonly configService: ConfigService,
+	) {}
+
+	public abstract execute(this: TApiGateway, routeModel: IProcessedApiRoute<TRequest>): Promise<ResponseReturn<TResponse, TException>>;
+
+	protected async sendRequest(this: TApiGateway): Promise<ResponseReturn<TResponse, TException>> {
+		this.ensureInstancePresenceBeforeRequestExecution();
+
+		try {
+			this.apiSuccessfulResponse = await this.axiosInstance.request<TResponse, SuccessfulResponse<TRequest, TResponse>, TRequest>(this.apiRequest);
+
+			return { successful: true, response: this.apiSuccessfulResponse.data.data };
+		} catch (error) {
+			const apiException = error as AxiosError<IUnsuccessfulResponse<TException>, TRequest>;
+
+			this.apiUnsuccessfulResponse = <UnSuccessfulResponse<TRequest, TException>>apiException.response;
+
+			return { successful: false, response: this.apiUnsuccessfulResponse.data.error };
+		}
+	}
+
+	protected prepare(this: TApiGateway, apiRoute: IProcessedApiRoute<TRequest>): TApiGateway {
+		this.apiRequest = { timeout: 600000, baseURL: this.prepareBaseUrl() };
+		this.axiosInstance = axios.create(this.apiRequest);
+
+		this.setRequestUrl(apiRoute.route).setMethod(apiRoute.method).setHeaders(apiRoute.headers).setRequestData(apiRoute.data).attachInterceptors();
+
+		return this;
+	}
+
+	private setRequestData(this: TApiGateway, requestModel?: TRequest): TApiGateway {
 		this.ensureInstancePresenceBeforeRequestExecution();
 
 		this.apiRequest.data = requestModel;
@@ -49,7 +74,7 @@ export abstract class ApiService<TApiGateway extends ApiService<TApiGateway, TRe
 		return this;
 	}
 
-	public setMethod(this: TApiGateway, method: Method): TApiGateway {
+	private setMethod(this: TApiGateway, method: Method): TApiGateway {
 		this.ensureInstancePresenceBeforeRequestExecution();
 
 		this.apiRequest.method = method;
@@ -57,7 +82,7 @@ export abstract class ApiService<TApiGateway extends ApiService<TApiGateway, TRe
 		return this;
 	}
 
-	public setHeaders(this: TApiGateway, headers: RawAxiosRequestHeaders): TApiGateway {
+	private setHeaders(this: TApiGateway, headers: RawAxiosRequestHeaders): TApiGateway {
 		this.ensureInstancePresenceBeforeRequestExecution();
 
 		this.axiosInstance.defaults.headers.common = { ...this.axiosInstance.defaults.headers.common, ...headers };
@@ -65,36 +90,16 @@ export abstract class ApiService<TApiGateway extends ApiService<TApiGateway, TRe
 		return this;
 	}
 
-	public setRequestUrl(this: TApiGateway, requestUrl: string): TApiGateway {
+	private setRequestUrl(this: TApiGateway, requestUrl: string): TApiGateway {
 		this.apiRequest.url = requestUrl;
 
 		return this;
 	}
 
-	public async sendRequest(this: TApiGateway): Promise<ResponseReturn<TRequest, TResponse, TException>> {
-		this.ensureInstancePresenceBeforeRequestExecution();
+	private prepareBaseUrl(this: TApiGateway): string {
+		const apiConfig = this.configService.get("api");
 
-		try {
-			this.apiResponse = await this.axiosInstance.request<TResponse, SuccessfulResponse<TRequest, TResponse>, TRequest>(this.apiRequest);
-
-			return { successful: true, response: this.apiResponse };
-		} catch (error) {
-			const apiException = error as AxiosError<TException, TRequest>;
-
-			this.apiResponse = apiException.response as UnSuccessfulResponse<TRequest, TException>;
-
-			return { successful: false, response: this.apiResponse };
-		}
-	}
-
-	protected init(this: TApiGateway, apiRoute: IProcessedApiRoute<TRequest>): TApiGateway {
-		// noinspection HttpUrlsUsage
-		this.apiRequest = { timeout: 600000, baseURL: `http://node.test` };
-		this.axiosInstance = axios.create(this.apiRequest);
-
-		this.setRequestUrl(apiRoute.routeUrl).setMethod(apiRoute.method).setHeaders(apiRoute.headers).setRequestModel(apiRoute.requestModel).attachInterceptors();
-
-		return this;
+		return `${apiConfig.protocol}://${apiConfig.baseUrl}`;
 	}
 
 	private ensureInstancePresenceBeforeRequestExecution(this: TApiGateway): void {
@@ -113,11 +118,11 @@ export abstract class ApiService<TApiGateway extends ApiService<TApiGateway, TRe
 		 * 3. LastLevelGlobalRequestInterceptors
 		 */
 
-		this.attachInterceptor({ cycle: "request", interceptors: this.lastLevelGlobalRequestInterceptors.reverse(), dataStream: this.apiRequest });
+		this.attachInterceptor({ cycle: "request", interceptors: this.lastLevelGlobalRequestInterceptors.reverse() });
 
-		this.attachInterceptor({ cycle: "request", interceptors: this.requestInterceptors.reverse(), dataStream: this.apiRequest });
+		this.attachInterceptor({ cycle: "request", interceptors: this.requestInterceptors.reverse() });
 
-		this.attachInterceptor({ cycle: "request", interceptors: this.firstLevelGlobalRequestInterceptors.reverse(), dataStream: this.apiRequest });
+		this.attachInterceptor({ cycle: "request", interceptors: this.firstLevelGlobalRequestInterceptors.reverse() });
 
 		/**
 		 * Response Interceptors
@@ -127,18 +132,18 @@ export abstract class ApiService<TApiGateway extends ApiService<TApiGateway, TRe
 		 * 2. GatewaySpecificResponseInterceptors
 		 * 3. LastLevelGlobalResponseInterceptors
 		 */
-		this.attachInterceptor({ cycle: "response", interceptors: this.firstLevelGlobalResponseInterceptors, dataStream: this.apiResponse });
+		this.attachInterceptor({ cycle: "response", interceptors: this.firstLevelGlobalResponseInterceptors });
 
-		this.attachInterceptor({ cycle: "response", interceptors: this.responseInterceptors, dataStream: this.apiResponse });
+		this.attachInterceptor({ cycle: "response", interceptors: this.responseInterceptors });
 
-		this.attachInterceptor({ cycle: "response", interceptors: this.lastLevelGlobalResponseInterceptors, dataStream: this.apiResponse });
+		this.attachInterceptor({ cycle: "response", interceptors: this.lastLevelGlobalResponseInterceptors });
 	}
 
-	private attachInterceptor(this: TApiGateway, streamInterceptionCycle: StreamInterceptionCycle<TRequest, TResponse, TException> | GlobalStreamInterceptionCycle): void {
-		streamInterceptionCycle.interceptors.forEach((streamCycleInterceptor: Constructable<BaseApiInterceptor<DataStream<TRequest, TResponse, TException>>>) => {
-			const interceptorInstance: BaseApiInterceptor<DataStream<TRequest, TResponse, TException>> = new streamCycleInterceptor();
+	private attachInterceptor(this: TApiGateway, interceptionCycle: InterceptionCycle): void {
+		interceptionCycle.interceptors.forEach((concreteInterceptor: Constructable<BaseApiInterceptor<any>>) => {
+			const interceptorInstance = new concreteInterceptor();
 
-			this.axiosInstance.interceptors[streamInterceptionCycle.cycle].use(interceptorInstance.intercept as any, interceptorInstance.handleInterceptionException);
+			this.axiosInstance.interceptors[interceptionCycle.cycle].use(interceptorInstance.intercept, interceptorInstance.handleInterceptionException);
 		});
 	}
 }

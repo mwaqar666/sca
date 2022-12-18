@@ -5,7 +5,7 @@ export interface ISuccessfulResponse<TResponse> {
 	error: null;
 }
 
-export interface IUnsuccessfulResponse {
+export interface IUnsuccessfulResponse<TException = unknown> {
 	data: null;
-	error: IException;
+	error: IException<TException>;
 }

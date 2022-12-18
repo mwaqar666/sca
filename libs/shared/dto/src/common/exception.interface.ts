@@ -1,5 +1,5 @@
-export interface IException {
+export interface IException<TException = unknown> {
 	error: string;
-	message: unknown;
+	message: TException;
 	statusCode: number;
 }

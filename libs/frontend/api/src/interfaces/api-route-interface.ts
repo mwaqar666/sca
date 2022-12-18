@@ -16,8 +16,8 @@ export interface IPrefixApiRoute {
 export type IRawApiRoute = IApiRoute | IPrefixApiRoute;
 
 export interface IProcessedApiRoute<TRequest> {
-	routeUrl: string;
+	route: string;
 	method: Method;
 	headers: RawAxiosRequestHeaders;
-	requestModel?: TRequest;
+	data?: TRequest;
 }
