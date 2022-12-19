@@ -11,3 +11,22 @@ body {
 	font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.x-flex {
+	@apply flex flex-row;
+}
+
+.y-flex {
+	@apply flex flex-col;
+}
+
+.screen-page {
+	@apply h-screen w-screen;
+}
+
+.full-width {
+	@apply w-full;
+}
+
+.center-items {
+	@apply justify-center items-center;
+}

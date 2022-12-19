@@ -1,4 +1,4 @@
-import { RouteData } from "../store";
+import type { RouteData } from "../store";
 
 export const WithoutLayout: RouteData = {
 	showHeader: false,

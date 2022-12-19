@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Subscription } from "rxjs";
+import type { Subscription } from "rxjs";
 
 @Injectable()
 export class ComponentGenericService {

@@ -19,14 +19,14 @@ export class ApiRouteLoaderService {
 			if ("prefix" in route) {
 				const preparedPrefix = this.prepareRouteSegments(prefix, route.prefix);
 
-				this.loadRawRoutes(route.routes, preparedPrefix);
+				this.loadRawRoutes(<Array<IRawApiRoute>>route.routes, preparedPrefix);
 
 				return;
 			}
 
 			route.route = this.prepareRouteSegments(prefix, route.route);
 
-			this.parsedRoutes.push(route);
+			this.parsedRoutes.push(<IApiRoute>route);
 		});
 	}
 

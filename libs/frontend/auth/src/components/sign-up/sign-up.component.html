@@ -1,0 +1,36 @@
+<form (ngSubmit)="signUp()" [formGroup]="signUpForm" class="auth-form-container">
+	<mat-form-field appearance="outline" class="auth-input">
+		<input formControlName="userFirstName" matInput placeholder="First Name" type="text">
+		<mat-icon matSuffix>person</mat-icon>
+	</mat-form-field>
+	<mat-form-field appearance="outline" class="auth-input">
+		<input formControlName="userMiddleName" matInput placeholder="Middle Name" type="text">
+		<mat-icon matSuffix>person</mat-icon>
+	</mat-form-field>
+	<mat-form-field appearance="outline" class="auth-input">
+		<input formControlName="userLastName" matInput placeholder="Last Name" type="text">
+		<mat-icon matSuffix>person</mat-icon>
+	</mat-form-field>
+	<mat-form-field appearance="outline" class="auth-input">
+		<input formControlName="userEmail" matInput placeholder="Email" type="email">
+		<mat-icon matSuffix>mail</mat-icon>
+	</mat-form-field>
+	<mat-form-field appearance="outline" class="auth-input">
+		<input formControlName="userPassword" matInput placeholder="Password" type="password">
+		<mat-icon matSuffix>lock</mat-icon>
+	</mat-form-field>
+	<mat-form-field appearance="outline" class="auth-input">
+		<input formControlName="userPasswordConfirm" matInput placeholder="Confirm Password" type="password">
+		<mat-icon matSuffix>lock</mat-icon>
+	</mat-form-field>
+	<mat-form-field appearance="outline" class="auth-input">
+		<input formControlName="projectName" matInput placeholder="Business Name" type="text">
+		<mat-icon matSuffix>business</mat-icon>
+	</mat-form-field>
+	<mat-form-field appearance="outline" class="auth-input">
+		<input formControlName="projectDomain" matInput placeholder="Business Website" type="url">
+		<mat-icon matSuffix>language</mat-icon>
+	</mat-form-field>
+
+	<button class="auth-input" color="primary" mat-flat-button type="submit">Sign Up</button>
+</form>

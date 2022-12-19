@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { MatDrawer } from "@angular/material/sidenav";
-import { ComponentGenericService, RouteData, RouteDataBusService } from "@sca-frontend/utils";
+import { ChangeDetectorRef, Component, type OnDestroy, type OnInit, ViewChild } from "@angular/core";
+import type { MatDrawer } from "@angular/material/sidenav";
+import { ComponentGenericService, type RouteData, RouteDataBusService } from "@sca-frontend/utils";
 
 @Component({
 	selector: "app-root",
@@ -22,6 +22,10 @@ export class AppComponent implements OnInit, OnDestroy {
 		this.listenFoRouteDataChanges();
 	}
 
+	public ngOnDestroy(): void {
+		this.componentGenericService.clearSubscriptions();
+	}
+
 	private listenFoRouteDataChanges() {
 		this.componentGenericService.registerSubscriptions(
 			this.routeDataBusService.getRoute().subscribe((data: RouteData) => {
@@ -29,9 +33,5 @@ export class AppComponent implements OnInit, OnDestroy {
 				this.changeDetectorRef.detectChanges();
 			}),
 		);
-	}
-
-	public ngOnDestroy(): void {
-		this.componentGenericService.clearSubscriptions();
 	}
 }

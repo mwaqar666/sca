@@ -1,4 +1,4 @@
-import { StateClass } from "@ngxs/store/internals";
+import type { StateClass } from "@ngxs/store/internals";
 import { RouteDataState } from "@sca-frontend/utils";
 
 export const States: Array<StateClass> = [

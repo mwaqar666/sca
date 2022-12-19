@@ -1,0 +1,12 @@
+<form (ngSubmit)="signIn()" [formGroup]="signInForm" class="auth-form-container">
+	<mat-form-field appearance="outline" class="auth-input">
+		<input formControlName="userEmail" matInput placeholder="Email" type="email">
+		<mat-icon matSuffix>mail</mat-icon>
+	</mat-form-field>
+	<mat-form-field appearance="outline" class="auth-input">
+		<input formControlName="userPassword" matInput placeholder="Password" type="password">
+		<mat-icon matSuffix>lock</mat-icon>
+	</mat-form-field>
+
+	<button class="auth-input" color="primary" mat-flat-button type="submit">Sign In</button>
+</form>

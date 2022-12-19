@@ -7,4 +7,6 @@ export interface IProjectUserSignUpRequestDto {
 	userEmail: string;
 	userPassword: string;
 	userPasswordConfirm: string;
+	projectName: string;
+	projectDomain: string;
 }

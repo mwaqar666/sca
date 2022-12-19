@@ -23,3 +23,13 @@ export type NullableOptional<T> = Optional<T> | Nullable<T>;
 export type OptionalOnly<T, K extends Key<T>> = Omit<T, K> & Partial<Pick<T, K>>;
 
 export type Constructable<T, TArgs extends any[] = any> = new (...args: TArgs) => T;
+
+export type Without<T, R> = { [K in Exclude<Key<T>, Key<R>>]?: never };
+
+export type SingleExclusiveUnion<T, U> = T | U extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U;
+
+export type ExclusiveUnion<T extends Array<any>> = T extends [infer Only]
+	? Only
+	: T extends [infer First, infer Second, ...infer Rest]
+	? ExclusiveUnion<[SingleExclusiveUnion<First, Second>, ...Rest]>
+	: never;

@@ -1,3 +1,4 @@
+import type { ExclusiveUnion } from "@sca-shared/utils";
 import type { Method, RawAxiosRequestHeaders } from "axios";
 
 export interface IApiRoute {
@@ -13,7 +14,7 @@ export interface IPrefixApiRoute {
 	routes: Array<IRawApiRoute>;
 }
 
-export type IRawApiRoute = IApiRoute | IPrefixApiRoute;
+export type IRawApiRoute = ExclusiveUnion<[IApiRoute, IPrefixApiRoute]>;
 
 export interface IProcessedApiRoute<TRequest> {
 	route: string;

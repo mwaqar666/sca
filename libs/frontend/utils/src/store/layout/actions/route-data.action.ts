@@ -1,4 +1,4 @@
-import { RouteData } from "../models";
+import type { RouteData } from "../models";
 
 export class SetRouteDataAction {
 	public static readonly type = "[RouteData] SetRouteDataAction";

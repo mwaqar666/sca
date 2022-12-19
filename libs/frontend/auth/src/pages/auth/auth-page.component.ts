@@ -1,12 +1,13 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, type OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { RouteDataBusService } from "@sca-frontend/utils";
 
 @Component({
-	selector: "auth-sign-up",
-	templateUrl: "./sign-up-page.component.html",
+	selector: "auth-page",
+	templateUrl: "./auth-page.component.html",
+	styleUrls: ["./auth-page.component.scss"],
 })
-export class SignUpPageComponent implements OnInit {
+export class AuthPageComponent implements OnInit {
 	public constructor(
 		// Dependencies
 

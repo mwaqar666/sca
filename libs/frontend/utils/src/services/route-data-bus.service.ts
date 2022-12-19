@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import type { ActivatedRoute } from "@angular/router";
 import { Store } from "@ngxs/store";
-import { Observable, take } from "rxjs";
-import { RouteData, RouteDataStateToken, SetRouteDataAction } from "../store";
+import { type Observable, take } from "rxjs";
+import { type RouteData, RouteDataStateToken, SetRouteDataAction } from "../store";
 
 @Injectable()
 export class RouteDataBusService {

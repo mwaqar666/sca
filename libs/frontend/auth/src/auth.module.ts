@@ -1,14 +1,20 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
+import { ReactiveFormsModule } from "@angular/forms";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatInputModule } from "@angular/material/input";
+import { MatTabsModule } from "@angular/material/tabs";
 import { AuthRoutingModule } from "./auth-routing.module";
-import { AuthRouterComponent } from "./components";
+import { SignInComponent, SignUpComponent } from "./components";
 import { AuthGuard, GuestGuard } from "./guards";
 import { AccessTokenInterceptor, RefreshTokenInterceptor } from "./interceptors";
-import { SignInPageComponent, SignUpPageComponent } from "./pages";
+import { AuthPageComponent } from "./pages";
+import { SignInApiService, SignInService } from "./services";
 
 @NgModule({
-	declarations: [AuthRouterComponent, SignUpPageComponent, SignInPageComponent],
-	imports: [CommonModule, AuthRoutingModule],
-	providers: [AccessTokenInterceptor, RefreshTokenInterceptor, AuthGuard, GuestGuard],
+	declarations: [AuthPageComponent, SignUpComponent, SignInComponent],
+	imports: [CommonModule, AuthRoutingModule, MatTabsModule, MatInputModule, MatIconModule, ReactiveFormsModule, MatButtonModule],
+	providers: [SignInService, SignInApiService, AccessTokenInterceptor, RefreshTokenInterceptor, AuthGuard, GuestGuard],
 })
 export class AuthModule {}
