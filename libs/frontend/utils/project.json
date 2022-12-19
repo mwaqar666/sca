@@ -1,0 +1,33 @@
+{
+	"name": "frontend-utils",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "libs/frontend/utils/src",
+	"prefix": "sca",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/angular:ng-packagr-lite",
+			"outputs": [
+				"{workspaceRoot}/dist/{projectRoot}"
+			],
+			"options": {
+				"tsConfig": "libs/frontend/utils/tsconfig.json",
+				"project": "libs/frontend/utils/ng-package.json",
+				"tailwindConfig": "libs/frontend/utils/tailwind.config.js"
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"libs/frontend/utils/**/*.ts",
+					"libs/frontend/utils/**/*.html"
+				]
+			}
+		}
+	},
+	"tags": []
+}

@@ -1,0 +1,33 @@
+{
+	"name": "frontend-store",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "libs/frontend/store/src",
+	"prefix": "store",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/angular:ng-packagr-lite",
+			"outputs": [
+				"{workspaceRoot}/dist/{projectRoot}"
+			],
+			"options": {
+				"tsConfig": "libs/frontend/store/tsconfig.json",
+				"project": "libs/frontend/store/ng-package.json",
+				"tailwindConfig": "libs/frontend/store/tailwind.config.js"
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"libs/frontend/store/**/*.ts",
+					"libs/frontend/store/**/*.html"
+				]
+			}
+		}
+	},
+	"tags": []
+}

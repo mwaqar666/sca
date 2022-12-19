@@ -1,0 +1,33 @@
+{
+	"name": "frontend-router",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "library",
+	"sourceRoot": "libs/frontend/router/src",
+	"prefix": "router",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/angular:ng-packagr-lite",
+			"outputs": [
+				"{workspaceRoot}/dist/{projectRoot}"
+			],
+			"options": {
+				"tsConfig": "libs/frontend/router/tsconfig.json",
+				"project": "libs/frontend/router/ng-package.json",
+				"tailwindConfig": "libs/frontend/router/tailwind.config.js"
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"libs/frontend/router/**/*.ts",
+					"libs/frontend/router/**/*.html"
+				]
+			}
+		}
+	},
+	"tags": []
+}

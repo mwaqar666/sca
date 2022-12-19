@@ -1,1 +1,24 @@
-Hello!
+<mat-toolbar *ngIf="routeData.showHeader" color="primary">
+	<button (click)="drawer.toggle()" mat-icon-button>
+		<mat-icon>menu</mat-icon>
+	</button>
+	<span>My App</span>
+	<span></span>
+	<button mat-icon-button>
+		<mat-icon>favorite</mat-icon>
+	</button>
+	<button mat-icon-button>
+		<mat-icon>share</mat-icon>
+	</button>
+</mat-toolbar>
+
+<router-outlet *ngIf="!routeData.showSidebar"></router-outlet>
+
+<mat-drawer-container *ngIf="routeData.showSidebar" hasBackdrop="true">
+	<mat-drawer #drawer mode="over">I'm a drawer</mat-drawer>
+	<mat-drawer-content>
+		<router-outlet></router-outlet>
+	</mat-drawer-content>
+</mat-drawer-container>
+
+
