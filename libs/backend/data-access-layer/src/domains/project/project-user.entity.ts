@@ -36,9 +36,9 @@ export class ProjectUserEntity extends SequelizeBaseEntity<ProjectUserEntity> {
 	public projectUserProjectId: number;
 
 	@ForeignKey(() => ProjectUserEntity)
-	@AllowNull(false)
+	@AllowNull(true)
 	@Column({ type: DataType.INTEGER })
-	public projectUserParentId: number;
+	public projectUserParentId: Nullable<number>;
 
 	@CreatedAt
 	public projectUserCreatedAt: Date;

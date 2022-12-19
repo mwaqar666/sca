@@ -1,6 +1,6 @@
 import type { Nullable } from "@sca-shared/utils";
 
-export interface IProjectUserSignUpRequestDto {
+export interface ISignUpRequest {
 	userFirstName: string;
 	userMiddleName: Nullable<string>;
 	userLastName: string;

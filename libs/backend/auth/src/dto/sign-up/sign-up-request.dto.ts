@@ -1,8 +1,8 @@
-import type { IProjectUserSignUpRequestDto } from "@sca-shared/dto";
+import type { ISignUpRequest } from "@sca-shared/dto";
 import type { Nullable } from "@sca-shared/utils";
 import { IsEmail, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from "class-validator";
 
-export class ProjectUserSignUpRequestDto implements IProjectUserSignUpRequestDto {
+export class SignUpRequestDto implements ISignUpRequest {
 	@MaxLength(100)
 	@MinLength(3)
 	@IsString()
@@ -39,4 +39,12 @@ export class ProjectUserSignUpRequestDto implements IProjectUserSignUpRequestDto
 	@IsString()
 	@IsNotEmpty()
 	public userPasswordConfirm: string;
+
+	@IsString()
+	@IsNotEmpty()
+	public projectName: string;
+
+	@IsString()
+	@IsNotEmpty()
+	public projectDomain: string;
 }

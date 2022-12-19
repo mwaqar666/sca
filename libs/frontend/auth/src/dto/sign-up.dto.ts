@@ -1,7 +1,7 @@
-import type { IProjectUserSignUpRequestDto } from "@sca-shared/dto";
+import type { ISignUpRequest } from "@sca-shared/dto";
 import type { Nullable } from "@sca-shared/utils";
 
-export class SignUpRequestDto implements IProjectUserSignUpRequestDto {
+export class SignUpRequestDto implements ISignUpRequest {
 	public userFirstName: string;
 	public userMiddleName: Nullable<string>;
 	public userLastName: string;

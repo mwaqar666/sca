@@ -4,12 +4,12 @@ export const AuthApiRoutes = {
 		signIn: {
 			method: "POST",
 			name: "auth.sign-in",
-			path: "project/sign-in",
+			path: "sign-in",
 		},
 		signUp: {
 			method: "POST",
 			name: "auth.sign-up",
-			path: "project/sign-up",
+			path: "sign-up",
 		},
 	},
 } as const;
