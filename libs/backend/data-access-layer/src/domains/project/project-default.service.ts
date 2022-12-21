@@ -1,13 +1,13 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { AggregateService } from "@sca-backend/aggregate";
+import type { AggregateService } from "@sca-backend/aggregate";
 import type { RunningTransaction } from "@sca-backend/db";
 import { SequelizeScopeConst } from "@sca-backend/db";
-import { DomainAggregateConst } from "../../const";
-import type { IDomainAggregate } from "../../types";
-import { UserEntity } from "../user";
+import { DomainExtensionsAggregateConst } from "../../const";
+import type { IDomainExtensionsAggregate } from "../../types";
+import type { UserEntity } from "../user";
 import type { ProjectDefaultEntity } from "./project-default.entity";
 import { ProjectDefaultRepository } from "./project-default.repository";
-import { ProjectEntity } from "./project.entity";
+import type { ProjectEntity } from "./project.entity";
 
 @Injectable()
 export class ProjectDefaultService {
@@ -15,7 +15,7 @@ export class ProjectDefaultService {
 		// Dependencies
 
 		private readonly projectDefaultRepository: ProjectDefaultRepository,
-		@Inject(DomainAggregateConst) private readonly aggregateService: AggregateService<IDomainAggregate>,
+		@Inject(DomainExtensionsAggregateConst) private readonly aggregateService: AggregateService<IDomainExtensionsAggregate>,
 	) {}
 
 	public async findOrCreateUserDefaultProjectConnection(userId: number, projectId: number, withTransaction?: RunningTransaction): Promise<ProjectDefaultEntity> {

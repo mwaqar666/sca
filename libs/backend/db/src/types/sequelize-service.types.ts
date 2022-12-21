@@ -11,10 +11,10 @@ export interface RunningTransaction {
 
 export type TransactionCallback<T> = (runningTransaction: RunningTransaction) => Promise<T>;
 
-export type TransactionError<T> = (error: any) => Promise<T>;
+export type TransactionError = (error: any) => Promise<void>;
 
-export interface TransactionalOperation<TransactionReturn, FailureReturn> {
+export interface TransactionalOperation<TransactionReturn> {
 	withTransaction?: RunningTransaction;
 	transactionCallback: TransactionCallback<TransactionReturn>;
-	failureCallback?: TransactionError<FailureReturn>;
+	failureCallback?: TransactionError;
 }

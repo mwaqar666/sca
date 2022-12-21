@@ -5,19 +5,19 @@ import { DefaultScopedFindOptions } from "../const";
 import type { EntityKeyValues, EntityScope, EntityType, SequelizeBaseEntity } from "../entity";
 import type { EntityCreateOptions, EntityCreateOrUpdateOptions, EntityDeleteOptions, EntityFindOrCreateOptions, EntityResolution, EntityUpdateOptions, ScopedFindOptions } from "./types";
 
-export abstract class BaseRepository<TEntity extends SequelizeBaseEntity<TEntity>> {
-	protected constructor(protected entity: EntityType<TEntity>) {}
+export class BaseRepository<TEntity extends SequelizeBaseEntity<TEntity>> {
+	protected constructor(protected readonly concreteEntity: EntityType<TEntity>) {}
 
 	public async findEntity(scopedFindOptions: ScopedFindOptions<TEntity>): Promise<Nullable<TEntity>> {
 		scopedFindOptions = this.providedOrDefaultScopedFindOptions(scopedFindOptions);
 
-		return await this.entity.applyScopes<TEntity>(scopedFindOptions.scopes).findOne<TEntity>(scopedFindOptions.findOptions);
+		return await this.concreteEntity.applyScopes<TEntity>(scopedFindOptions.scopes).findOne<TEntity>(scopedFindOptions.findOptions);
 	}
 
 	public async findEntities(scopedFindOptions?: Partial<ScopedFindOptions<TEntity>>): Promise<Array<TEntity>> {
 		scopedFindOptions = this.providedOrDefaultScopedFindOptions(scopedFindOptions);
 
-		return await this.entity.applyScopes<TEntity>(scopedFindOptions.scopes).findAll<TEntity>(scopedFindOptions.findOptions);
+		return await this.concreteEntity.applyScopes<TEntity>(scopedFindOptions.scopes).findAll<TEntity>(scopedFindOptions.findOptions);
 	}
 
 	public async findOrFailEntity(scopedFindOptions: ScopedFindOptions<TEntity>): Promise<TEntity> {
@@ -27,7 +27,7 @@ export abstract class BaseRepository<TEntity extends SequelizeBaseEntity<TEntity
 
 		if (foundEntity) return foundEntity;
 
-		throw new NotFoundException(`${this.entity.name} with key value pairs ${JSON.stringify(scopedFindOptions.findOptions)} not found!`);
+		throw new NotFoundException(`${this.concreteEntity.name} with key value pairs ${JSON.stringify(scopedFindOptions.findOptions)} not found!`);
 	}
 
 	public async resolveEntity(entity: EntityResolution<TEntity>, scopes?: EntityScope): Promise<Nullable<TEntity>> {
@@ -36,13 +36,13 @@ export abstract class BaseRepository<TEntity extends SequelizeBaseEntity<TEntity
 		const scopedFindOptions = this.providedOrDefaultScopedFindOptions({ scopes });
 
 		if (typeof entity === "string") {
-			if (!this.entity.uuidColumnName) throw new Error(`Uuid column name not defined on ${this.entity.name}`);
+			if (!this.concreteEntity.uuidColumnName) throw new Error(`Uuid column name not defined on ${this.concreteEntity.name}`);
 
-			scopedFindOptions.findOptions = { where: { [this.entity.uuidColumnName]: entity } as WhereOptions<TEntity> };
+			scopedFindOptions.findOptions = { where: { [this.concreteEntity.uuidColumnName]: entity } as WhereOptions<TEntity> };
 			return await this.findEntity(scopedFindOptions);
 		}
 
-		scopedFindOptions.findOptions = { where: { [this.entity.primaryKeyAttribute]: entity } as WhereOptions<TEntity> };
+		scopedFindOptions.findOptions = { where: { [this.concreteEntity.primaryKeyAttribute]: entity } as WhereOptions<TEntity> };
 		return await this.findEntity(scopedFindOptions);
 	}
 
@@ -51,7 +51,7 @@ export abstract class BaseRepository<TEntity extends SequelizeBaseEntity<TEntity
 
 		if (foundEntity) return foundEntity;
 
-		throw new NotFoundException(`${this.entity.name} not resolved with identifier ${entity}`);
+		throw new NotFoundException(`${this.concreteEntity.name} not resolved with identifier ${entity}`);
 	}
 
 	public async findOrCreateEntity(entityFindOrCreateOptions: EntityFindOrCreateOptions<TEntity>): Promise<TEntity> {
@@ -71,7 +71,7 @@ export abstract class BaseRepository<TEntity extends SequelizeBaseEntity<TEntity
 	}
 
 	public async createEntity(entityCreationOptions: EntityCreateOptions<TEntity>): Promise<TEntity> {
-		return await this.entity.create<TEntity>(entityCreationOptions.valuesToCreate as CreationAttributes<TEntity>, { transaction: entityCreationOptions.transaction });
+		return await this.concreteEntity.create<TEntity>(entityCreationOptions.valuesToCreate as CreationAttributes<TEntity>, { transaction: entityCreationOptions.transaction });
 	}
 
 	public async updateEntity(entityUpdateOptions: EntityUpdateOptions<TEntity>): Promise<TEntity> {

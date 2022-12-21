@@ -1,53 +1,42 @@
 import { Injectable } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import type { ProjectEntity, ProjectUserEntity, UserEntity } from "@sca-backend/data-access-layer";
-import type { AccessTokenPayloadDto, AuthenticatedProject, RefreshTokenPayloadDto } from "@sca-shared/dto";
-import { AccessToken, RefreshToken } from "../const";
+import { ConfigService } from "@nestjs/config";
+import { JwtService, type JwtSignOptions } from "@nestjs/jwt";
+import type { ConfigType, TokenConfig } from "@sca-backend/config";
 import { CryptService } from "./crypt.service";
 
 @Injectable()
 export class TokenService {
+	private readonly tokenConfig: TokenConfig;
+
 	public constructor(
 		// Dependencies
 
 		private readonly jwtService: JwtService,
 		private readonly cryptService: CryptService,
-	) {}
-
-	public async createAccessToken(userWithProject: UserEntity): Promise<string> {
-		const accessTokenPayload: AccessTokenPayloadDto = {
-			tokenIdentity: this.cryptService.encrypt(AccessToken),
-			userUuid: userWithProject.userUuid,
-			userFirstName: userWithProject.userFirstName,
-			userMiddleName: userWithProject.userMiddleName,
-			userLastName: userWithProject.userLastName,
-			userEmail: userWithProject.userEmail,
-			userDefaultProject: this.prepareSingleProjectStructure(userWithProject.userDefaultProject.projectDefaultProject),
-			userProjects: this.prepareAllProjectStructure(userWithProject.userProjects),
-		};
-
-		return this.jwtService.signAsync(accessTokenPayload);
+		private readonly configService: ConfigService<ConfigType, true>,
+	) {
+		this.tokenConfig = configService.get<TokenConfig>("tokens");
 	}
 
-	public async createRefreshToken(userWithProject: UserEntity): Promise<string> {
-		const refreshTokenPayload: RefreshTokenPayloadDto = {
-			tokenIdentity: this.cryptService.encrypt(RefreshToken),
-			userUuid: userWithProject.userUuid,
-			projectUuid: userWithProject.userDefaultProject.projectDefaultProject.projectUuid,
-		};
-
-		return this.jwtService.signAsync(refreshTokenPayload);
+	public async createAndSignAccessToken<T extends object>(payload: T): Promise<string> {
+		return this.jwtService.signAsync(payload, this.prepareAccessTokenConfig());
 	}
 
-	private prepareAllProjectStructure(projects: Array<ProjectUserEntity>): Array<AuthenticatedProject> {
-		return projects.map((projectUser: ProjectUserEntity) => this.prepareSingleProjectStructure(projectUser.projectUserProject));
+	public async createAndSignRefreshToken<T extends object>(payload: T): Promise<string> {
+		return this.jwtService.signAsync(payload, this.prepareRefreshTokenConfig());
 	}
 
-	private prepareSingleProjectStructure(project: ProjectEntity): AuthenticatedProject {
+	private prepareAccessTokenConfig(): JwtSignOptions {
 		return {
-			projectUuid: project.projectUuid,
-			projectName: project.projectName,
-			projectDomain: project.projectDomain,
+			secret: this.tokenConfig.accessTokenSecret,
+			expiresIn: this.tokenConfig.accessTokenExpiry,
+		};
+	}
+
+	private prepareRefreshTokenConfig(): JwtSignOptions {
+		return {
+			secret: this.tokenConfig.refreshTokenSecret,
+			expiresIn: this.tokenConfig.refreshTokenExpiry,
 		};
 	}
 }

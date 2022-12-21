@@ -1,8 +1,9 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { type UserEntity, UserProjectIdentityService } from "@sca-backend/data-access-layer";
-import { PasswordService, TokenService } from "@sca-backend/security";
+import { PasswordService } from "@sca-backend/security";
 import type { ISignInRequest, ISignInResponse, ISignUpRequest, ISignUpResponse } from "@sca-shared/dto";
 import { ProjectUnavailableExceptionMessage, UnauthorizedExceptionMessage } from "../const";
+import { AuthTokenService } from "./auth-token.service";
 
 @Injectable()
 export class AuthService {
@@ -10,8 +11,8 @@ export class AuthService {
 		// Dependencies
 
 		private readonly identityService: UserProjectIdentityService,
-		private readonly tokenService: TokenService,
 		private readonly passwordService: PasswordService,
+		private readonly authTokenService: AuthTokenService,
 	) {}
 
 	public async signIn(signInRequest: ISignInRequest): Promise<ISignInResponse> {
@@ -27,8 +28,8 @@ export class AuthService {
 	}
 
 	private async createAuthenticationTokens(user: UserEntity): Promise<{ accessToken: string; refreshToken: string }> {
-		const accessToken = this.tokenService.createAccessToken(user);
-		const refreshToken = this.tokenService.createRefreshToken(user);
+		const accessToken = this.authTokenService.prepareAccessToken(user);
+		const refreshToken = this.authTokenService.prepareRefreshToken(user);
 
 		return { accessToken: await accessToken, refreshToken: await refreshToken };
 	}

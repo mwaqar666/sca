@@ -6,12 +6,8 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-
-import { ApiModule } from "@sca-frontend/api";
 import { AuthModule } from "@sca-frontend/auth";
-import { ConfigModule } from "@sca-frontend/config";
 import { RouterModule } from "@sca-frontend/router";
-import { StorageModule } from "@sca-frontend/storage";
 import { StoreModule } from "@sca-frontend/store";
 import { UtilsModule } from "@sca-frontend/utils";
 import { AppComponent } from "./components";
@@ -31,12 +27,9 @@ import { AppComponent } from "./components";
 
 		// Application Modules
 		UtilsModule,
-		ConfigModule,
-		StorageModule,
-		ApiModule,
 		RouterModule,
-		AuthModule,
 		StoreModule,
+		AuthModule,
 	],
 	providers: [],
 	bootstrap: [AppComponent],

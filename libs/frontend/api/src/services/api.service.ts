@@ -1,9 +1,9 @@
-import { ConfigService } from "@sca-frontend/config";
+import type { ConfigService } from "@sca-frontend/config";
 import type { IUnsuccessfulResponse } from "@sca-shared/dto";
 import type { Constructable } from "@sca-shared/utils";
 import type { Axios, AxiosError, Method, RawAxiosRequestHeaders } from "axios";
 import axios from "axios";
-import { FirstLevelRequestInterceptor, FirstLevelResponseInterceptor, LastLevelResponseInterceptor, RemoveEmptyStringsAndUndefinedValues } from "../global-interceptors";
+import { RemoveEmptyStringsAndUndefinedValues } from "../global-interceptors";
 import type {
 	ApiRequest,
 	ApiRequestInterceptor,
@@ -28,11 +28,11 @@ export abstract class ApiService<TApiGateway extends ApiService<TApiGateway, TRe
 
 	private axiosInstance: Axios;
 
-	private firstLevelGlobalRequestInterceptors: Array<Constructable<GlobalApiRequestInterceptor>> = [FirstLevelRequestInterceptor];
+	private firstLevelGlobalRequestInterceptors: Array<Constructable<GlobalApiRequestInterceptor>> = [];
 	private lastLevelGlobalRequestInterceptors: Array<Constructable<GlobalApiRequestInterceptor>> = [RemoveEmptyStringsAndUndefinedValues];
 
-	private firstLevelGlobalResponseInterceptors: Array<Constructable<GlobalApiResponseInterceptor>> = [FirstLevelResponseInterceptor];
-	private lastLevelGlobalResponseInterceptors: Array<Constructable<GlobalApiResponseInterceptor>> = [LastLevelResponseInterceptor];
+	private firstLevelGlobalResponseInterceptors: Array<Constructable<GlobalApiResponseInterceptor>> = [];
+	private lastLevelGlobalResponseInterceptors: Array<Constructable<GlobalApiResponseInterceptor>> = [];
 
 	protected constructor(private readonly appConfigService: ConfigService) {}
 

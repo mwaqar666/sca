@@ -42,6 +42,7 @@ export interface CryptConfig {
 	saltByteLength: number;
 	saltIterations: number;
 	saltScheme: string;
+	hashSaltIterations: number;
 }
 
 export interface AppConfig {

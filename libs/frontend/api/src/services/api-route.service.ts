@@ -2,8 +2,7 @@ import { Injectable } from "@angular/core";
 import type { Nullable } from "@sca-shared/utils";
 import type { RawAxiosRequestHeaders } from "axios";
 import { InvalidQueryParameterError, InvalidRouteParameterError, NotProvidedRouteParameterError, RouteNotFoundError } from "../const";
-import type { IApiRoute, IProcessedApiRoute, IRawApiRoute } from "../interfaces";
-import { ApiRouteLoaderService } from "./api-route-loader.service";
+import type { IApiRoute, IProcessedApiRoute } from "../interfaces";
 
 @Injectable()
 export class ApiRouteService {
@@ -11,16 +10,8 @@ export class ApiRouteService {
 	private currentRoute: Nullable<IApiRoute>;
 	private currentProcessedRoute: Nullable<IProcessedApiRoute<any>>;
 
-	public constructor(
-		// Dependencies
-
-		private readonly apiRouteLoaderService: ApiRouteLoaderService,
-	) {}
-
-	public loadRoutes(routes: Array<IRawApiRoute>): void {
-		const loadedRoutes = this.apiRouteLoaderService.loadRoutes(routes);
-
-		this.apiRoutes.push(...loadedRoutes);
+	public registerRoutes(routes: Array<IApiRoute>): void {
+		this.apiRoutes.push(...routes);
 	}
 
 	public getProcessedRoute<T = any>(): IProcessedApiRoute<T> {

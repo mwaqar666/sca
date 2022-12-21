@@ -31,6 +31,7 @@ import type {
 	REFRESH_TOKEN_EXPIRY,
 	REFRESH_TOKEN_SECRET,
 } from "../const";
+import { CRYPT_HASH_SALT_ITERATIONS } from "../const";
 import { DbGenerator, Dialect, Env } from "./config.type";
 
 export interface ConfigValidationType {
@@ -63,6 +64,7 @@ export interface ConfigValidationType {
 	[CRYPT_SALT_BYTE_LEN]: Joi.NumberSchema;
 	[CRYPT_SALT_ITERATIONS]: Joi.NumberSchema;
 	[CRYPT_SALT_SCHEME]: Joi.StringSchema;
+	[CRYPT_HASH_SALT_ITERATIONS]: Joi.NumberSchema;
 
 	[APP_HOST]: Joi.StringSchema;
 	[APP_PORT]: Joi.NumberSchema;

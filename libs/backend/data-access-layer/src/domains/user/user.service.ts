@@ -2,8 +2,8 @@ import { Inject, Injectable } from "@nestjs/common";
 import type { AggregateService } from "@sca-backend/aggregate";
 import { type EntityScope, EntityTableColumnProperties, RunningTransaction, SequelizeScopeConst } from "@sca-backend/db";
 import type { Nullable } from "@sca-shared/utils";
-import { DomainAggregateConst } from "../../const";
-import type { IDomainAggregate } from "../../types";
+import { DomainExtensionsAggregateConst, DomainUtilitiesAggregateConst } from "../../const";
+import type { IDomainExtensionsAggregate, IDomainUtilitiesAggregate } from "../../types";
 import { UserTypeEnum } from "../user-type";
 import type { UserEntity } from "./user.entity";
 import { UserRepository } from "./user.repository";
@@ -14,7 +14,8 @@ export class UserService {
 		// Dependencies
 
 		private readonly userRepository: UserRepository,
-		@Inject(DomainAggregateConst) private readonly aggregateService: AggregateService<IDomainAggregate>,
+		@Inject(DomainExtensionsAggregateConst) private readonly extensionsAggregateService: AggregateService<IDomainExtensionsAggregate>,
+		@Inject(DomainUtilitiesAggregateConst) private readonly utilitiesAggregateService: AggregateService<IDomainUtilitiesAggregate>,
 	) {}
 
 	public async findUser(userEmail: string, ...scopes: EntityScope): Promise<Nullable<UserEntity>> {
@@ -25,10 +26,12 @@ export class UserService {
 	}
 
 	public async createProjectUser(createUserData: Partial<EntityTableColumnProperties<UserEntity>>, withTransaction?: RunningTransaction): Promise<UserEntity> {
-		return await this.aggregateService.services.sequelize.executeTransactionalOperation({
+		return await this.extensionsAggregateService.services.sequelize.executeTransactionalOperation({
 			withTransaction,
 			transactionCallback: async (runningTransaction: RunningTransaction) => {
 				const userType = UserTypeEnum.ProjectUsers;
+
+				if (createUserData.userPassword) createUserData.userPassword = await this.utilitiesAggregateService.services.hash.hashString(createUserData.userPassword);
 
 				return await this.userRepository.createEntity({
 					transaction: runningTransaction.currentTransaction.transaction,

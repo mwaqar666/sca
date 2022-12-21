@@ -11,6 +11,7 @@ import {
 	CRYPT_AUTH_TAG_BYTE_LEN,
 	CRYPT_BLOCK_CIPHER,
 	CRYPT_ENCRYPTION_KEY_BYTE_LENGTH,
+	CRYPT_HASH_SALT_ITERATIONS,
 	CRYPT_INITIALIZATION_VECTOR_BYTE_LEN,
 	CRYPT_SALT_BYTE_LEN,
 	CRYPT_SALT_ITERATIONS,
@@ -71,6 +72,7 @@ export const ConfigFactory: NestConfigFactory<ConfigType> = () => {
 			saltByteLength: parseInt(EnvExtractor.env(CRYPT_SALT_BYTE_LEN), 10),
 			saltIterations: parseInt(EnvExtractor.env(CRYPT_SALT_ITERATIONS), 10),
 			saltScheme: EnvExtractor.env(CRYPT_SALT_SCHEME),
+			hashSaltIterations: parseInt(EnvExtractor.env(CRYPT_HASH_SALT_ITERATIONS), 10),
 		},
 
 		app: {

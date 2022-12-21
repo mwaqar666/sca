@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import type { Transaction } from "sequelize";
+import { DatabaseError } from "sequelize";
 import { Sequelize } from "sequelize-typescript";
 import type { RunningTransaction, TransactionalOperation, TransactionStore } from "../types";
 
@@ -11,7 +12,7 @@ export class SequelizeService {
 		private readonly sequelizeInstance: Sequelize,
 	) {}
 
-	public async executeTransactionalOperation<T, R = void>(transactionalOperation: TransactionalOperation<T, R>): Promise<T | R> {
+	public async executeTransactionalOperation<T>(transactionalOperation: TransactionalOperation<T>): Promise<T> {
 		const preparedTransaction = await this.prepareTransaction(transactionalOperation.withTransaction);
 
 		try {
@@ -21,11 +22,11 @@ export class SequelizeService {
 
 			return transactionResult;
 		} catch (error) {
-			await preparedTransaction.currentTransaction.transaction.rollback();
+			if (error instanceof DatabaseError) await preparedTransaction.currentTransaction.transaction.rollback();
 
-			if (error && transactionalOperation.failureCallback) return await transactionalOperation.failureCallback(error);
+			if (transactionalOperation.failureCallback) await transactionalOperation.failureCallback(error);
 
-			throw new Error();
+			throw new Error((<Error>error).message);
 		}
 	}
 

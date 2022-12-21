@@ -2,10 +2,10 @@ import { Inject, Injectable } from "@nestjs/common";
 import { AggregateService } from "@sca-backend/aggregate";
 import { RunningTransaction, SequelizeScopeConst } from "@sca-backend/db";
 import type { ISignInRequest, ISignUpRequest } from "@sca-shared/dto";
-import { DomainAggregateConst } from "../const";
-import { ProjectDefaultService, ProjectService, type ProjectUserEntity, ProjectUserService, UserEntity, UserService } from "../domains";
+import { DomainExtensionsAggregateConst } from "../const";
+import { ProjectDefaultService, ProjectService, type ProjectUserEntity, ProjectUserService, type UserEntity, UserService } from "../domains";
 import type { FailedAuthReasonProject, FailedAuthReasonUser, SuccessfulAuthWithUserAndProject } from "../dto";
-import { IDomainAggregate } from "../types";
+import { IDomainExtensionsAggregate } from "../types";
 
 @Injectable()
 export class UserProjectIdentityService {
@@ -16,7 +16,7 @@ export class UserProjectIdentityService {
 		private readonly projectService: ProjectService,
 		private readonly projectUserService: ProjectUserService,
 		private readonly projectDefaultService: ProjectDefaultService,
-		@Inject(DomainAggregateConst) private readonly aggregateService: AggregateService<IDomainAggregate>,
+		@Inject(DomainExtensionsAggregateConst) private readonly aggregateService: AggregateService<IDomainExtensionsAggregate>,
 	) {}
 
 	public async authenticateProjectUserWithAllAndDefaultProjects(signInRequest: ISignInRequest): Promise<FailedAuthReasonUser | FailedAuthReasonProject | SuccessfulAuthWithUserAndProject> {

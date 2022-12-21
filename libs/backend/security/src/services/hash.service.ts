@@ -16,7 +16,7 @@ export class HashService {
 	}
 
 	public async hashString(stringToHash: string): Promise<string> {
-		return await hash(stringToHash, this.cryptConfig.saltIterations);
+		return await hash(stringToHash, this.cryptConfig.hashSaltIterations);
 	}
 
 	public async hashEquals(stringToCompare: string, hashToCompare: string): Promise<boolean> {

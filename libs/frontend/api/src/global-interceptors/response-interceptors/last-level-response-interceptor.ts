@@ -9,6 +9,6 @@ export class LastLevelResponseInterceptor implements GlobalApiResponseIntercepto
 	}
 
 	public async handleInterceptionException(error: any): Promise<ResponseInterceptorException> {
-		throw new ResponseInterceptorException({ error: "Last level response interceptor error", message: error });
+		return new ResponseInterceptorException({ error: "Last level response interceptor error", message: error });
 	}
 }

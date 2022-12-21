@@ -1,7 +1,8 @@
-import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { FormControlDataType } from "@sca-frontend/utils";
-import { SignUpRequestDto } from "../../dto";
+import { Component, type OnInit } from "@angular/core";
+import { FormBuilder, FormControl, type FormGroup, Validators } from "@angular/forms";
+import type { FormControlDataType } from "@sca-frontend/utils";
+import type { SignUpRequestDto } from "../../dto";
+import { SignUpService } from "../../services";
 
 @Component({
 	selector: "auth-sign-up",
@@ -15,16 +16,18 @@ export class SignUpComponent implements OnInit {
 		// Dependencies
 
 		private readonly formBuilder: FormBuilder,
+		private readonly signUpService: SignUpService,
 	) {}
 
 	public ngOnInit(): void {
 		this.initializeForm();
 	}
 
-	public signUp() {
+	public async signUp() {
 		const signUpDto = <SignUpRequestDto>this.signUpForm.value;
+		const signUpResponse = await this.signUpService.signUp(signUpDto);
 
-		console.log(signUpDto);
+		console.log(signUpResponse);
 	}
 
 	private initializeForm() {

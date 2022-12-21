@@ -1,1 +1,2 @@
-export const DomainAggregateConst = "Domain";
+export const DomainExtensionsAggregateConst = "DomainExtensions";
+export const DomainUtilitiesAggregateConst = "DomainUtilities";

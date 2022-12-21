@@ -12,6 +12,7 @@ import {
 	CRYPT_AUTH_TAG_BYTE_LEN,
 	CRYPT_BLOCK_CIPHER,
 	CRYPT_ENCRYPTION_KEY_BYTE_LENGTH,
+	CRYPT_HASH_SALT_ITERATIONS,
 	CRYPT_INITIALIZATION_VECTOR_BYTE_LEN,
 	CRYPT_SALT_BYTE_LEN,
 	CRYPT_SALT_ITERATIONS,
@@ -78,6 +79,7 @@ export const ConfigValidation: Joi.ObjectSchema<ConfigValidationType> = Joi.obje
 	[CRYPT_SALT_BYTE_LEN]: Joi.number().optional().default(ConfigDefaultsConst.Crypt[CRYPT_SALT_BYTE_LEN]),
 	[CRYPT_SALT_ITERATIONS]: Joi.number().optional().default(ConfigDefaultsConst.Crypt[CRYPT_SALT_ITERATIONS]),
 	[CRYPT_SALT_SCHEME]: Joi.string().optional().default(ConfigDefaultsConst.Crypt[CRYPT_SALT_SCHEME]),
+	[CRYPT_HASH_SALT_ITERATIONS]: Joi.string().optional().default(ConfigDefaultsConst.Crypt[CRYPT_HASH_SALT_ITERATIONS]),
 
 	[APP_HOST]: Joi.string().optional().default(ConfigDefaultsConst.App[APP_HOST]),
 	[APP_PORT]: Joi.number().optional().default(ConfigDefaultsConst.App[APP_PORT]),

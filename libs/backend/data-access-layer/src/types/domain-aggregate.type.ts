@@ -1,4 +1,5 @@
 import type { TResolvedInjectables } from "@sca-backend/aggregate";
-import { DomainAggregateDependencies } from "../config";
+import { DomainExtensionsAggregateDependencies, DomainUtilitiesAggregateDependencies } from "../config";
 
-export type IDomainAggregate = TResolvedInjectables<typeof DomainAggregateDependencies>;
+export type IDomainExtensionsAggregate = TResolvedInjectables<typeof DomainExtensionsAggregateDependencies>;
+export type IDomainUtilitiesAggregate = TResolvedInjectables<typeof DomainUtilitiesAggregateDependencies>;

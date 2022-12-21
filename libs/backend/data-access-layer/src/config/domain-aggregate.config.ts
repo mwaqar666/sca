@@ -1,10 +1,16 @@
 import { SequelizeService } from "@sca-backend/db";
-import { DomainAggregateConst } from "../const";
+import { HashService } from "@sca-backend/security";
+import { DomainExtensionsAggregateConst, DomainUtilitiesAggregateConst } from "../const";
 
-export const DomainAggregateDependencies = {
+export const DomainExtensionsAggregateDependencies = {
 	sequelize: SequelizeService,
 };
 
+export const DomainUtilitiesAggregateDependencies = {
+	hash: HashService,
+};
+
 export const DomainAggregateConfig = {
-	[DomainAggregateConst]: DomainAggregateDependencies,
+	[DomainExtensionsAggregateConst]: DomainExtensionsAggregateDependencies,
+	[DomainUtilitiesAggregateConst]: DomainUtilitiesAggregateDependencies,
 };

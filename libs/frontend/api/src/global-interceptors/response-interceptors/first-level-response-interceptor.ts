@@ -9,6 +9,6 @@ export class FirstLevelResponseInterceptor implements GlobalApiResponseIntercept
 	}
 
 	public async handleInterceptionException(error: any): Promise<ResponseInterceptorException> {
-		throw new ResponseInterceptorException({ error: "First level response interceptor error", message: error });
+		return new ResponseInterceptorException({ error: "First level response interceptor error", message: error });
 	}
 }

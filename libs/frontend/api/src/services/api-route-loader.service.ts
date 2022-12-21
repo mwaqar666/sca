@@ -9,7 +9,7 @@ export class ApiRouteLoaderService {
 	public loadRoutes(routes: Array<IRawApiRoute>): Array<IApiRoute> {
 		this.loadRawRoutes(routes);
 
-		return this.parsedRoutes;
+		return this.flushAndReturnParsedRoutes();
 	}
 
 	private loadRawRoutes(routes: Array<IRawApiRoute>): void;
@@ -24,10 +24,18 @@ export class ApiRouteLoaderService {
 				return;
 			}
 
-			route.route = this.prepareRouteSegments(prefix, route.route);
+			const preparedRoute: IApiRoute = { ...route };
+			preparedRoute.route = this.prepareRouteSegments(prefix, route.route);
 
-			this.parsedRoutes.push(<IApiRoute>route);
+			this.parsedRoutes.push(preparedRoute);
 		});
+	}
+
+	private flushAndReturnParsedRoutes(): Array<IApiRoute> {
+		const parsedRoutes = this.parsedRoutes;
+		this.parsedRoutes = [];
+
+		return parsedRoutes;
 	}
 
 	private prepareRouteSegments(...prefixes: Array<Optional<string>>): string {
