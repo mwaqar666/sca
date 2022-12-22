@@ -1,6 +1,7 @@
-import { Injectable } from "@nestjs/common";
+import { HttpStatus, Injectable, InternalServerErrorException } from "@nestjs/common";
+import type { AppExceptionDto } from "@sca-backend/utils";
 import type { Transaction } from "sequelize";
-import { DatabaseError } from "sequelize";
+import { BaseError } from "sequelize";
 import { Sequelize } from "sequelize-typescript";
 import type { RunningTransaction, TransactionalOperation, TransactionStore } from "../types";
 
@@ -22,11 +23,11 @@ export class SequelizeService {
 
 			return transactionResult;
 		} catch (error) {
-			if (error instanceof DatabaseError) await preparedTransaction.currentTransaction.transaction.rollback();
+			if (error instanceof BaseError) await preparedTransaction.currentTransaction.transaction.rollback();
 
 			if (transactionalOperation.failureCallback) await transactionalOperation.failureCallback(error);
 
-			throw new Error((<Error>error).message);
+			throw this.createInternalServerError(error);
 		}
 	}
 
@@ -40,6 +41,14 @@ export class SequelizeService {
 		if (!preparedTransaction.createdOnThisLevel) return;
 
 		await preparedTransaction.currentTransaction.transaction.commit();
+	}
+
+	private createInternalServerError(error: unknown): InternalServerErrorException {
+		if (error instanceof InternalServerErrorException) return error;
+
+		const caughtException = error as Error;
+		const httpErrorResponse: AppExceptionDto = { error: caughtException.message, message: caughtException.message, statusCode: HttpStatus.INTERNAL_SERVER_ERROR };
+		return new InternalServerErrorException(httpErrorResponse);
 	}
 
 	private async createNewTransaction(): Promise<TransactionStore> {

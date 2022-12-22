@@ -25,7 +25,7 @@ export class UserService {
 		});
 	}
 
-	public async createProjectUser(createUserData: Partial<EntityTableColumnProperties<UserEntity>>, withTransaction?: RunningTransaction): Promise<UserEntity> {
+	public async createUser(createUserData: Partial<EntityTableColumnProperties<UserEntity>>, withTransaction?: RunningTransaction): Promise<UserEntity> {
 		return await this.extensionsAggregateService.services.sequelize.executeTransactionalOperation({
 			withTransaction,
 			transactionCallback: async (runningTransaction: RunningTransaction) => {

@@ -27,9 +27,9 @@ export class ProjectUserService {
 				return await this.projectUserRepository.createEntity({
 					transaction: runningTransaction.currentTransaction.transaction,
 					valuesToCreate: {
-						projectUserUserId: linkUserProjectDto.user.userId,
-						projectUserProjectId: linkUserProjectDto.project.projectId,
-						projectUserParentId: linkUserProjectDto.projectUser ? linkUserProjectDto.projectUser.projectUserId : null,
+						projectUserUserId: linkUserProjectDto.userId,
+						projectUserProjectId: linkUserProjectDto.projectId,
+						projectUserParentId: linkUserProjectDto.projectUserParentId ?? null,
 					},
 				});
 			},

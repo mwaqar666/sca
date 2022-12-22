@@ -4,10 +4,8 @@ import type { RunningTransaction } from "@sca-backend/db";
 import { SequelizeScopeConst } from "@sca-backend/db";
 import { DomainExtensionsAggregateConst } from "../../const";
 import type { IDomainExtensionsAggregate } from "../../types";
-import type { UserEntity } from "../user";
 import type { ProjectDefaultEntity } from "./project-default.entity";
 import { ProjectDefaultRepository } from "./project-default.repository";
-import type { ProjectEntity } from "./project.entity";
 
 @Injectable()
 export class ProjectDefaultService {
@@ -32,15 +30,15 @@ export class ProjectDefaultService {
 		});
 	}
 
-	public async createUserDefaultProject(user: UserEntity, defaultProject: ProjectEntity, withTransaction?: RunningTransaction): Promise<ProjectDefaultEntity> {
+	public async createUserDefaultProject(userId: number, projectId: number, withTransaction?: RunningTransaction): Promise<ProjectDefaultEntity> {
 		return await this.aggregateService.services.sequelize.executeTransactionalOperation({
 			withTransaction,
 			transactionCallback: async (runningTransaction: RunningTransaction) => {
 				return await this.projectDefaultRepository.createEntity({
 					transaction: runningTransaction.currentTransaction.transaction,
 					valuesToCreate: {
-						projectDefaultUserId: user.userId,
-						projectDefaultProjectId: defaultProject.projectId,
+						projectDefaultUserId: userId,
+						projectDefaultProjectId: projectId,
 					},
 				});
 			},
