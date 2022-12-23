@@ -1,0 +1,32 @@
+{
+	"name": "backend-socket",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "/src",
+	"projectType": "library",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"outputs": [
+				"{options.outputPath}"
+			],
+			"options": {
+				"outputPath": "dist/libs/backend/socket",
+				"tsConfig": "libs/backend/socket/tsconfig.json",
+				"packageJson": "libs/backend/socket/package.json",
+				"main": "libs/backend/socket/src/index.ts"
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"libs/backend/socket/**/*.ts"
+				]
+			}
+		}
+	},
+	"tags": []
+}
