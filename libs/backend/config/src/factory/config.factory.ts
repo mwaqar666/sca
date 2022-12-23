@@ -1,4 +1,4 @@
-import { type ConfigFactory as NestConfigFactory } from "@nestjs/config";
+import type { ConfigFactory as NestConfigFactory } from "@nestjs/config";
 import { EnvExtractor } from "@sca-shared/utils";
 import {
 	ACCESS_TOKEN_EXPIRY,
@@ -31,6 +31,10 @@ import {
 	REDIS_USERNAME,
 	REFRESH_TOKEN_EXPIRY,
 	REFRESH_TOKEN_SECRET,
+	SOCKET_AGENT_PATH,
+	SOCKET_AGENT_PORT,
+	SOCKET_CUSTOMER_PATH,
+	SOCKET_CUSTOMER_PORT,
 } from "../const";
 import type { ConfigType } from "../types";
 
@@ -73,6 +77,13 @@ export const ConfigFactory: NestConfigFactory<ConfigType> = () => {
 			saltIterations: parseInt(EnvExtractor.env(CRYPT_SALT_ITERATIONS), 10),
 			saltScheme: EnvExtractor.env(CRYPT_SALT_SCHEME),
 			hashSaltIterations: parseInt(EnvExtractor.env(CRYPT_HASH_SALT_ITERATIONS), 10),
+		},
+
+		socket: {
+			agentSocketPort: parseInt(EnvExtractor.env(SOCKET_AGENT_PORT), 10),
+			agentSocketPath: EnvExtractor.env(SOCKET_AGENT_PATH),
+			customerSocketPort: parseInt(EnvExtractor.env(SOCKET_CUSTOMER_PORT), 10),
+			customerSocketPath: EnvExtractor.env(SOCKET_CUSTOMER_PATH),
 		},
 
 		app: {

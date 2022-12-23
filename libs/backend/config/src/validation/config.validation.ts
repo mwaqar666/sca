@@ -44,6 +44,10 @@ import {
 	REFRESH_TOKEN_EXPIRY,
 	REFRESH_TOKEN_SECRET,
 	SNOWFLAKE,
+	SOCKET_AGENT_PATH,
+	SOCKET_AGENT_PORT,
+	SOCKET_CUSTOMER_PATH,
+	SOCKET_CUSTOMER_PORT,
 	SQLITE,
 	USER_ACCEPTANCE_TESTING,
 } from "../const";
@@ -80,6 +84,11 @@ export const ConfigValidation: Joi.ObjectSchema<ConfigValidationType> = Joi.obje
 	[CRYPT_SALT_ITERATIONS]: Joi.number().optional().default(ConfigDefaultsConst.Crypt[CRYPT_SALT_ITERATIONS]),
 	[CRYPT_SALT_SCHEME]: Joi.string().optional().default(ConfigDefaultsConst.Crypt[CRYPT_SALT_SCHEME]),
 	[CRYPT_HASH_SALT_ITERATIONS]: Joi.string().optional().default(ConfigDefaultsConst.Crypt[CRYPT_HASH_SALT_ITERATIONS]),
+
+	[SOCKET_AGENT_PORT]: Joi.number().optional().default(ConfigDefaultsConst.Socket[SOCKET_AGENT_PORT]),
+	[SOCKET_AGENT_PATH]: Joi.string().optional().default(ConfigDefaultsConst.Socket[SOCKET_AGENT_PATH]),
+	[SOCKET_CUSTOMER_PORT]: Joi.number().optional().default(ConfigDefaultsConst.Socket[SOCKET_CUSTOMER_PORT]),
+	[SOCKET_CUSTOMER_PATH]: Joi.string().optional().default(ConfigDefaultsConst.Socket[SOCKET_CUSTOMER_PATH]),
 
 	[APP_HOST]: Joi.string().optional().default(ConfigDefaultsConst.App[APP_HOST]),
 	[APP_PORT]: Joi.number().optional().default(ConfigDefaultsConst.App[APP_PORT]),

@@ -11,6 +11,7 @@ import type {
 	CRYPT_AUTH_TAG_BYTE_LEN,
 	CRYPT_BLOCK_CIPHER,
 	CRYPT_ENCRYPTION_KEY_BYTE_LENGTH,
+	CRYPT_HASH_SALT_ITERATIONS,
 	CRYPT_INITIALIZATION_VECTOR_BYTE_LEN,
 	CRYPT_SALT_BYTE_LEN,
 	CRYPT_SALT_ITERATIONS,
@@ -30,8 +31,11 @@ import type {
 	REDIS_USERNAME,
 	REFRESH_TOKEN_EXPIRY,
 	REFRESH_TOKEN_SECRET,
+	SOCKET_AGENT_PATH,
+	SOCKET_AGENT_PORT,
+	SOCKET_CUSTOMER_PATH,
+	SOCKET_CUSTOMER_PORT,
 } from "../const";
-import { CRYPT_HASH_SALT_ITERATIONS } from "../const";
 import { DbGenerator, Dialect, Env } from "./config.type";
 
 export interface ConfigValidationType {
@@ -65,6 +69,11 @@ export interface ConfigValidationType {
 	[CRYPT_SALT_ITERATIONS]: Joi.NumberSchema;
 	[CRYPT_SALT_SCHEME]: Joi.StringSchema;
 	[CRYPT_HASH_SALT_ITERATIONS]: Joi.NumberSchema;
+
+	[SOCKET_AGENT_PORT]: Joi.NumberSchema;
+	[SOCKET_AGENT_PATH]: Joi.StringSchema;
+	[SOCKET_CUSTOMER_PORT]: Joi.NumberSchema;
+	[SOCKET_CUSTOMER_PATH]: Joi.StringSchema;
 
 	[APP_HOST]: Joi.StringSchema;
 	[APP_PORT]: Joi.NumberSchema;

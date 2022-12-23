@@ -1,4 +1,16 @@
-import { DEVELOPMENT } from "./config-values.const";
+import {
+	APP_DEFAULT_PORT,
+	DB_DEFAULT_DIALECT,
+	DB_DEFAULT_PORT,
+	DEVELOPMENT,
+	LOCALHOST,
+	MIGRATIONS,
+	REDIS_DEFAULT_PORT,
+	SOCKET_AGENT_DEFAULT_PATH,
+	SOCKET_AGENT_DEFAULT_PORT,
+	SOCKET_CUSTOMER_DEFAULT_PATH,
+	SOCKET_CUSTOMER_DEFAULT_PORT,
+} from "./config-values.const";
 import {
 	ACCESS_TOKEN_EXPIRY,
 	APP_HOST,
@@ -18,6 +30,10 @@ import {
 	REDIS_HOST,
 	REDIS_PORT,
 	REFRESH_TOKEN_EXPIRY,
+	SOCKET_AGENT_PATH,
+	SOCKET_AGENT_PORT,
+	SOCKET_CUSTOMER_PATH,
+	SOCKET_CUSTOMER_PORT,
 } from "./config.const";
 
 export const ConfigDefaultsConst = {
@@ -29,15 +45,15 @@ export const ConfigDefaultsConst = {
 	},
 
 	Database: {
-		[DB_HOST]: "localhost",
-		[DB_DIALECT]: "mysql",
-		[DB_PORT]: 3306,
-		[DB_GENERATOR]: "migrations",
+		[DB_HOST]: LOCALHOST,
+		[DB_DIALECT]: DB_DEFAULT_DIALECT,
+		[DB_PORT]: DB_DEFAULT_PORT,
+		[DB_GENERATOR]: MIGRATIONS,
 	},
 
 	Redis: {
-		[REDIS_HOST]: "localhost",
-		[REDIS_PORT]: 6379,
+		[REDIS_HOST]: LOCALHOST,
+		[REDIS_PORT]: REDIS_DEFAULT_PORT,
 	},
 
 	Crypt: {
@@ -51,8 +67,15 @@ export const ConfigDefaultsConst = {
 		[CRYPT_HASH_SALT_ITERATIONS]: 10,
 	},
 
+	Socket: {
+		[SOCKET_AGENT_PORT]: SOCKET_AGENT_DEFAULT_PORT,
+		[SOCKET_AGENT_PATH]: SOCKET_AGENT_DEFAULT_PATH,
+		[SOCKET_CUSTOMER_PORT]: SOCKET_CUSTOMER_DEFAULT_PORT,
+		[SOCKET_CUSTOMER_PATH]: SOCKET_CUSTOMER_DEFAULT_PATH,
+	},
+
 	App: {
-		[APP_HOST]: "localhost",
-		[APP_PORT]: 3000,
+		[APP_HOST]: LOCALHOST,
+		[APP_PORT]: APP_DEFAULT_PORT,
 	},
 };

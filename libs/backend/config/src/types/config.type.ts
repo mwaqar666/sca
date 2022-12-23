@@ -45,6 +45,13 @@ export interface CryptConfig {
 	hashSaltIterations: number;
 }
 
+export interface SocketConfig {
+	customerSocketPath: string;
+	customerSocketPort: number;
+	agentSocketPath: string;
+	agentSocketPort: number;
+}
+
 export interface AppConfig {
 	host: string;
 	port: number;
@@ -62,6 +69,8 @@ export interface ConfigType {
 	redis: RedisConfig;
 
 	crypt: CryptConfig;
+
+	socket: SocketConfig;
 
 	app: AppConfig;
 }

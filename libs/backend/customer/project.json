@@ -1,0 +1,32 @@
+{
+	"name": "backend-customer",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/backend/customer/src",
+	"projectType": "library",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"outputs": [
+				"{options.outputPath}"
+			],
+			"options": {
+				"outputPath": "dist/libs/backend/customer",
+				"tsConfig": "libs/backend/customer/tsconfig.json",
+				"packageJson": "libs/backend/customer/package.json",
+				"main": "libs/backend/customer/src/index.ts"
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"libs/backend/customer/**/*.ts"
+				]
+			}
+		}
+	},
+	"tags": []
+}
