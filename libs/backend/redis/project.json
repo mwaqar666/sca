@@ -1,7 +1,7 @@
 {
 	"name": "backend-redis",
 	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
-	"sourceRoot": "src",
+	"sourceRoot": "libs/backend/redis/src",
 	"projectType": "library",
 	"targets": {
 		"build": {

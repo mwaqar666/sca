@@ -45,6 +45,9 @@
 			"@sca-backend/utils": [
 				"libs/backend/utils/src/index.ts"
 			],
+			"@sca-backend/websocket": [
+				"libs/backend/websocket/src/index.ts"
+			],
 			"@sca-frontend/api": [
 				"libs/frontend/api/src/index.ts"
 			],

@@ -1,7 +1,7 @@
 {
 	"name": "backend-config",
 	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
-	"sourceRoot": "src",
+	"sourceRoot": "libs/backend/config/src",
 	"projectType": "library",
 	"targets": {
 		"build": {
