@@ -14,7 +14,7 @@ export class SignUpService {
 	) {}
 
 	public async signUp(signUpRequestDto: SignUpRequestDto): Promise<SignUpResponseDto> {
-		const signUpRoute = this.apiRouteService.findRoute(AuthApiRoutes.routes.signUp.name).withRequestModel(signUpRequestDto).getProcessedRoute<SignUpRequestDto>();
+		const signUpRoute = this.apiRouteService.findRoute(AuthApiRoutes.Routes.SignUp.Name).withRequestModel(signUpRequestDto).getProcessedRoute<SignUpRequestDto>();
 		const { successful, response } = await this.signUpApiService.execute(signUpRoute);
 
 		if (!successful) throw new Error(response.error);

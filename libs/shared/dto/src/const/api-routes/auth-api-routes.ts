@@ -1,15 +1,15 @@
 export const AuthApiRoutes = {
-	prefix: "auth",
-	routes: {
-		signIn: {
-			method: "POST",
-			name: "auth.sign-in",
-			path: "sign-in",
+	Prefix: "auth",
+	Routes: {
+		SignIn: {
+			Method: "POST",
+			Name: "auth.sign-in",
+			Path: "sign-in",
 		},
-		signUp: {
-			method: "POST",
-			name: "auth.sign-up",
-			path: "sign-up",
+		SignUp: {
+			Method: "POST",
+			Name: "auth.sign-up",
+			Path: "sign-up",
 		},
 	},
 } as const;

@@ -14,7 +14,7 @@ export class SignInService {
 	) {}
 
 	public async signIn(signInRequestDto: SignInRequestDto): Promise<SignInResponseDto> {
-		const signInRoute = this.apiRouteService.findRoute(AuthApiRoutes.routes.signIn.name).withRequestModel(signInRequestDto).getProcessedRoute<SignInRequestDto>();
+		const signInRoute = this.apiRouteService.findRoute(AuthApiRoutes.Routes.SignIn.Name).withRequestModel(signInRequestDto).getProcessedRoute<SignInRequestDto>();
 		const { successful, response } = await this.signInApiService.execute(signInRoute);
 
 		if (!successful) throw new Error(response.error);

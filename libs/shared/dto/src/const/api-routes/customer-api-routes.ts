@@ -1,10 +1,10 @@
 export const CustomerApiRoutes = {
-	prefix: "customer",
-	routes: {
-		handleCustomer: {
-			method: "GET",
-			name: "customer.handle-customer",
-			path: "handle-customer",
+	Prefix: "customer",
+	Routes: {
+		HandleCustomer: {
+			Method: "GET",
+			Name: "customer.handle-customer",
+			Path: "handle-customer",
 		},
 	},
 } as const;
