@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { type RefreshTokenPayloadDto } from "@sca-shared/dto";
+import { type IRefreshTokenPayload } from "@sca-shared/dto";
 import { BaseJwtStrategyFactory } from "../base";
 import { REFRESH_TOKEN_STRATEGY } from "../const";
 import { JwtStrategyConfigFactory } from "../factories";
@@ -14,7 +14,7 @@ export class RefreshTokenStrategy extends BaseJwtStrategyFactory(REFRESH_TOKEN_S
 		super(jwtStrategyConfig.refreshTokenStrategyConfig);
 	}
 
-	public async validate(refreshTokenPayload: RefreshTokenPayloadDto): Promise<void> {
+	public async validate(refreshTokenPayload: IRefreshTokenPayload): Promise<void> {
 		console.log(refreshTokenPayload);
 	}
 }

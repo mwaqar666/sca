@@ -33,6 +33,7 @@
 		"@types/node": "^18.11.17",
 		"@types/passport-jwt": "^3.0.8",
 		"@types/sequelize": "^4.28.14",
+		"@types/uuid": "^9.0.0",
 		"@typescript-eslint/eslint-plugin": "^5.36.1",
 		"@typescript-eslint/parser": "^5.36.1",
 		"autoprefixer": "^10.4.0",
@@ -95,6 +96,7 @@
 		"socket.io": "^4.5.4",
 		"tslib": "^2.3.0",
 		"umzug": "^3.2.1",
+		"uuid": "^9.0.0",
 		"zone.js": "~0.11.4"
 	}
 }

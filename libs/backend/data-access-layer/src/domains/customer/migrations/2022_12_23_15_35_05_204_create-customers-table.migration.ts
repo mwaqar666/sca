@@ -26,15 +26,18 @@ export default class extends BaseMigration {
 				type: DataTypes.INTEGER,
 			},
 			customerFullName: {
-				allowNull: true,
+				defaultValue: "Anonymous",
+				allowNull: false,
 				type: DataTypes.STRING(100),
 			},
 			customerEmail: {
-				allowNull: true,
+				defaultValue: "Anonymous",
+				allowNull: false,
 				type: DataTypes.STRING(100),
 			},
 			customerContact: {
-				allowNull: true,
+				defaultValue: "Anonymous",
+				allowNull: false,
 				type: DataTypes.STRING(100),
 			},
 			customerCreatedAt: {

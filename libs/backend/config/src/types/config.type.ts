@@ -13,6 +13,8 @@ export interface TokenConfig {
 	accessTokenExpiry: string;
 	refreshTokenSecret: string;
 	refreshTokenExpiry: string;
+	customerTokenSecret: string;
+	customerTokenExpiry: string;
 }
 
 export interface DatabaseConfig {

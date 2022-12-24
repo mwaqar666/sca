@@ -30,17 +30,20 @@ export class CustomerEntity extends SequelizeBaseEntity<CustomerEntity> {
 	@Column({ type: DataType.INTEGER })
 	public customerCustomerIdentifierId: number;
 
-	@AllowNull(true)
+	@Default("Anonymous")
+	@AllowNull(false)
 	@Column({ type: DataType.STRING(100) })
-	public customerFullName: Nullable<string>;
+	public customerFullName: string;
 
-	@AllowNull(true)
+	@Default("Anonymous")
+	@AllowNull(false)
 	@Column({ type: DataType.STRING(100) })
-	public customerEmail: Nullable<string>;
+	public customerEmail: string;
 
-	@AllowNull(true)
+	@Default("Anonymous")
+	@AllowNull(false)
 	@Column({ type: DataType.STRING(100) })
-	public customerContact: Nullable<string>;
+	public customerContact: string;
 
 	@CreatedAt
 	public customerCreatedAt: Date;

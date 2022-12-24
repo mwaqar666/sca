@@ -12,11 +12,11 @@ export class ProjectService {
 		// Dependencies
 
 		private readonly projectRepository: ProjectRepository,
-		@Inject(DomainExtensionsAggregateConst) private readonly aggregateService: AggregateService<IDomainExtensionsAggregate>,
+		@Inject(DomainExtensionsAggregateConst) private readonly extensionsAggregateService: AggregateService<IDomainExtensionsAggregate>,
 	) {}
 
 	public async createProject(createProjectData: Partial<EntityTableColumnProperties<ProjectEntity>>, withTransaction?: RunningTransaction): Promise<ProjectEntity> {
-		return await this.aggregateService.services.sequelize.executeTransactionalOperation({
+		return await this.extensionsAggregateService.services.sequelize.executeTransactionalOperation({
 			withTransaction,
 			transactionCallback: async (runningTransaction: RunningTransaction) => {
 				return await this.projectRepository.createEntity({

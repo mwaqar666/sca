@@ -23,6 +23,7 @@ import {
 	CRYPT_SALT_BYTE_LEN,
 	CRYPT_SALT_ITERATIONS,
 	CRYPT_SALT_SCHEME,
+	CUSTOMER_TOKEN_EXPIRY,
 	DB_DIALECT,
 	DB_GENERATOR,
 	DB_HOST,
@@ -42,6 +43,7 @@ export const ConfigDefaultsConst = {
 	Token: {
 		[ACCESS_TOKEN_EXPIRY]: "5m",
 		[REFRESH_TOKEN_EXPIRY]: "24hr",
+		[CUSTOMER_TOKEN_EXPIRY]: "24hr",
 	},
 
 	Database: {

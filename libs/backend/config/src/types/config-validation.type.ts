@@ -16,6 +16,8 @@ import type {
 	CRYPT_SALT_BYTE_LEN,
 	CRYPT_SALT_ITERATIONS,
 	CRYPT_SALT_SCHEME,
+	CUSTOMER_TOKEN_EXPIRY,
+	CUSTOMER_TOKEN_SECRET,
 	DB_DATABASE,
 	DB_DIALECT,
 	DB_GENERATOR,
@@ -45,6 +47,8 @@ export interface ConfigValidationType {
 	[ACCESS_TOKEN_EXPIRY]: Joi.StringSchema;
 	[REFRESH_TOKEN_SECRET]: Joi.StringSchema;
 	[REFRESH_TOKEN_EXPIRY]: Joi.StringSchema;
+	[CUSTOMER_TOKEN_SECRET]: Joi.StringSchema;
+	[CUSTOMER_TOKEN_EXPIRY]: Joi.StringSchema;
 
 	[DB_USERNAME]: Joi.StringSchema;
 	[DB_PASSWORD]: Joi.StringSchema;

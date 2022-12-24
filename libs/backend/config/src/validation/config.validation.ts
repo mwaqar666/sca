@@ -17,6 +17,8 @@ import {
 	CRYPT_SALT_BYTE_LEN,
 	CRYPT_SALT_ITERATIONS,
 	CRYPT_SALT_SCHEME,
+	CUSTOMER_TOKEN_EXPIRY,
+	CUSTOMER_TOKEN_SECRET,
 	DB2,
 	DB_DATABASE,
 	DB_DIALECT,
@@ -60,6 +62,8 @@ export const ConfigValidation: Joi.ObjectSchema<ConfigValidationType> = Joi.obje
 	[ACCESS_TOKEN_EXPIRY]: Joi.string().optional().default(ConfigDefaultsConst.Token[ACCESS_TOKEN_EXPIRY]),
 	[REFRESH_TOKEN_SECRET]: Joi.string().required(),
 	[REFRESH_TOKEN_EXPIRY]: Joi.string().optional().default(ConfigDefaultsConst.Token[REFRESH_TOKEN_EXPIRY]),
+	[CUSTOMER_TOKEN_SECRET]: Joi.string().required(),
+	[CUSTOMER_TOKEN_EXPIRY]: Joi.string().optional().default(ConfigDefaultsConst.Token[CUSTOMER_TOKEN_EXPIRY]),
 
 	[DB_USERNAME]: Joi.string().required(),
 	[DB_PASSWORD]: Joi.string().required(),

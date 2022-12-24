@@ -1,20 +1,18 @@
 import { Injectable } from "@nestjs/common";
 import type { ProjectEntity, ProjectUserEntity, UserEntity } from "@sca-backend/data-access-layer";
-import { AccessToken, CryptService, RefreshToken, TokenService } from "@sca-backend/security";
-import type { AccessTokenPayloadDto, AuthenticatedProject, RefreshTokenPayloadDto } from "@sca-shared/dto";
+import { TokenService } from "@sca-backend/security";
+import type { IAccessToken, IAuthenticatedProject, IRefreshTokenPayload } from "@sca-shared/dto";
 
 @Injectable()
 export class AuthTokenService {
 	public constructor(
 		// Dependencies
 
-		private readonly cryptService: CryptService,
 		private readonly tokenService: TokenService,
 	) {}
 
 	public async prepareAccessToken(userWithProject: UserEntity): Promise<string> {
-		const payload: AccessTokenPayloadDto = {
-			tokenIdentity: this.cryptService.encrypt(AccessToken),
+		const payload: Omit<IAccessToken, "tokenIdentity"> = {
 			userUuid: userWithProject.userUuid,
 			userFirstName: userWithProject.userFirstName,
 			userMiddleName: userWithProject.userMiddleName,
@@ -28,8 +26,7 @@ export class AuthTokenService {
 	}
 
 	public async prepareRefreshToken(userWithProject: UserEntity): Promise<string> {
-		const payload: RefreshTokenPayloadDto = {
-			tokenIdentity: this.cryptService.encrypt(RefreshToken),
+		const payload: Omit<IRefreshTokenPayload, "tokenIdentity"> = {
 			userUuid: userWithProject.userUuid,
 			projectUuid: userWithProject.userDefaultProject.projectDefaultProject.projectUuid,
 		};
@@ -37,11 +34,11 @@ export class AuthTokenService {
 		return await this.tokenService.createAndSignRefreshToken(payload);
 	}
 
-	private prepareAllProjectStructure(projects: Array<ProjectUserEntity>): Array<AuthenticatedProject> {
+	private prepareAllProjectStructure(projects: Array<ProjectUserEntity>): Array<IAuthenticatedProject> {
 		return projects.map((projectUser: ProjectUserEntity) => this.prepareSingleProjectStructure(projectUser.projectUserProject));
 	}
 
-	private prepareSingleProjectStructure(project: ProjectEntity): AuthenticatedProject {
+	private prepareSingleProjectStructure(project: ProjectEntity): IAuthenticatedProject {
 		return {
 			projectUuid: project.projectUuid,
 			projectName: project.projectName,

@@ -1,2 +1,2 @@
-export * from "./access-token-payload.dto";
-export * from "./refresh-token-payload.dto";
+export * from "./access-token-payload";
+export * from "./refresh-token-payload";

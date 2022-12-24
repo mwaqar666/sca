@@ -16,7 +16,7 @@ export class UserProjectIdentityService {
 		private readonly projectService: ProjectService,
 		private readonly projectUserService: ProjectUserService,
 		private readonly projectDefaultService: ProjectDefaultService,
-		@Inject(DomainExtensionsAggregateConst) private readonly aggregateService: AggregateService<IDomainExtensionsAggregate>,
+		@Inject(DomainExtensionsAggregateConst) private readonly extensionsAggregateService: AggregateService<IDomainExtensionsAggregate>,
 	) {}
 
 	public async authenticateProjectUserWithAllAndDefaultProjects(signInRequest: ISignInRequest): Promise<FailedAuthReasonUser | FailedAuthReasonProject | SuccessfulAuthWithUserAndProject> {
@@ -40,7 +40,7 @@ export class UserProjectIdentityService {
 	}
 
 	public async registerUserWithProject(signUpRequest: ISignUpRequest): Promise<UserEntity> {
-		return await this.aggregateService.services.sequelize.executeTransactionalOperation({
+		return await this.extensionsAggregateService.services.sequelize.executeTransactionalOperation({
 			transactionCallback: async (runningTransaction: RunningTransaction) => {
 				const user = await this.userService.createUser(signUpRequest, runningTransaction);
 				const project = await this.projectService.createProject(signUpRequest, runningTransaction);

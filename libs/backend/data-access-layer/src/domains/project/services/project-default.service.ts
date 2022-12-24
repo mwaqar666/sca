@@ -13,11 +13,11 @@ export class ProjectDefaultService {
 		// Dependencies
 
 		private readonly projectDefaultRepository: ProjectDefaultRepository,
-		@Inject(DomainExtensionsAggregateConst) private readonly aggregateService: AggregateService<IDomainExtensionsAggregate>,
+		@Inject(DomainExtensionsAggregateConst) private readonly extensionsAggregateService: AggregateService<IDomainExtensionsAggregate>,
 	) {}
 
 	public async findOrCreateUserDefaultProjectConnection(userId: number, projectId: number, withTransaction?: RunningTransaction): Promise<ProjectDefaultEntity> {
-		return await this.aggregateService.services.sequelize.executeTransactionalOperation({
+		return await this.extensionsAggregateService.services.sequelize.executeTransactionalOperation({
 			withTransaction,
 			transactionCallback: async (runningTransaction: RunningTransaction) => {
 				return await this.projectDefaultRepository.findOrCreateUserDefaultProjectConnection(
@@ -31,7 +31,7 @@ export class ProjectDefaultService {
 	}
 
 	public async createUserDefaultProject(userId: number, projectId: number, withTransaction?: RunningTransaction): Promise<ProjectDefaultEntity> {
-		return await this.aggregateService.services.sequelize.executeTransactionalOperation({
+		return await this.extensionsAggregateService.services.sequelize.executeTransactionalOperation({
 			withTransaction,
 			transactionCallback: async (runningTransaction: RunningTransaction) => {
 				return await this.projectDefaultRepository.createEntity({

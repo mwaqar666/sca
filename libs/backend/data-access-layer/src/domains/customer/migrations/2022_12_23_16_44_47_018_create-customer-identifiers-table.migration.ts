@@ -18,7 +18,7 @@ export default class extends BaseMigration {
 				allowNull: false,
 				type: DataTypes.UUID,
 			},
-			customerIdentifierCookieValue: {
+			customerIdentifierCookie: {
 				allowNull: false,
 				type: DataTypes.STRING(100),
 			},

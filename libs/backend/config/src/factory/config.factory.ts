@@ -16,6 +16,8 @@ import {
 	CRYPT_SALT_BYTE_LEN,
 	CRYPT_SALT_ITERATIONS,
 	CRYPT_SALT_SCHEME,
+	CUSTOMER_TOKEN_EXPIRY,
+	CUSTOMER_TOKEN_SECRET,
 	DB_DATABASE,
 	DB_DIALECT,
 	DB_GENERATOR,
@@ -47,6 +49,8 @@ export const ConfigFactory: NestConfigFactory<ConfigType> = () => {
 			accessTokenExpiry: EnvExtractor.env(ACCESS_TOKEN_EXPIRY),
 			refreshTokenSecret: EnvExtractor.env(REFRESH_TOKEN_SECRET),
 			refreshTokenExpiry: EnvExtractor.env(REFRESH_TOKEN_EXPIRY),
+			customerTokenSecret: EnvExtractor.env(CUSTOMER_TOKEN_SECRET),
+			customerTokenExpiry: EnvExtractor.env(CUSTOMER_TOKEN_EXPIRY),
 		},
 
 		database: {

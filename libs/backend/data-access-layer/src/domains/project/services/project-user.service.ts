@@ -13,7 +13,7 @@ export class ProjectUserService {
 		// Dependencies
 
 		private readonly projectUserRepository: ProjectUserRepository,
-		@Inject(DomainExtensionsAggregateConst) private readonly aggregateService: AggregateService<IDomainExtensionsAggregate>,
+		@Inject(DomainExtensionsAggregateConst) private readonly extensionsAggregateService: AggregateService<IDomainExtensionsAggregate>,
 	) {}
 
 	public async findAllProjectsForUser(userId: number, ...scopes: EntityScope): Promise<Array<ProjectUserEntity>> {
@@ -21,7 +21,7 @@ export class ProjectUserService {
 	}
 
 	public async linkProjectToUser(linkUserProjectDto: LinkUserProjectDto, withTransaction?: RunningTransaction): Promise<ProjectUserEntity> {
-		return await this.aggregateService.services.sequelize.executeTransactionalOperation({
+		return await this.extensionsAggregateService.services.sequelize.executeTransactionalOperation({
 			withTransaction,
 			transactionCallback: async (runningTransaction: RunningTransaction) => {
 				return await this.projectUserRepository.createEntity({

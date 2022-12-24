@@ -77,7 +77,7 @@ export class BaseRepository<TEntity extends SequelizeBaseEntity<TEntity>> {
 	public async updateEntity(entityUpdateOptions: EntityUpdateOptions<TEntity>): Promise<TEntity> {
 		let foundEntity: TEntity;
 
-		if ("findOptions" in entityUpdateOptions) {
+		if (entityUpdateOptions.findOptions) {
 			foundEntity = await this.findOrFailEntity({ findOptions: entityUpdateOptions.findOptions, scopes: entityUpdateOptions.scopes });
 		} else {
 			foundEntity = await this.resolveOrFailEntity(entityUpdateOptions.entity, entityUpdateOptions.scopes);
@@ -106,7 +106,7 @@ export class BaseRepository<TEntity extends SequelizeBaseEntity<TEntity>> {
 	}
 
 	public async deleteEntity(entityDeleteOptions: EntityDeleteOptions<TEntity>): Promise<boolean> {
-		if ("findOptions" in entityDeleteOptions) {
+		if (entityDeleteOptions.findOptions) {
 			const foundEntity = await this.findEntity({ findOptions: entityDeleteOptions.findOptions, scopes: entityDeleteOptions.scopes });
 			if (!foundEntity) return false;
 

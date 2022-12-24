@@ -28,7 +28,7 @@ export class CustomerIdentifierEntity extends SequelizeBaseEntity<CustomerIdenti
 	@Unique
 	@AllowNull(false)
 	@Column({ type: DataType.STRING(100) })
-	public customerIdentifierCookieValue: string;
+	public customerIdentifierCookie: string;
 
 	@AllowNull(false)
 	@Column({ type: DataType.STRING(100) })

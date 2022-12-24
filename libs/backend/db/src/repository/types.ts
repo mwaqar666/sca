@@ -1,3 +1,4 @@
+import { ExclusiveUnion } from "@sca-shared/utils";
 import type { FindOptions, Transaction } from "sequelize";
 import type { EntityScope, EntityTableColumnProperties, SequelizeBaseEntity } from "../entity";
 
@@ -23,7 +24,7 @@ export interface EntityFinderOptions<TEntity extends SequelizeBaseEntity<TEntity
 	findOptions: FindOptions<TEntity>;
 }
 
-export type EntityFinderOrResolverOption<TEntity extends SequelizeBaseEntity<TEntity>> = EntityResolverOptions<TEntity> | EntityFinderOptions<TEntity>;
+export type EntityFinderOrResolverOption<TEntity extends SequelizeBaseEntity<TEntity>> = ExclusiveUnion<[EntityResolverOptions<TEntity>, EntityFinderOptions<TEntity>]>;
 
 export interface EntityCreateOptions<TEntity extends SequelizeBaseEntity<TEntity>> extends Transactional {
 	valuesToCreate: Partial<EntityTableColumnProperties<TEntity>>;
