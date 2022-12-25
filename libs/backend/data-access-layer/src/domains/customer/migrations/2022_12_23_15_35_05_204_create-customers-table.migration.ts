@@ -1,12 +1,9 @@
 import { BaseMigration, type SequelizeQueryInterface, TableHelpers } from "@sca-backend/db";
 import { DataTypes } from "sequelize";
-import { CustomerEntity, CustomerIdentifierEntity } from "../entities";
+import { CustomerEntity } from "../entities";
 
 export default class extends BaseMigration {
-	private customersTableName = TableHelpers.createTableName(CustomerEntity);
-	private customerIdentifiersTableName = TableHelpers.createTableName(CustomerIdentifierEntity);
-
-	private customerCustomerIdentifierForeignKeyConstraint = TableHelpers.createForeignConstraintName(CustomerEntity, "customerCustomerIdentifierId");
+	private readonly customersTableName = TableHelpers.createTableName(CustomerEntity);
 
 	public async up(queryInterface: SequelizeQueryInterface): Promise<void> {
 		await queryInterface.createTable<CustomerEntity>(this.customersTableName, {
@@ -21,24 +18,17 @@ export default class extends BaseMigration {
 				allowNull: false,
 				type: DataTypes.UUID,
 			},
-			customerCustomerIdentifierId: {
+			customerPersonalInfo: {
 				allowNull: false,
-				type: DataTypes.INTEGER,
+				type: DataTypes.TEXT,
 			},
-			customerFullName: {
-				defaultValue: "Anonymous",
+			customerIpInfo: {
 				allowNull: false,
-				type: DataTypes.STRING(100),
+				type: DataTypes.TEXT,
 			},
-			customerEmail: {
-				defaultValue: "Anonymous",
+			customerCookie: {
 				allowNull: false,
-				type: DataTypes.STRING(100),
-			},
-			customerContact: {
-				defaultValue: "Anonymous",
-				allowNull: false,
-				type: DataTypes.STRING(100),
+				type: DataTypes.STRING,
 			},
 			customerCreatedAt: {
 				allowNull: false,
@@ -53,23 +43,9 @@ export default class extends BaseMigration {
 				type: DataTypes.DATE,
 			},
 		});
-
-		await queryInterface.addConstraint(this.customersTableName, {
-			type: "foreign key",
-			name: this.customerCustomerIdentifierForeignKeyConstraint,
-			fields: ["customerCustomerIdentifierId"],
-			references: {
-				table: this.customerIdentifiersTableName,
-				field: "customerIdentifierId",
-			},
-			onUpdate: "cascade",
-			onDelete: "cascade",
-		});
 	}
 
 	public async down(queryInterface: SequelizeQueryInterface): Promise<void> {
-		await queryInterface.removeConstraint(this.customersTableName, this.customerCustomerIdentifierForeignKeyConstraint);
-
 		await queryInterface.dropTable(this.customersTableName);
 	}
 }

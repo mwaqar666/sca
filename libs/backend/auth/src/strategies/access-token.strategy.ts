@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import type { IAccessToken } from "@sca-shared/dto";
+import type { IAccessTokenPayload } from "@sca-shared/dto";
 import { BaseJwtStrategyFactory } from "../base";
 import { ACCESS_TOKEN_STRATEGY } from "../const";
 import { JwtStrategyConfigFactory } from "../factories";
@@ -14,7 +14,7 @@ export class AccessTokenStrategy extends BaseJwtStrategyFactory(ACCESS_TOKEN_STR
 		super(jwtStrategyConfig.accessTokenStrategyConfig);
 	}
 
-	public async validate(accessTokenPayload: IAccessToken): Promise<void> {
+	public async validate(accessTokenPayload: IAccessTokenPayload): Promise<void> {
 		console.log(accessTokenPayload);
 	}
 }

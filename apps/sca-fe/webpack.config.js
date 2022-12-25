@@ -1,11 +1,13 @@
-const { GetEnvVars: readEnvFile } = require("env-cmd");
-const { resolve } = require("path");
-const { DefinePlugin } = require("webpack");
+// noinspection DuplicatedCode
+
+const {GetEnvVars: readEnvFile} = require("env-cmd");
+const {resolve} = require("path");
+const {DefinePlugin} = require("webpack");
 
 const extractEnvFileVariables = async (configuration) => {
 	const environmentFilePath = resolve(process.cwd(), "config", "frontend", `.env.${configuration}`);
 
-	const environmentVariables = await readEnvFile({ envFile: { filePath: environmentFilePath } });
+	const environmentVariables = await readEnvFile({envFile: {filePath: environmentFilePath}});
 	environmentVariables["NODE_ENV"] = configuration;
 
 	const emptyFilteredEnvironmentVariables = {};

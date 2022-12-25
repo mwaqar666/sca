@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Request as NestRequest } from "@nestjs/common";
+import { Body, Controller, Post, Request as NestRequest } from "@nestjs/common";
 import { CustomerApiRoutes } from "@sca-shared/dto";
 import type { Request } from "express";
 import { HandleCustomerRequestDto, HandleCustomerResponseDto } from "../dto";
@@ -12,10 +12,8 @@ export class CustomerController {
 		private readonly customerHandleService: CustomerHandleService,
 	) {}
 
-	@Get(CustomerApiRoutes.Routes.HandleCustomer.Path)
+	@Post(CustomerApiRoutes.Routes.HandleCustomer.Path)
 	public async initializeCustomer(@NestRequest() request: Request, @Body() handleCustomerRequestDto: HandleCustomerRequestDto): Promise<HandleCustomerResponseDto> {
-		this.customerHandleService.handleCustomer(request, handleCustomerRequestDto);
-
-		return { customerToken: "" };
+		return await this.customerHandleService.handleCustomer(request, handleCustomerRequestDto);
 	}
 }

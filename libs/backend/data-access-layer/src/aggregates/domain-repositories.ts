@@ -1,4 +1,4 @@
-import { CustomerIdentifierRepository, CustomerRepository, ProjectDefaultRepository, ProjectRepository, ProjectUserRepository, UserRepository, UserTypeRepository } from "../domains";
+import { CustomerRepository, ProjectCustomerRepository, ProjectDefaultRepository, ProjectRepository, ProjectUserRepository, UserRepository, UserTypeRepository } from "../domains";
 
 export const DomainRepositories = [
 	// Register repositories here
@@ -8,6 +8,6 @@ export const DomainRepositories = [
 	ProjectRepository,
 	ProjectDefaultRepository,
 	ProjectUserRepository,
-	CustomerIdentifierRepository,
+	ProjectCustomerRepository,
 	CustomerRepository,
 ];

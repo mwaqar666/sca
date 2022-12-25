@@ -1,7 +1,7 @@
 import type { Nullable } from "@sca-shared/utils";
+import type { ITokenIdentity } from "./token-identity";
 
-export interface IAccessToken {
-	tokenIdentity: string;
+export interface IAccessTokenPayload extends ITokenIdentity {
 	userUuid: string;
 	userFirstName: string;
 	userMiddleName: Nullable<string>;

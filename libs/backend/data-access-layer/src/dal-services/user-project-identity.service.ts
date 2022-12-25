@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { AggregateService } from "@sca-backend/aggregate";
+import type { AggregateService } from "@sca-backend/aggregate";
 import { type RunningTransaction, SequelizeScopeConst } from "@sca-backend/db";
 import type { ISignInRequest, ISignUpRequest } from "@sca-shared/dto";
 import { DomainExtensionsAggregateConst } from "../const";

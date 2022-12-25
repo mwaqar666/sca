@@ -1,4 +1,4 @@
-import { CustomerIdentifierService, CustomerService, ProjectDefaultService, ProjectService, ProjectUserService, UserService, UserTypeService } from "../domains";
+import { CustomerService, ProjectCustomerService, ProjectDefaultService, ProjectService, ProjectUserService, UserService, UserTypeService } from "../domains";
 
 export const DomainServices = [
 	// Register data services here
@@ -8,6 +8,6 @@ export const DomainServices = [
 	ProjectService,
 	ProjectDefaultService,
 	ProjectUserService,
-	CustomerIdentifierService,
+	ProjectCustomerService,
 	CustomerService,
 ];

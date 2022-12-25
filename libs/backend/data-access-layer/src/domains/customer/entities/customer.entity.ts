@@ -1,7 +1,9 @@
 import { BaseEntityScopes, SequelizeBaseEntity } from "@sca-backend/db";
 import type { Nullable } from "@sca-shared/utils";
-import { AllowNull, AutoIncrement, BelongsTo, Column, CreatedAt, DataType, Default, DeletedAt, ForeignKey, PrimaryKey, Scopes, Table, Unique, UpdatedAt } from "sequelize-typescript";
-import { CustomerIdentifierEntity, type CustomerIdentifierEntity as CustomerIdentifierEntityType } from "./customer-identifier.entity";
+import { JsonHelper } from "@sca-shared/utils";
+import { AllowNull, AutoIncrement, Column, CreatedAt, DataType, Default, DeletedAt, HasMany, HasOne, PrimaryKey, Scopes, Table, Unique, UpdatedAt } from "sequelize-typescript";
+import { ProjectCustomerEntity, type ProjectCustomerEntity as ProjectCustomerEntityType } from "../../project";
+import type { ICustomerIpInfo, ICustomerPersonalInfo } from "../types";
 
 @Scopes(() => ({
 	...BaseEntityScopes.commonScopes(() => CustomerEntity),
@@ -25,25 +27,37 @@ export class CustomerEntity extends SequelizeBaseEntity<CustomerEntity> {
 	@Column({ type: DataType.UUID })
 	public customerUuid: string;
 
-	@ForeignKey(() => CustomerIdentifierEntity)
 	@AllowNull(false)
-	@Column({ type: DataType.INTEGER })
-	public customerCustomerIdentifierId: number;
+	@Column({
+		type: DataType.TEXT,
+		get() {
+			const json = this.getDataValue("customerPersonalInfo");
+			return JsonHelper.parse<ICustomerPersonalInfo>(json);
+		},
+		set(data: ICustomerPersonalInfo) {
+			const parsedData = JsonHelper.stringify(data);
+			this.setDataValue("customerPersonalInfo", parsedData);
+		},
+	})
+	public customerPersonalInfo: ICustomerPersonalInfo;
 
-	@Default("Anonymous")
 	@AllowNull(false)
-	@Column({ type: DataType.STRING(100) })
-	public customerFullName: string;
+	@Column({
+		type: DataType.TEXT,
+		get() {
+			const json = this.getDataValue("customerIpInfo");
+			return JsonHelper.parse<ICustomerIpInfo>(json);
+		},
+		set(data: ICustomerIpInfo) {
+			const parsedData = JsonHelper.stringify(data);
+			this.setDataValue("customerIpInfo", parsedData);
+		},
+	})
+	public customerIpInfo: ICustomerIpInfo;
 
-	@Default("Anonymous")
 	@AllowNull(false)
-	@Column({ type: DataType.STRING(100) })
-	public customerEmail: string;
-
-	@Default("Anonymous")
-	@AllowNull(false)
-	@Column({ type: DataType.STRING(100) })
-	public customerContact: string;
+	@Column({ type: DataType.STRING })
+	public customerCookie: string;
 
 	@CreatedAt
 	public customerCreatedAt: Date;
@@ -54,10 +68,17 @@ export class CustomerEntity extends SequelizeBaseEntity<CustomerEntity> {
 	@DeletedAt
 	public customerDeletedAt: Nullable<Date>;
 
-	@BelongsTo(() => CustomerEntity, {
-		as: "customerCustomerIdentifier",
-		foreignKey: "customerCustomerIdentifierId",
-		targetKey: "customerIdentifierId",
+	@HasOne(() => ProjectCustomerEntity, {
+		as: "customerCurrentProject",
+		foreignKey: "projectCustomerCustomerId",
+		sourceKey: "customerId",
 	})
-	public customerCustomerIdentifier: Array<CustomerIdentifierEntityType>;
+	public customerCurrentProject: ProjectCustomerEntityType;
+
+	@HasMany(() => ProjectCustomerEntity, {
+		as: "customerProjects",
+		foreignKey: "projectCustomerCustomerId",
+		sourceKey: "customerId",
+	})
+	public customerProjects: Array<ProjectCustomerEntityType>;
 }

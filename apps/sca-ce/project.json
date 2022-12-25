@@ -1,0 +1,130 @@
+{
+	"name": "sca-ce",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "application",
+	"sourceRoot": "apps/sca-ce/src",
+	"prefix": "app",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/angular:webpack-browser",
+			"outputs": [
+				"{options.outputPath}"
+			],
+			"options": {
+				"customWebpackConfig": {
+					"path": "apps/sca-ce/webpack.config.js"
+				},
+				"outputPath": "dist/apps/sca-ce",
+				"index": "apps/sca-ce/src/index.html",
+				"main": "apps/sca-ce/src/main.ts",
+				"polyfills": [
+					"zone.js",
+					"form-data"
+				],
+				"tsConfig": "apps/sca-ce/tsconfig.json",
+				"inlineStyleLanguage": "scss",
+				"allowedCommonJsDependencies": [
+					"joi"
+				],
+				"assets": [
+					"apps/sca-ce/src/favicon.ico",
+					"apps/sca-ce/src/assets"
+				],
+				"styles": [
+					"@angular/material/prebuilt-themes/indigo-pink.css",
+					"apps/sca-ce/src/styles.scss"
+				],
+				"scripts": []
+			},
+			"configurations": {
+				"dev": {
+					"buildOptimizer": false,
+					"optimization": false,
+					"vendorChunk": true,
+					"extractLicenses": false,
+					"sourceMap": true,
+					"namedChunks": true
+				},
+				"qa": {
+					"buildOptimizer": false,
+					"optimization": false,
+					"vendorChunk": true,
+					"extractLicenses": false,
+					"sourceMap": true,
+					"namedChunks": true
+				},
+				"uat": {
+					"budgets": [
+						{
+							"type": "initial",
+							"maximumWarning": "500kb",
+							"maximumError": "1mb"
+						},
+						{
+							"type": "anyComponentStyle",
+							"maximumWarning": "2kb",
+							"maximumError": "4kb"
+						}
+					],
+					"outputHashing": "all"
+				},
+				"prod": {
+					"budgets": [
+						{
+							"type": "initial",
+							"maximumWarning": "500kb",
+							"maximumError": "1mb"
+						},
+						{
+							"type": "anyComponentStyle",
+							"maximumWarning": "2kb",
+							"maximumError": "4kb"
+						}
+					],
+					"outputHashing": "all"
+				}
+			},
+			"defaultConfiguration": "dev"
+		},
+		"serve": {
+			"executor": "@nrwl/angular:webpack-dev-server",
+			"options": {
+				"port": 4201
+			},
+			"configurations": {
+				"dev": {
+					"browserTarget": "sca-ce:build:dev"
+				},
+				"qa": {
+					"browserTarget": "sca-ce:build:qa"
+				},
+				"uat": {
+					"browserTarget": "sca-ce:build:uat"
+				},
+				"prod": {
+					"browserTarget": "sca-ce:build:prod"
+				}
+			},
+			"defaultConfiguration": "dev"
+		},
+		"extract-i18n": {
+			"executor": "@angular-devkit/build-angular:extract-i18n",
+			"options": {
+				"browserTarget": "sca-ce:build"
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"apps/sca-ce/**/*.ts",
+					"apps/sca-ce/**/*.html"
+				]
+			}
+		}
+	},
+	"tags": []
+}

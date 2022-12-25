@@ -1,4 +1,4 @@
-import { CustomerEntity, CustomerIdentifierEntity, ProjectDefaultEntity, ProjectEntity, ProjectUserEntity, UserEntity, UserTypeEntity } from "../domains";
+import { CustomerEntity, ProjectCustomerEntity, ProjectDefaultEntity, ProjectEntity, ProjectUserEntity, UserEntity, UserTypeEntity } from "../domains";
 
 export const DomainEntities = [
 	// Register entities here
@@ -8,6 +8,6 @@ export const DomainEntities = [
 	ProjectEntity,
 	ProjectDefaultEntity,
 	ProjectUserEntity,
-	CustomerIdentifierEntity,
+	ProjectCustomerEntity,
 	CustomerEntity,
 ];
