@@ -5,7 +5,7 @@ const { resolve } = require("path");
 const { DefinePlugin } = require("webpack");
 
 const extractEnvFileVariables = async (configuration) => {
-	const environmentFilePath = resolve(process.cwd(), "config", "customer", `.env.${configuration}`);
+	const environmentFilePath = resolve(process.cwd(), "config", "frontend", `.env.${configuration}`);
 
 	const environmentVariables = await readEnvFile({ envFile: { filePath: environmentFilePath } });
 	environmentVariables["NODE_ENV"] = configuration;
