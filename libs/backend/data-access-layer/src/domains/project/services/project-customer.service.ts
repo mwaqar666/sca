@@ -15,6 +15,10 @@ export class ProjectCustomerService {
 		@Inject(DomainExtensionsAggregateConst) private readonly extensionsAggregateService: AggregateService<IDomainExtensionsAggregate>,
 	) {}
 
+	public async findAllProjectsForCustomer(customerId: number): Promise<Array<ProjectCustomerEntity>> {
+		return await this.projectCustomerRepository.findAllProjectsForCustomer(customerId);
+	}
+
 	public async persistProjectCustomerConnection(projectId: number, customerId: number, withTransaction?: RunningTransaction): Promise<ProjectCustomerEntity> {
 		return await this.extensionsAggregateService.services.sequelize.executeTransactionalOperation({
 			withTransaction,

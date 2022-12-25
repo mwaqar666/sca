@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import type { AggregateService } from "@sca-backend/aggregate";
-import type { EntityScope, RunningTransaction } from "@sca-backend/db";
+import type { RunningTransaction } from "@sca-backend/db";
 import { DomainExtensionsAggregateConst } from "../../../const";
 import type { LinkUserProjectDto } from "../../../dto";
 import type { IDomainExtensionsAggregate } from "../../../types";
@@ -16,8 +16,8 @@ export class ProjectUserService {
 		@Inject(DomainExtensionsAggregateConst) private readonly extensionsAggregateService: AggregateService<IDomainExtensionsAggregate>,
 	) {}
 
-	public async findAllProjectsForUser(userId: number, ...scopes: EntityScope): Promise<Array<ProjectUserEntity>> {
-		return await this.projectUserRepository.findAllProjectsForUser(userId, ...scopes);
+	public async findAllProjectsForUser(userId: number): Promise<Array<ProjectUserEntity>> {
+		return await this.projectUserRepository.findAllProjectsForUser(userId);
 	}
 
 	public async linkProjectToUser(linkUserProjectDto: LinkUserProjectDto, withTransaction?: RunningTransaction): Promise<ProjectUserEntity> {

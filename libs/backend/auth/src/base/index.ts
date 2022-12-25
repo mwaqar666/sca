@@ -1,1 +1,1 @@
-export * from "./base-jwt-strategy.factory";
+export * from "./base.guard";

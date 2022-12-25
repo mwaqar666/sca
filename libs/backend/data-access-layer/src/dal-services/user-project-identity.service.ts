@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import type { AggregateService } from "@sca-backend/aggregate";
-import { type RunningTransaction, SequelizeScopeConst } from "@sca-backend/db";
-import type { ISignInRequest, ISignUpRequest } from "@sca-shared/dto";
+import type { RunningTransaction } from "@sca-backend/db";
+import type { ISignUpRequest } from "@sca-shared/dto";
 import { DomainExtensionsAggregateConst } from "../const";
 import { ProjectDefaultService, ProjectService, type ProjectUserEntity, ProjectUserService, type UserEntity, UserService } from "../domains";
 import type { FailedAuthReasonProject, FailedAuthReasonUser, SuccessfulAuthWithUserAndProject } from "../dto";
@@ -19,24 +19,18 @@ export class UserProjectIdentityService {
 		@Inject(DomainExtensionsAggregateConst) private readonly extensionsAggregateService: AggregateService<IDomainExtensionsAggregate>,
 	) {}
 
-	public async authenticateProjectUserWithAllAndDefaultProjects(signInRequest: ISignInRequest): Promise<FailedAuthReasonUser | FailedAuthReasonProject | SuccessfulAuthWithUserAndProject> {
-		const user = await this.userService.findUser(signInRequest.userEmail, SequelizeScopeConst.withoutTimestamps);
-		if (!user) return { authUser: null, authErrorReason: "user" };
+	public async authenticateUserUsingEmailWithAllAndDefaultProjects(userEmail: string): Promise<FailedAuthReasonUser | FailedAuthReasonProject | SuccessfulAuthWithUserAndProject> {
+		const user = await this.userService.findUserUsingEmail(userEmail);
+		if (!user) return { authEntity: null, authErrorReason: "user" };
 
-		const projectUsersWithProjects = await this.projectUserService.findAllProjectsForUser(user.userId, SequelizeScopeConst.withoutTimestamps);
-		if (projectUsersWithProjects.length === 0) return { authUser: null, authErrorReason: "project" };
+		return await this.authenticateUserWithAllAndDefaultProjects(user);
+	}
 
-		const userDefaultProjectConnection = await this.projectDefaultService.findOrCreateUserDefaultProjectConnection(user.userId, projectUsersWithProjects[0].projectUserProjectId);
+	public async authenticateUserUsingUuidWithAllAndDefaultProjects(userUuid: string): Promise<FailedAuthReasonUser | FailedAuthReasonProject | SuccessfulAuthWithUserAndProject> {
+		const user = await this.userService.findUserUsingUuid(userUuid);
+		if (!user) return { authEntity: null, authErrorReason: "user" };
 
-		const defaultProjectUserIndex = projectUsersWithProjects.findIndex(
-			(projectUser: ProjectUserEntity) => projectUser.projectUserProjectId === userDefaultProjectConnection.projectDefaultProjectId,
-		);
-		userDefaultProjectConnection.projectDefaultProject = projectUsersWithProjects[defaultProjectUserIndex].projectUserProject;
-
-		user.userDefaultProject = userDefaultProjectConnection;
-		user.userProjects = projectUsersWithProjects;
-
-		return { authUser: user, authErrorReason: null };
+		return await this.authenticateUserWithAllAndDefaultProjects(user);
 	}
 
 	public async registerUserWithProject(signUpRequest: ISignUpRequest): Promise<UserEntity> {
@@ -55,5 +49,22 @@ export class UserProjectIdentityService {
 				return user;
 			},
 		});
+	}
+
+	private async authenticateUserWithAllAndDefaultProjects(user: UserEntity): Promise<FailedAuthReasonUser | FailedAuthReasonProject | SuccessfulAuthWithUserAndProject> {
+		const projectUsersWithProjects = await this.projectUserService.findAllProjectsForUser(user.userId);
+		if (projectUsersWithProjects.length === 0) return { authEntity: null, authErrorReason: "project" };
+
+		const userDefaultProjectConnection = await this.projectDefaultService.findOrCreateUserDefaultProjectConnection(user.userId, projectUsersWithProjects[0].projectUserProjectId);
+
+		const defaultProjectUserIndex = projectUsersWithProjects.findIndex(
+			(projectUser: ProjectUserEntity) => projectUser.projectUserProjectId === userDefaultProjectConnection.projectDefaultProjectId,
+		);
+		userDefaultProjectConnection.projectDefaultProject = projectUsersWithProjects[defaultProjectUserIndex].projectUserProject;
+
+		user.userDefaultProject = userDefaultProjectConnection;
+		user.userProjects = projectUsersWithProjects;
+
+		return { authEntity: user, authErrorReason: null };
 	}
 }

@@ -14,9 +14,9 @@ export class CustomerTokenService {
 	public async prepareCustomerToken(customerWithProject: CustomerEntity): Promise<string> {
 		const customerTokenPayload: Omit<ICustomerTokenPayload, "tokenIdentity"> = {
 			projectUuid: customerWithProject.customerCurrentProject.projectCustomerProject.projectUuid,
-			customerIdentifierUuid: customerWithProject.customerUuid,
+			customerUuid: customerWithProject.customerUuid,
 		};
 
-		return await this.tokenService.createAndSignCustomerToken(customerTokenPayload);
+		return await this.tokenService.createCustomerToken(customerTokenPayload);
 	}
 }

@@ -1,6 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import type { AggregateService } from "@sca-backend/aggregate";
 import type { RunningTransaction } from "@sca-backend/db";
+import { SequelizeScopeConst } from "@sca-backend/db";
 import type { Nullable } from "@sca-shared/utils";
 import { DomainExtensionsAggregateConst, DomainUtilitiesAggregateConst } from "../../../const";
 import type { IDomainExtensionsAggregate, IDomainUtilitiesAggregate } from "../../../types";
@@ -34,6 +35,10 @@ export class CustomerService {
 				return this.customerRepository.updateOrCreateCustomer(customerCookie, customerPersonalInfo, customerIpInfo, runningTransaction.currentTransaction.transaction);
 			},
 		});
+	}
+
+	public async findCustomerUsingUuid(customerUuid: string): Promise<Nullable<CustomerEntity>> {
+		return await this.customerRepository.resolveEntity(customerUuid, [SequelizeScopeConst.isActive, SequelizeScopeConst.withoutTimestamps]);
 	}
 
 	public customerPersonalInfoOrDefault(): ICustomerPersonalInfo;

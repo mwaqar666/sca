@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import type { AggregateService } from "@sca-backend/aggregate";
-import { type EntityScope, EntityTableColumnProperties, RunningTransaction, SequelizeScopeConst } from "@sca-backend/db";
+import { type EntityTableColumnProperties, type RunningTransaction, SequelizeScopeConst } from "@sca-backend/db";
 import type { Nullable } from "@sca-shared/utils";
 import { DomainExtensionsAggregateConst, DomainUtilitiesAggregateConst } from "../../../const";
 import type { IDomainExtensionsAggregate, IDomainUtilitiesAggregate } from "../../../types";
@@ -18,11 +18,15 @@ export class UserService {
 		@Inject(DomainUtilitiesAggregateConst) private readonly utilitiesAggregateService: AggregateService<IDomainUtilitiesAggregate>,
 	) {}
 
-	public async findUser(userEmail: string, ...scopes: EntityScope): Promise<Nullable<UserEntity>> {
+	public async findUserUsingEmail(userEmail: string): Promise<Nullable<UserEntity>> {
 		return await this.userRepository.findEntity({
-			scopes: [SequelizeScopeConst.isActive, ...scopes],
 			findOptions: { where: { userEmail } },
+			scopes: [SequelizeScopeConst.withoutTimestamps, SequelizeScopeConst.isActive],
 		});
+	}
+
+	public async findUserUsingUuid(userUuid: string): Promise<Nullable<UserEntity>> {
+		return await this.userRepository.resolveEntity(userUuid, [SequelizeScopeConst.withoutTimestamps, SequelizeScopeConst.isActive]);
 	}
 
 	public async createUser(createUserData: Partial<EntityTableColumnProperties<UserEntity>>, withTransaction?: RunningTransaction): Promise<UserEntity> {

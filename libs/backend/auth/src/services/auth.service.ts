@@ -35,14 +35,14 @@ export class AuthService {
 	}
 
 	private async authenticateProjectUser(signInRequest: ISignInRequest): Promise<UserEntity> {
-		const { authUser, authErrorReason } = await this.identityService.authenticateProjectUserWithAllAndDefaultProjects(signInRequest);
+		const { authEntity, authErrorReason } = await this.identityService.authenticateUserUsingEmailWithAllAndDefaultProjects(signInRequest.userEmail);
 
 		if (authErrorReason) throw new UnauthorizedException(authErrorReason === "user" ? UnauthorizedExceptionMessage : ProjectUnavailableExceptionMessage);
 
-		const passwordIsSame = await this.passwordService.verifyPassword(signInRequest.userPassword, authUser.userPassword);
+		const passwordIsSame = await this.passwordService.verifyPassword(signInRequest.userPassword, authEntity.userPassword);
 
 		if (!passwordIsSame) throw new UnauthorizedException(UnauthorizedExceptionMessage);
 
-		return authUser;
+		return authEntity;
 	}
 }

@@ -1,1 +1,1 @@
-export * from "./authenticated-request.type";
+export * from "./auth-request";

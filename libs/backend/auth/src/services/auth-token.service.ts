@@ -22,16 +22,15 @@ export class AuthTokenService {
 			userProjects: this.prepareAllProjectStructure(userWithProject.userProjects),
 		};
 
-		return await this.tokenService.createAndSignAccessToken(payload);
+		return await this.tokenService.createAccessToken(payload);
 	}
 
 	public async prepareRefreshToken(userWithProject: UserEntity): Promise<string> {
 		const payload: Omit<IRefreshTokenPayload, "tokenIdentity"> = {
 			userUuid: userWithProject.userUuid,
-			projectUuid: userWithProject.userDefaultProject.projectDefaultProject.projectUuid,
 		};
 
-		return await this.tokenService.createAndSignRefreshToken(payload);
+		return await this.tokenService.createRefreshToken(payload);
 	}
 
 	private prepareAllProjectStructure(projects: Array<ProjectUserEntity>): Array<IAuthenticatedProject> {

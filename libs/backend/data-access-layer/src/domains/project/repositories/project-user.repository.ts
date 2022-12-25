@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { BaseRepository, type EntityScope, type EntityType } from "@sca-backend/db";
+import { BaseRepository, type EntityType, SequelizeScopeConst } from "@sca-backend/db";
 import { ProjectEntity, ProjectUserEntity } from "../entities";
 
 @Injectable()
@@ -14,16 +14,16 @@ export class ProjectUserRepository extends BaseRepository<ProjectUserEntity> {
 		super(projectUserEntity);
 	}
 
-	public async findAllProjectsForUser(userId: number, ...scopes: EntityScope): Promise<Array<ProjectUserEntity>> {
+	public async findAllProjectsForUser(userId: number): Promise<Array<ProjectUserEntity>> {
 		return await this.findEntities({
-			scopes,
+			scopes: [SequelizeScopeConst.withoutTimestamps],
 			findOptions: {
 				where: { projectUserUserId: userId },
 				include: [
 					{
 						required: true,
 						as: "projectUserProject",
-						model: this.projectEntity.applyScopes(scopes),
+						model: this.projectEntity.applyScopes([SequelizeScopeConst.withoutTimestamps]),
 					},
 				],
 			},

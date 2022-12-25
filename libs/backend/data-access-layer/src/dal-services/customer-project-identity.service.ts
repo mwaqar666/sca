@@ -3,7 +3,8 @@ import type { AggregateService } from "@sca-backend/aggregate";
 import type { RunningTransaction } from "@sca-backend/db";
 import type { IHandleCustomerRequest } from "@sca-shared/dto";
 import { DomainExtensionsAggregateConst } from "../const";
-import { type CustomerEntity, CustomerService, type ICustomerIpInfo, ProjectCustomerService, ProjectService } from "../domains";
+import { type CustomerEntity, CustomerService, type ICustomerIpInfo, type ProjectCustomerEntity, ProjectCustomerService, ProjectService } from "../domains";
+import type { FailedAuthReasonCustomer, FailedAuthReasonProject, SuccessfulAuthWithCustomerAndProject } from "../dto";
 import type { IDomainExtensionsAggregate } from "../types";
 
 @Injectable()
@@ -30,5 +31,24 @@ export class CustomerProjectIdentityService {
 				return customer;
 			},
 		});
+	}
+
+	public async authenticateCustomerWithUuidWithAllProjects(
+		customerUuid: string,
+		projectUuid: string,
+	): Promise<FailedAuthReasonCustomer | FailedAuthReasonProject | SuccessfulAuthWithCustomerAndProject> {
+		const customer = await this.customerService.findCustomerUsingUuid(customerUuid);
+		if (!customer) return { authEntity: null, authErrorReason: "customer" };
+
+		const projectCustomersWithProjects = await this.projectCustomerService.findAllProjectsForCustomer(customer.customerId);
+		if (projectCustomersWithProjects.length === 0) return { authEntity: null, authErrorReason: "project" };
+
+		const currentProjectCustomerIndex = projectCustomersWithProjects.findIndex((projectCustomer: ProjectCustomerEntity) => projectCustomer.projectCustomerProject.projectUuid === projectUuid);
+		if (currentProjectCustomerIndex === -1) return { authEntity: null, authErrorReason: "project" };
+
+		customer.customerCurrentProject = projectCustomersWithProjects[currentProjectCustomerIndex];
+		customer.customerProjects = projectCustomersWithProjects;
+
+		return { authEntity: customer, authErrorReason: null };
 	}
 }
