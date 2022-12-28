@@ -3,7 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { JwtService, type JwtSignOptions } from "@nestjs/jwt";
 import type { JwtVerifyOptions } from "@nestjs/jwt/dist/interfaces";
 import type { ConfigType, TokenConfig } from "@sca-backend/config";
-import type { ITokenIdentity } from "@sca-shared/dto";
+import type { IPurePayload, ITokenIdentity } from "@sca-shared/dto";
 import type { Nullable } from "@sca-shared/utils";
 import { AccessToken, CustomerToken, RefreshToken } from "../const";
 import { CryptService } from "./crypt.service";
@@ -26,7 +26,7 @@ export class TokenService {
 		return await this.createToken(payload, AccessToken, this.prepareAccessTokenConfig());
 	}
 
-	public async verifyAccessToken<T extends ITokenIdentity>(jwtToken: string): Promise<Nullable<Omit<T, "tokenIdentity">>> {
+	public async verifyAccessToken<T extends ITokenIdentity>(jwtToken: string): Promise<Nullable<IPurePayload<T>>> {
 		return await this.verifyToken(jwtToken, AccessToken, this.prepareAccessTokenConfig());
 	}
 
@@ -34,7 +34,7 @@ export class TokenService {
 		return await this.createToken(payload, RefreshToken, this.prepareRefreshTokenConfig());
 	}
 
-	public async verifyRefreshToken<T extends ITokenIdentity>(jwtToken: string): Promise<Nullable<Omit<T, "tokenIdentity">>> {
+	public async verifyRefreshToken<T extends ITokenIdentity>(jwtToken: string): Promise<Nullable<IPurePayload<T>>> {
 		return await this.verifyToken(jwtToken, RefreshToken, this.prepareRefreshTokenConfig());
 	}
 
@@ -42,11 +42,11 @@ export class TokenService {
 		return await this.createToken(payload, CustomerToken, this.prepareCustomerTokenConfig());
 	}
 
-	public async verifyCustomerToken<T extends ITokenIdentity>(jwtToken: string): Promise<Nullable<Omit<T, "tokenIdentity">>> {
+	public async verifyCustomerToken<T extends ITokenIdentity>(jwtToken: string): Promise<Nullable<IPurePayload<T>>> {
 		return await this.verifyToken(jwtToken, CustomerToken, this.prepareCustomerTokenConfig());
 	}
 
-	private async verifyToken<T extends ITokenIdentity>(jwtToken: string, tokenVerificationIdentity: string, verificationOptions: JwtVerifyOptions): Promise<Nullable<Omit<T, "tokenIdentity">>> {
+	private async verifyToken<T extends ITokenIdentity>(jwtToken: string, tokenVerificationIdentity: string, verificationOptions: JwtVerifyOptions): Promise<Nullable<IPurePayload<T>>> {
 		try {
 			const verifiedPayload = await this.jwtService.verifyAsync<T>(jwtToken, verificationOptions);
 			const { tokenIdentity, ...extractedPayload } = verifiedPayload;

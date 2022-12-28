@@ -11,5 +11,10 @@ export const AuthApiRoutes = {
 			Name: "auth.sign-up",
 			Path: "sign-up",
 		},
+		Refresh: {
+			Method: "POST",
+			Name: "auth.refresh",
+			Path: "refresh",
+		},
 	},
 } as const;

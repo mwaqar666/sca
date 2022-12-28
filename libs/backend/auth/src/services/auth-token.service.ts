@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import type { ProjectEntity, ProjectUserEntity, UserEntity } from "@sca-backend/data-access-layer";
 import { TokenService } from "@sca-backend/security";
-import type { IAccessTokenPayload, IAuthenticatedProject, IRefreshTokenPayload } from "@sca-shared/dto";
+import type { IAccessTokenPayload, IAuthenticatedProject, IPurePayload, IRefreshTokenPayload } from "@sca-shared/dto";
 
 @Injectable()
 export class AuthTokenService {
@@ -12,7 +12,7 @@ export class AuthTokenService {
 	) {}
 
 	public async prepareAccessToken(userWithProject: UserEntity): Promise<string> {
-		const payload: Omit<IAccessTokenPayload, "tokenIdentity"> = {
+		const payload: IPurePayload<IAccessTokenPayload> = {
 			userUuid: userWithProject.userUuid,
 			userFirstName: userWithProject.userFirstName,
 			userMiddleName: userWithProject.userMiddleName,
@@ -26,7 +26,7 @@ export class AuthTokenService {
 	}
 
 	public async prepareRefreshToken(userWithProject: UserEntity): Promise<string> {
-		const payload: Omit<IRefreshTokenPayload, "tokenIdentity"> = {
+		const payload: IPurePayload<IRefreshTokenPayload> = {
 			userUuid: userWithProject.userUuid,
 		};
 

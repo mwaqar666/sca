@@ -27,7 +27,7 @@ export class AuthService {
 		return this.createAuthenticationTokens(authUserWithDefaultAndAllProjects);
 	}
 
-	private async createAuthenticationTokens(user: UserEntity): Promise<ISignInResponse & ISignUpResponse> {
+	public async createAuthenticationTokens(user: UserEntity): Promise<ISignInResponse> {
 		const accessToken = this.authTokenService.prepareAccessToken(user);
 		const refreshToken = this.authTokenService.prepareRefreshToken(user);
 

@@ -2,7 +2,7 @@ import { type CanActivate, type ExecutionContext, Injectable } from "@nestjs/com
 import { Reflector } from "@nestjs/core";
 import { CustomerProjectIdentityService } from "@sca-backend/data-access-layer";
 import { TokenService } from "@sca-backend/security";
-import type { ICustomerTokenPayload } from "@sca-shared/dto";
+import type { ICustomerTokenPayload, IPurePayload } from "@sca-shared/dto";
 import { BaseGuard } from "../../base";
 import { AuthCustomer } from "../../const";
 import { JwtExtractorService } from "../../services";
@@ -28,10 +28,10 @@ export class CustomerTokenGuard extends BaseGuard<IAuthCustomerSocket, ICustomer
 
 		const jwtToken = this.jwtExtractorService.extractJwtFromSocketRequestHeader(socket);
 
-		return await this.verifyAndAuthenticatedTokenPayload(socket, jwtToken, this.tokenService.verifyRefreshToken);
+		return await this.verifyAndAuthenticatedTokenPayload(socket, jwtToken, this.tokenService.verifyCustomerToken);
 	}
 
-	protected async authenticatePayload(socket: IAuthCustomerSocket, payload: Omit<ICustomerTokenPayload, "tokenIdentity">): Promise<boolean> {
+	protected async authenticatePayload(socket: IAuthCustomerSocket, payload: IPurePayload<ICustomerTokenPayload>): Promise<boolean> {
 		const { authEntity, authErrorReason } = await this.identityService.authenticateCustomerWithUuidWithAllProjects(payload.customerUuid, payload.projectUuid);
 
 		if (authErrorReason) return false;

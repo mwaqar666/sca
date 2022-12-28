@@ -2,14 +2,14 @@ import { type CanActivate, type ExecutionContext, Injectable } from "@nestjs/com
 import { Reflector } from "@nestjs/core";
 import { UserProjectIdentityService } from "@sca-backend/data-access-layer";
 import { TokenService } from "@sca-backend/security";
-import type { IRefreshTokenPayload } from "@sca-shared/dto";
+import type { IPurePayload, IRefreshTokenPayload } from "@sca-shared/dto";
 import { BaseGuard } from "../../base";
 import { AuthUser } from "../../const";
 import { JwtExtractorService } from "../../services";
-import type { IAuthUserRequest } from "../../types";
+import type { IAuthUserRefreshRequest } from "../../types";
 
 @Injectable()
-export class RefreshTokenHttpGuard extends BaseGuard<IAuthUserRequest, IRefreshTokenPayload> implements CanActivate {
+export class RefreshTokenHttpGuard extends BaseGuard<IAuthUserRefreshRequest, IRefreshTokenPayload> implements CanActivate {
 	public constructor(
 		// Dependencies
 
@@ -26,12 +26,12 @@ export class RefreshTokenHttpGuard extends BaseGuard<IAuthUserRequest, IRefreshT
 
 		if (!request) return true;
 
-		const jwtToken = this.jwtExtractorService.extractJwtFromHttpRequestHeader(request);
+		const jwtToken = this.jwtExtractorService.extractJwtFromHttpRequestBody(request, "refreshToken");
 
 		return await this.verifyAndAuthenticatedTokenPayload(request, jwtToken, this.tokenService.verifyRefreshToken);
 	}
 
-	protected async authenticatePayload(request: IAuthUserRequest, payload: Omit<IRefreshTokenPayload, "tokenIdentity">): Promise<boolean> {
+	protected async authenticatePayload(request: IAuthUserRefreshRequest, payload: IPurePayload<IRefreshTokenPayload>): Promise<boolean> {
 		const { authEntity, authErrorReason } = await this.identityService.authenticateUserUsingUuidWithAllAndDefaultProjects(payload.userUuid);
 
 		if (authErrorReason) return false;

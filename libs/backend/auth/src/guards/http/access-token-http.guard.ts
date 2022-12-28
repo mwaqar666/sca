@@ -2,7 +2,7 @@ import { type CanActivate, type ExecutionContext, Injectable } from "@nestjs/com
 import { Reflector } from "@nestjs/core";
 import { UserProjectIdentityService } from "@sca-backend/data-access-layer";
 import { TokenService } from "@sca-backend/security";
-import type { IAccessTokenPayload } from "@sca-shared/dto";
+import type { IAccessTokenPayload, IPurePayload } from "@sca-shared/dto";
 import { BaseGuard } from "../../base";
 import { AuthUser } from "../../const";
 import { JwtExtractorService } from "../../services";
@@ -31,7 +31,7 @@ export class AccessTokenHttpGuard extends BaseGuard<IAuthUserRequest, IAccessTok
 		return await this.verifyAndAuthenticatedTokenPayload(request, jwtToken, this.tokenService.verifyAccessToken);
 	}
 
-	protected async authenticatePayload(request: IAuthUserRequest, payload: Omit<IAccessTokenPayload, "tokenIdentity">): Promise<boolean> {
+	protected async authenticatePayload(request: IAuthUserRequest, payload: IPurePayload<IAccessTokenPayload>): Promise<boolean> {
 		const { authEntity, authErrorReason } = await this.identityService.authenticateUserUsingUuidWithAllAndDefaultProjects(payload.userUuid);
 
 		if (authErrorReason) return false;

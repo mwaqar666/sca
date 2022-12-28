@@ -1,7 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import type { Nullable } from "@sca-shared/utils";
+import type { Key, Nullable } from "@sca-shared/utils";
 import type { Request } from "express";
 import type { Socket } from "socket.io";
+import type { ParamsDictionary } from "express-serve-static-core";
 
 @Injectable()
 export class JwtExtractorService {
@@ -17,6 +18,10 @@ export class JwtExtractorService {
 		if (scheme.toLowerCase() !== "bearer") return null;
 
 		return token;
+	}
+
+	public extractJwtFromHttpRequestBody<T, F extends Key<T> = Key<T>>(request: Request<ParamsDictionary, any, T>, field: F): Nullable<T[F]> {
+		return request.body[field] ?? null;
 	}
 
 	public extractJwtFromSocketRequestHeader(socket: Socket): Nullable<string> {

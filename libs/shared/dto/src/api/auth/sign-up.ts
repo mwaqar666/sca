@@ -1,4 +1,5 @@
 import type { Nullable } from "@sca-shared/utils";
+import type { ISignInResponse } from "./sign-in";
 
 export interface ISignUpRequest {
 	userFirstName: string;
@@ -11,7 +12,4 @@ export interface ISignUpRequest {
 	projectDomain: string;
 }
 
-export interface ISignUpResponse {
-	accessToken: string;
-	refreshToken: string;
-}
+export type ISignUpResponse = ISignInResponse;

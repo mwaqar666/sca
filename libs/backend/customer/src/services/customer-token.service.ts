@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import type { CustomerEntity } from "@sca-backend/data-access-layer";
 import { TokenService } from "@sca-backend/security";
-import type { ICustomerTokenPayload } from "@sca-shared/dto";
+import type { ICustomerTokenPayload, IPurePayload } from "@sca-shared/dto";
 
 @Injectable()
 export class CustomerTokenService {
@@ -12,7 +12,7 @@ export class CustomerTokenService {
 	) {}
 
 	public async prepareCustomerToken(customerWithProject: CustomerEntity): Promise<string> {
-		const customerTokenPayload: Omit<ICustomerTokenPayload, "tokenIdentity"> = {
+		const customerTokenPayload: IPurePayload<ICustomerTokenPayload> = {
 			projectUuid: customerWithProject.customerCurrentProject.projectCustomerProject.projectUuid,
 			customerUuid: customerWithProject.customerUuid,
 		};
