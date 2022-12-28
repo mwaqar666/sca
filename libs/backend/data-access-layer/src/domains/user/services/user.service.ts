@@ -4,7 +4,7 @@ import { type EntityTableColumnProperties, type RunningTransaction, SequelizeSco
 import type { Nullable } from "@sca-shared/utils";
 import { DomainExtensionsAggregateConst, DomainUtilitiesAggregateConst } from "../../../const";
 import type { IDomainExtensionsAggregate, IDomainUtilitiesAggregate } from "../../../types";
-import { UserTypeEnum } from "../../user-type";
+import { UserTypeEnum } from "../types";
 import type { UserEntity } from "../entities";
 import { UserRepository } from "../repositories";
 

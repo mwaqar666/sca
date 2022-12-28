@@ -1,7 +1,7 @@
 import { BaseEntityScopes, SequelizeBaseEntity } from "@sca-backend/db";
 import type { Nullable } from "@sca-shared/utils";
 import { AllowNull, AutoIncrement, Column, CreatedAt, DataType, Default, DeletedAt, HasMany, PrimaryKey, Scopes, Table, UpdatedAt } from "sequelize-typescript";
-import { UserEntity, type UserEntity as UserEntityType } from "../../user";
+import { UserEntity, type UserEntity as UserEntityType } from "./user.entity";
 import type { UserTypeEnum } from "../types";
 
 @Scopes(() => ({

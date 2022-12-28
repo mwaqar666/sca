@@ -1,7 +1,6 @@
 import { BaseMigration, type SequelizeQueryInterface, TableHelpers } from "@sca-backend/db";
 import { DataTypes } from "sequelize";
-import { UserTypeEntity } from "../../user-type";
-import { UserEntity } from "../entities";
+import { UserEntity, UserTypeEntity } from "../entities";
 
 export default class extends BaseMigration {
 	private readonly usersTableName = TableHelpers.createTableName(UserEntity);
