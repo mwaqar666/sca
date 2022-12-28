@@ -28,7 +28,7 @@ export class AccessTokenSocketGuard extends BaseGuard<IAuthUserSocket, IAccessTo
 
 		const jwtToken = this.jwtExtractorService.extractJwtFromSocketRequestHeader(socket);
 
-		return await this.verifyAndAuthenticatedTokenPayload(socket, jwtToken, this.tokenService.verifyAccessToken);
+		return await this.verifyAndAuthenticatedTokenPayload(socket, jwtToken, this.tokenService, this.tokenService.verifyAccessToken);
 	}
 
 	protected async authenticatePayload(socket: IAuthUserSocket, payload: IPurePayload<IAccessTokenPayload>): Promise<boolean> {

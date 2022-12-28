@@ -28,7 +28,7 @@ export class AccessTokenHttpGuard extends BaseGuard<IAuthUserRequest, IAccessTok
 
 		const jwtToken = this.jwtExtractorService.extractJwtFromHttpRequestHeader(request);
 
-		return await this.verifyAndAuthenticatedTokenPayload(request, jwtToken, this.tokenService.verifyAccessToken);
+		return await this.verifyAndAuthenticatedTokenPayload(request, jwtToken, this.tokenService, this.tokenService.verifyAccessToken);
 	}
 
 	protected async authenticatePayload(request: IAuthUserRequest, payload: IPurePayload<IAccessTokenPayload>): Promise<boolean> {

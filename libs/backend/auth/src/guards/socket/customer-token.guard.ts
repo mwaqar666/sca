@@ -28,7 +28,7 @@ export class CustomerTokenGuard extends BaseGuard<IAuthCustomerSocket, ICustomer
 
 		const jwtToken = this.jwtExtractorService.extractJwtFromSocketRequestHeader(socket);
 
-		return await this.verifyAndAuthenticatedTokenPayload(socket, jwtToken, this.tokenService.verifyCustomerToken);
+		return await this.verifyAndAuthenticatedTokenPayload(socket, jwtToken, this.tokenService, this.tokenService.verifyCustomerToken);
 	}
 
 	protected async authenticatePayload(socket: IAuthCustomerSocket, payload: IPurePayload<ICustomerTokenPayload>): Promise<boolean> {

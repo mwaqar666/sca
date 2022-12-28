@@ -28,7 +28,7 @@ export class RefreshTokenHttpGuard extends BaseGuard<IAuthUserRefreshRequest, IR
 
 		const jwtToken = this.jwtExtractorService.extractJwtFromHttpRequestBody(request, "refreshToken");
 
-		return await this.verifyAndAuthenticatedTokenPayload(request, jwtToken, this.tokenService.verifyRefreshToken);
+		return await this.verifyAndAuthenticatedTokenPayload(request, jwtToken, this.tokenService, this.tokenService.verifyRefreshToken);
 	}
 
 	protected async authenticatePayload(request: IAuthUserRefreshRequest, payload: IPurePayload<IRefreshTokenPayload>): Promise<boolean> {

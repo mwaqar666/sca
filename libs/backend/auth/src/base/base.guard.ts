@@ -1,6 +1,6 @@
 import type { CanActivate, ExecutionContext } from "@nestjs/common";
 import type { Reflector } from "@nestjs/core";
-import type { TokenVerifier } from "@sca-backend/security";
+import type { TokenService, TokenVerifier } from "@sca-backend/security";
 import type { IPurePayload, ITokenIdentity } from "@sca-shared/dto";
 import type { Constructable, Nullable, Optional } from "@sca-shared/utils";
 import { GuardIdentifier } from "../const";
@@ -26,10 +26,10 @@ export abstract class BaseGuard<R, T extends ITokenIdentity> {
 
 	protected abstract authenticatePayload(requestOrSocket: R, payload: IPurePayload<T>): Promise<boolean>;
 
-	protected async verifyAndAuthenticatedTokenPayload(request: R, jwtToken: Nullable<string>, tokenVerifier: TokenVerifier<T>): Promise<boolean> {
+	protected async verifyAndAuthenticatedTokenPayload(request: R, jwtToken: Nullable<string>, extractorInstance: TokenService, extractor: TokenVerifier<T>): Promise<boolean> {
 		if (!jwtToken) return false;
 
-		const payload = await tokenVerifier(jwtToken);
+		const payload = await extractor.call(extractorInstance, jwtToken);
 
 		if (!payload) return false;
 
