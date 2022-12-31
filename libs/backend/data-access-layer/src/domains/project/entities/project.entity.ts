@@ -4,6 +4,7 @@ import { AllowNull, AutoIncrement, Column, CreatedAt, DataType, Default, Deleted
 import { ProjectCustomerEntity, type ProjectCustomerEntity as ProjectCustomerEntityType } from "./project-customer.entity";
 import { ProjectDefaultEntity, type ProjectDefaultEntity as ProjectDefaultEntityType } from "./project-default.entity";
 import { ProjectUserEntity, type ProjectUserEntity as ProjectUserEntityType } from "./project-user.entity";
+import { TrackerEntity, type TrackerEntity as TrackerEntityType } from "../../tracker";
 
 @Scopes(() => ({
 	...BaseEntityScopes.commonScopes(() => ProjectEntity),
@@ -80,4 +81,11 @@ export class ProjectEntity extends SequelizeBaseEntity<ProjectEntity> {
 		sourceKey: "projectId",
 	})
 	public projectCustomers: Array<ProjectCustomerEntityType>;
+
+	@HasMany(() => TrackerEntity, {
+		as: "projectTrackers",
+		foreignKey: "trackerProjectId",
+		sourceKey: "projectId",
+	})
+	public projectTrackers: Array<TrackerEntityType>;
 }

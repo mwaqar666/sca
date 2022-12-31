@@ -4,6 +4,7 @@ import { JsonHelper } from "@sca-shared/utils";
 import { AllowNull, AutoIncrement, Column, CreatedAt, DataType, Default, DeletedAt, HasMany, HasOne, PrimaryKey, Scopes, Table, Unique, UpdatedAt } from "sequelize-typescript";
 import { ProjectCustomerEntity, type ProjectCustomerEntity as ProjectCustomerEntityType } from "../../project";
 import type { ICustomerIpInfo, ICustomerPersonalInfo } from "../types";
+import { TrackerEntity, type TrackerEntity as TrackerEntityType } from "../../tracker";
 
 @Scopes(() => ({
 	...BaseEntityScopes.commonScopes(() => CustomerEntity),
@@ -19,13 +20,13 @@ export class CustomerEntity extends SequelizeBaseEntity<CustomerEntity> {
 	@PrimaryKey
 	@AutoIncrement
 	@Column({ type: DataType.INTEGER })
-	public customerId: number;
+	public readonly customerId: number;
 
 	@Unique
 	@Default(DataType.UUIDV4)
 	@AllowNull(false)
 	@Column({ type: DataType.UUID })
-	public customerUuid: string;
+	public readonly customerUuid: string;
 
 	@AllowNull(false)
 	@Column({
@@ -68,6 +69,7 @@ export class CustomerEntity extends SequelizeBaseEntity<CustomerEntity> {
 	@DeletedAt
 	public customerDeletedAt: Nullable<Date>;
 
+	// Relationships
 	@HasOne(() => ProjectCustomerEntity, {
 		as: "customerCurrentProject",
 		foreignKey: "projectCustomerCustomerId",
@@ -81,4 +83,11 @@ export class CustomerEntity extends SequelizeBaseEntity<CustomerEntity> {
 		sourceKey: "customerId",
 	})
 	public customerProjects: Array<ProjectCustomerEntityType>;
+
+	@HasMany(() => TrackerEntity, {
+		as: "customerTrackers",
+		foreignKey: "trackerCustomerId",
+		sourceKey: "customerId",
+	})
+	public customerTrackers: Array<TrackerEntityType>;
 }

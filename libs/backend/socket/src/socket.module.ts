@@ -1,10 +1,9 @@
 import { Module } from "@nestjs/common";
 import * as Dispatchers from "./dispatchers";
-import { ServiceBusModule } from "@sca-backend/service-bus";
+import { EntityKeyColumnStripperInterceptor } from "@sca-backend/db";
 
 @Module({
-	imports: [ServiceBusModule],
-	providers: [...Object.values(Dispatchers)],
+	providers: [EntityKeyColumnStripperInterceptor, ...Object.values(Dispatchers)],
 	exports: [...Object.values(Dispatchers)],
 })
 export class SocketModule {}

@@ -4,7 +4,6 @@ import { type EntityTableColumnProperties, type RunningTransaction, SequelizeSco
 import type { Nullable } from "@sca-shared/utils";
 import { DomainExtensionsAggregateConst, DomainUtilitiesAggregateConst } from "../../../const";
 import type { IDomainExtensionsAggregate, IDomainUtilitiesAggregate } from "../../../types";
-import { UserTypeEnum } from "../types";
 import type { UserEntity } from "../entities";
 import { UserRepository } from "../repositories";
 
@@ -29,20 +28,15 @@ export class UserService {
 		return await this.userRepository.resolveEntity(userUuid, [SequelizeScopeConst.withoutTimestamps, SequelizeScopeConst.isActive]);
 	}
 
-	public async createUser(createUserData: Partial<EntityTableColumnProperties<UserEntity>>, withTransaction?: RunningTransaction): Promise<UserEntity> {
+	public async createUser(createUserData: Partial<EntityTableColumnProperties<UserEntity>>, userUserTypeId: number, withTransaction?: RunningTransaction): Promise<UserEntity> {
 		return await this.extensionsAggregateService.services.sequelize.executeTransactionalOperation({
 			withTransaction,
 			transactionCallback: async (runningTransaction: RunningTransaction) => {
-				const userType = UserTypeEnum.ProjectUsers;
-
 				if (createUserData.userPassword) createUserData.userPassword = await this.utilitiesAggregateService.services.hash.hashString(createUserData.userPassword);
 
 				return await this.userRepository.createEntity({
 					transaction: runningTransaction.currentTransaction.transaction,
-					valuesToCreate: {
-						...createUserData,
-						userUserTypeId: userType,
-					},
+					valuesToCreate: { ...createUserData, userUserTypeId },
 				});
 			},
 		});

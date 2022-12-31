@@ -1,6 +1,6 @@
 import { BaseEntityScopes, SequelizeBaseEntity } from "@sca-backend/db";
 import type { Nullable } from "@sca-shared/utils";
-import { AllowNull, BelongsTo, Column, CreatedAt, DataType, Default, DeletedAt, ForeignKey, Scopes, Table, Unique, UpdatedAt } from "sequelize-typescript";
+import { AllowNull, AutoIncrement, BelongsTo, Column, CreatedAt, DataType, Default, DeletedAt, ForeignKey, PrimaryKey, Scopes, Table, Unique, UpdatedAt } from "sequelize-typescript";
 import { CustomerEntity, type CustomerEntity as CustomerEntityType } from "../../customer";
 import { ProjectEntity, type ProjectEntity as ProjectEntityType } from "./project.entity";
 
@@ -15,6 +15,9 @@ export class ProjectCustomerEntity extends SequelizeBaseEntity<ProjectCustomerEn
 	public static override updatedAtColumnName = "projectCustomerUpdatedAt";
 	public static override deletedAtColumnName = "projectCustomerDeletedAt";
 
+	@PrimaryKey
+	@AutoIncrement
+	@Column({ type: DataType.INTEGER })
 	public projectCustomerId: number;
 
 	@Unique

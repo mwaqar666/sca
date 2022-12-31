@@ -8,9 +8,10 @@ import { AggregateServicesModule } from "@sca-backend/aggregate";
 import { CustomerAggregatesConfig } from "./config";
 import { AuthModule } from "@sca-backend/auth";
 import { SecurityModule } from "@sca-backend/security";
+import { SocketModule } from "@sca-backend/socket";
 
 @Module({
-	imports: [AuthModule, SecurityModule, DataAccessLayerModule, AggregateServicesModule.forRoot(CustomerAggregatesConfig)],
+	imports: [AuthModule, SecurityModule, DataAccessLayerModule, SocketModule, AggregateServicesModule.forRoot(CustomerAggregatesConfig)],
 	controllers: [...Object.values(Controllers)],
 	providers: [...Object.values(Services), ...Object.values(SocketServices), ...Object.values(Gateways)],
 })
