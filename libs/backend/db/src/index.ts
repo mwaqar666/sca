@@ -2,6 +2,7 @@ export * from "./entity";
 export * from "./config";
 export * from "./const";
 export * from "./migrator";
+export * from "./redis";
 export * from "./interceptors";
 export * from "./repository";
 export * from "./services";

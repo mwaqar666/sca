@@ -1,6 +1,8 @@
 import { CustomerRepository, ProjectCustomerRepository, ProjectDefaultRepository, ProjectRepository, ProjectUserRepository, UserRepository, UserTypeRepository } from "../domains";
+import type { Constructable } from "@sca-shared/utils";
+import type { BaseRepository } from "@sca-backend/db";
 
-export const DomainRepositories = [
+export const DomainRepositories: Array<Constructable<BaseRepository<any>>> = [
 	// Register repositories here
 
 	UserRepository,

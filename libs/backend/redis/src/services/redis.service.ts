@@ -31,7 +31,9 @@ export class RedisService {
 	}
 
 	private async createRedisClient(): Promise<RedisClientType<RedisDefaultModules & RedisModules, RedisFunctions, RedisScripts>> {
-		const redisClient = createClient({ url: this.prepareRedisConnectionUrl() });
+		const connectionUrl = this.prepareRedisConnectionUrl();
+
+		const redisClient = createClient({ url: connectionUrl });
 
 		await redisClient.connect();
 

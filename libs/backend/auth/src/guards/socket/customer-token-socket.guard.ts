@@ -6,10 +6,10 @@ import type { ICustomerTokenPayload, IPurePayload } from "@sca-shared/dto";
 import { BaseGuard } from "../../base";
 import { AuthCustomer } from "../../const";
 import { JwtExtractorService } from "../../services";
-import type { IAuthCustomerSocket } from "../../types";
+import type { AuthCustomerSocket } from "../../types";
 
 @Injectable()
-export class CustomerTokenGuard extends BaseGuard<IAuthCustomerSocket, ICustomerTokenPayload> implements CanActivate {
+export class CustomerTokenSocketGuard extends BaseGuard<AuthCustomerSocket, ICustomerTokenPayload> implements CanActivate {
 	public constructor(
 		// Dependencies
 
@@ -31,7 +31,7 @@ export class CustomerTokenGuard extends BaseGuard<IAuthCustomerSocket, ICustomer
 		return await this.verifyAndAuthenticatedTokenPayload(socket, jwtToken, this.tokenService, this.tokenService.verifyCustomerToken);
 	}
 
-	protected async authenticatePayload(socket: IAuthCustomerSocket, payload: IPurePayload<ICustomerTokenPayload>): Promise<boolean> {
+	protected async authenticatePayload(socket: AuthCustomerSocket, payload: IPurePayload<ICustomerTokenPayload>): Promise<boolean> {
 		const { authEntity, authErrorReason } = await this.identityService.authenticateCustomerWithUuidWithAllProjects(payload.customerUuid, payload.projectUuid);
 
 		if (authErrorReason) return false;

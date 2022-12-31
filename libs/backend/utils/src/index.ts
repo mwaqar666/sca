@@ -6,4 +6,6 @@ export * from "./exceptions";
 export * from "./helpers";
 export * from "./interceptors";
 export * from "./pipes";
+export * from "./services";
 export * from "./transformers";
+export * from "./types";

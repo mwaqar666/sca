@@ -1,12 +1,17 @@
 import { Module } from "@nestjs/common";
 import { DataAccessLayerModule } from "@sca-backend/data-access-layer";
+import * as Controllers from "./controllers";
+import * as Services from "./services";
+import * as SocketServices from "./services/socket";
+import * as Gateways from "./gateways";
+import { AggregateServicesModule } from "@sca-backend/aggregate";
+import { CustomerAggregatesConfig } from "./config";
+import { AuthModule } from "@sca-backend/auth";
 import { SecurityModule } from "@sca-backend/security";
-import { CustomerController } from "./controllers";
-import { CustomerHandleService, CustomerInfoService, CustomerTokenService } from "./services";
 
 @Module({
-	imports: [DataAccessLayerModule, SecurityModule],
-	controllers: [CustomerController],
-	providers: [CustomerHandleService, CustomerInfoService, CustomerTokenService],
+	imports: [AuthModule, SecurityModule, DataAccessLayerModule, AggregateServicesModule.forRoot(CustomerAggregatesConfig)],
+	controllers: [...Object.values(Controllers)],
+	providers: [...Object.values(Services), ...Object.values(SocketServices), ...Object.values(Gateways)],
 })
 export class CustomerModule {}

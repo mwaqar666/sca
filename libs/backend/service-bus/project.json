@@ -1,0 +1,32 @@
+{
+	"name": "backend-service-bus",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/backend/service-bus/src",
+	"projectType": "library",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"outputs": [
+				"{options.outputPath}"
+			],
+			"options": {
+				"outputPath": "dist/libs/backend/service-bus",
+				"tsConfig": "libs/backend/service-bus/tsconfig.json",
+				"packageJson": "libs/backend/service-bus/package.json",
+				"main": "libs/backend/service-bus/src/index.ts"
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"libs/backend/service-bus/**/*.ts"
+				]
+			}
+		}
+	},
+	"tags": []
+}

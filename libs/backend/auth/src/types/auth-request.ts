@@ -26,6 +26,10 @@ export interface IAuthCustomerSocketData {
 	[AuthCustomer]: CustomerEntity;
 }
 
-export class IAuthUserSocket extends Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, IAuthUserSocketData> {}
+export class AuthUserSocket extends Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, IAuthUserSocketData> {
+	public override data: IAuthUserSocketData;
+}
 
-export class IAuthCustomerSocket extends Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, IAuthCustomerSocketData> {}
+export class AuthCustomerSocket extends Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, IAuthCustomerSocketData> {
+	public override data: IAuthCustomerSocketData;
+}

@@ -20,10 +20,10 @@ export type EntityNonTableColumnProperties = EntityRelationshipPropertyTypes | (
 
 export type EntityTableColumnProperties<TEntity extends SequelizeBaseEntity<TEntity>> = FilterWhereNot<EntityProperties<TEntity>, EntityNonTableColumnProperties>;
 
-export interface Relationship<TEntity extends SequelizeBaseEntity<TEntity>> {
+export type Relationship<TEntity extends SequelizeBaseEntity<TEntity>> = {
 	propertyKey: string;
 	entityOrEntities: SequelizeBaseEntity<TEntity> | Array<SequelizeBaseEntity<TEntity>>;
-}
+};
 
 export type AvailableScopes = Record<typeof SequelizeScopeConst[keyof typeof SequelizeScopeConst], ScopesOptions>;
 

@@ -6,10 +6,10 @@ import type { IAccessTokenPayload, IPurePayload } from "@sca-shared/dto";
 import { BaseGuard } from "../../base";
 import { AuthUser } from "../../const";
 import { JwtExtractorService } from "../../services";
-import type { IAuthUserSocket } from "../../types";
+import type { AuthUserSocket } from "../../types";
 
 @Injectable()
-export class AccessTokenSocketGuard extends BaseGuard<IAuthUserSocket, IAccessTokenPayload> implements CanActivate {
+export class AccessTokenSocketGuard extends BaseGuard<AuthUserSocket, IAccessTokenPayload> implements CanActivate {
 	public constructor(
 		// Dependencies
 
@@ -31,7 +31,7 @@ export class AccessTokenSocketGuard extends BaseGuard<IAuthUserSocket, IAccessTo
 		return await this.verifyAndAuthenticatedTokenPayload(socket, jwtToken, this.tokenService, this.tokenService.verifyAccessToken);
 	}
 
-	protected async authenticatePayload(socket: IAuthUserSocket, payload: IPurePayload<IAccessTokenPayload>): Promise<boolean> {
+	protected async authenticatePayload(socket: AuthUserSocket, payload: IPurePayload<IAccessTokenPayload>): Promise<boolean> {
 		const { authEntity, authErrorReason } = await this.identityService.authenticateUserUsingUuidWithAllAndDefaultProjects(payload.userUuid);
 
 		if (authErrorReason) return false;

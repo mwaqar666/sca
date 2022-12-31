@@ -1,6 +1,7 @@
 import { CustomerService, ProjectCustomerService, ProjectDefaultService, ProjectService, ProjectUserService, UserService, UserTypeService } from "../domains";
+import type { Type } from "@nestjs/common";
 
-export const DomainServices = [
+export const DomainServices: Array<Type> = [
 	// Register data services here
 
 	UserService,

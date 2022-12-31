@@ -10,6 +10,6 @@ import * as Services from "./services";
 	controllers: [AuthController],
 	imports: [DataAccessLayerModule, SecurityModule],
 	providers: [...Object.values(Services), ...Object.values(Guards)],
-	exports: [...Object.values(Guards)],
+	exports: [...Object.values(Services), ...Object.values(Guards)],
 })
 export class AuthModule extends BaseModule {}

@@ -1,0 +1,32 @@
+{
+	"name": "backend-user",
+	"$schema": "../../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/backend/user/src",
+	"projectType": "library",
+	"targets": {
+		"build": {
+			"executor": "@nrwl/js:tsc",
+			"outputs": [
+				"{options.outputPath}"
+			],
+			"options": {
+				"outputPath": "dist/libs/backend/user",
+				"tsConfig": "libs/backend/user/tsconfig.json",
+				"packageJson": "libs/backend/user/package.json",
+				"main": "libs/backend/user/src/index.ts"
+			}
+		},
+		"lint": {
+			"executor": "@nrwl/linter:eslint",
+			"outputs": [
+				"{options.outputFile}"
+			],
+			"options": {
+				"lintFilePatterns": [
+					"libs/backend/user/**/*.ts"
+				]
+			}
+		}
+	},
+	"tags": []
+}
