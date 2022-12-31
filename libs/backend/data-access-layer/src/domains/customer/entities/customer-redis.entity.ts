@@ -7,7 +7,7 @@ export interface CustomerRedisEntity {
 	projectUuid: string;
 	customerUuid: string;
 	connectionIds: string[];
-	customerTrackingId: string;
+	trackingNumber: string;
 }
 
 export class CustomerRedisEntity extends BaseRedisEntity<CustomerRedisEntity> {}
@@ -19,7 +19,7 @@ export const CustomerRedisSchema: Schema<CustomerRedisEntity> = new Schema(
 		projectUuid: { type: "string" },
 		customerUuid: { type: "string" },
 		connectionIds: { type: "string[]" },
-		customerTrackingId: { type: "string" },
+		trackingNumber: { type: "string" },
 	},
 	{
 		dataStructure: "JSON",

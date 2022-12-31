@@ -1,4 +1,4 @@
-import type { Nullable } from "@sca-shared/utils";
+import type { FilterWhereNot, Key } from "@sca-shared/utils";
 import type { BaseRedisEntity } from "./base-redis.entity";
 
 export type TAbsent = "Absent"; // Entity not present
@@ -13,52 +13,21 @@ export type TExpiryAdded = "ExpiryAdded"; // Entity last connection expiry start
 export type TDisconnected = "Disconnected"; // Entity additional connection removed
 export type TPreConnected = "PreConnected"; // Entity additional connection added
 
-export interface IEntityStatus<TEntity extends BaseRedisEntity<TEntity>> {
-	entity: Nullable<BaseRedisEntity<TEntity>>;
-	status: TAbsent | TPresent | TCreated | TUpdated | TRemoved | TReconnected | TExpiryAdded | TDisconnected | TPreConnected;
+export type TEntityStatuses = TAbsent | TPresent | TCreated | TUpdated | TRemoved | TReconnected | TExpiryAdded | TDisconnected | TPreConnected;
+export type TNullableEntityStatuses = TAbsent | TRemoved;
+export type TNonNullableEntityStatuses = Exclude<TEntityStatuses, TNullableEntityStatuses>;
+
+export interface IEntityStatus<TEntity extends BaseRedisEntity<TEntity>, TStatus extends TEntityStatuses> {
+	entity: TStatus extends TNonNullableEntityStatuses ? TEntity : null;
+	status: TStatus;
 }
 
-export interface IEntityAbsent<TEntity extends BaseRedisEntity<TEntity>> extends IEntityStatus<TEntity> {
-	entity: null;
-	status: TAbsent;
-}
+export type IRedisEntityKeyValues<TEntity extends BaseRedisEntity<TEntity>> = { [TProp in Key<TEntity>]: TEntity[TProp] };
 
-export interface IEntityPresent<TEntity extends BaseRedisEntity<TEntity>> extends IEntityStatus<TEntity> {
-	entity: TEntity;
-	status: TPresent;
-}
+export type IBaseRedisEntityKeyValues<TEntity extends BaseRedisEntity<TEntity>> = { [TProp in Key<BaseRedisEntity<TEntity>>]: BaseRedisEntity<TEntity>[TProp] };
 
-export interface IEntityCreated<TEntity extends BaseRedisEntity<TEntity>> extends IEntityStatus<TEntity> {
-	entity: TEntity;
-	status: TCreated;
-}
+export type IRedisEntityProperties<TEntity extends BaseRedisEntity<TEntity>> = Omit<IRedisEntityKeyValues<TEntity>, Key<IBaseRedisEntityKeyValues<TEntity>>>;
 
-export interface IEntityUpdated<TEntity extends BaseRedisEntity<TEntity>> extends IEntityStatus<TEntity> {
-	entity: TEntity;
-	status: TUpdated;
-}
+export type IRedisEntityNonSchemaProperties = (...params: any) => any;
 
-export interface IEntityRemoved<TEntity extends BaseRedisEntity<TEntity>> extends IEntityStatus<TEntity> {
-	entity: null;
-	status: TRemoved;
-}
-
-export interface IEntityReconnected<TEntity extends BaseRedisEntity<TEntity>> extends IEntityStatus<TEntity> {
-	entity: TEntity;
-	status: TReconnected;
-}
-
-export interface IEntityExpiryAdded<TEntity extends BaseRedisEntity<TEntity>> extends IEntityStatus<TEntity> {
-	entity: TEntity;
-	status: TExpiryAdded;
-}
-
-export interface IEntityDisconnected<TEntity extends BaseRedisEntity<TEntity>> extends IEntityStatus<TEntity> {
-	entity: TEntity;
-	status: TDisconnected;
-}
-
-export interface IEntityPreConnected<TEntity extends BaseRedisEntity<TEntity>> extends IEntityStatus<TEntity> {
-	entity: TEntity;
-	status: TPreConnected;
-}
+export type IRedisEntitySchemaProperties<TEntity extends BaseRedisEntity<TEntity>> = FilterWhereNot<IRedisEntityProperties<TEntity>, IRedisEntityNonSchemaProperties>;

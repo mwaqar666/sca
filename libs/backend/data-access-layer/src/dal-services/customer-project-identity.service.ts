@@ -26,6 +26,8 @@ export class CustomerProjectIdentityService {
 				const projectCustomer = await this.projectCustomerService.persistProjectCustomerConnection(project.projectId, customer.customerId, runningTransaction);
 
 				projectCustomer.projectCustomerProject = project;
+				projectCustomer.projectCustomerCustomer = customer;
+
 				customer.customerCurrentProject = projectCustomer;
 
 				return customer;
@@ -42,6 +44,7 @@ export class CustomerProjectIdentityService {
 
 		const projectCustomersWithProjects = await this.projectCustomerService.findAllProjectsForCustomer(customer.customerId);
 		if (projectCustomersWithProjects.length === 0) return { authEntity: null, authErrorReason: "project" };
+		projectCustomersWithProjects.forEach((projectCustomer: ProjectCustomerEntity) => (projectCustomer.projectCustomerCustomer = customer));
 
 		const currentProjectCustomerIndex = projectCustomersWithProjects.findIndex((projectCustomer: ProjectCustomerEntity) => projectCustomer.projectCustomerProject.projectUuid === projectUuid);
 		if (currentProjectCustomerIndex === -1) return { authEntity: null, authErrorReason: "project" };

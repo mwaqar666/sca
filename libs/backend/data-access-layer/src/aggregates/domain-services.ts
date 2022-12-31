@@ -1,4 +1,4 @@
-import { CustomerService, ProjectCustomerService, ProjectDefaultService, ProjectService, ProjectUserService, UserService, UserTypeService } from "../domains";
+import { CustomerService, ProjectCustomerService, ProjectDefaultService, ProjectService, ProjectUserService, TrackerService, UserService, UserTypeService } from "../domains";
 import type { Type } from "@nestjs/common";
 
 export const DomainServices: Array<Type> = [
@@ -11,4 +11,5 @@ export const DomainServices: Array<Type> = [
 	ProjectUserService,
 	ProjectCustomerService,
 	CustomerService,
+	TrackerService,
 ];

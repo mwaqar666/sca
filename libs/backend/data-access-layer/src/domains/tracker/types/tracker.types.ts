@@ -6,7 +6,7 @@ export interface ICustomerTrackingInfo {
 	arrivalTime: string;
 	departureTime: Nullable<string>;
 	customerSource: ICustomerSource;
-	pageVisits: Array<ICustomerPageVisitInfo>;
+	pageVisits: Record<string, Array<ICustomerPageVisitInfo>>;
 }
 
 export interface ICustomerPageVisitInfo {

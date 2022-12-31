@@ -24,10 +24,10 @@ export class CustomerSocketService extends SocketService {
 		this.customerConnectionService.setServer(server);
 	}
 
-	public async connectIncomingCustomer(customerSocket: AuthCustomerSocket, handleIncomingCustomerPayloadDto: HandleIncomingCustomerPayloadDto): Promise<void> {
+	public async connectIncomingCustomer(customerSocket: AuthCustomerSocket, customerPayloadDto: HandleIncomingCustomerPayloadDto): Promise<void> {
 		await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async () => {
-				const customerConnectionStatus = await this.customerConnectionService.handleIncomingConnection(customerSocket.data[AuthCustomer], customerSocket.id);
+				return await this.customerConnectionService.handleIncomingConnection(customerSocket.data[AuthCustomer], customerSocket.id, customerPayloadDto);
 			},
 		});
 	}

@@ -39,8 +39,9 @@ export class TrackerEntity extends SequelizeBaseEntity<TrackerEntity> {
 	public trackerCustomerId: number;
 
 	@Unique
+	@Default(DataType.UUIDV4)
 	@AllowNull(false)
-	@Column({ type: DataType.STRING })
+	@Column({ type: DataType.UUID })
 	public readonly trackerTrackingNumber: string;
 
 	@AllowNull(false)
