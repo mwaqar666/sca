@@ -3,7 +3,7 @@ import { InjectModel } from "@nestjs/sequelize";
 import { BaseRepository, type EntityType, SequelizeScopeConst } from "@sca-backend/db";
 import type { Transaction } from "sequelize";
 import { CustomerEntity } from "../entities";
-import type { ICustomerIpInfo, ICustomerPersonalInfo } from "../types";
+import type { ICustomerIpInfo, ICustomerPersonalInfo } from "@sca-shared/dto";
 
 @Injectable()
 export class CustomerRepository extends BaseRepository<CustomerEntity> {

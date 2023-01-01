@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import type { ICustomerIpInfo } from "@sca-backend/data-access-layer";
+import type { ICustomerIpInfo } from "@sca-shared/dto";
 import type { IpApiResponse } from "../types";
 
 @Injectable()

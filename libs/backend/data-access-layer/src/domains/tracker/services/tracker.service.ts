@@ -6,7 +6,7 @@ import type { IDomainExtensionsAggregate } from "../../../types";
 import type { TrackerEntity } from "../entities";
 import type { RunningTransaction } from "@sca-backend/db";
 import { SequelizeScopeConst } from "@sca-backend/db";
-import type { ICustomerPageVisitInfo, ICustomerTrackingInfo } from "../types";
+import type { ICustomerPageVisitInfo, ICustomerTrackingInfo } from "@sca-shared/dto";
 import type { PartialExcept } from "@sca-shared/utils";
 
 @Injectable()

@@ -1,18 +1,18 @@
 import type { FactoryProvider } from "@nestjs/common";
-import { MessageBusService } from "../services";
+import type { MessageBusService } from "../services";
 import * as ServiceBuses from "../services/service-buses";
-import type { IServiceBus } from "../types";
 import type { Constructable } from "@sca-shared/utils";
+import { RedisService } from "@sca-backend/redis";
 
-export const ServiceBusFactories = Object.values(ServiceBuses).map((ServiceBus: Constructable<IServiceBus, [MessageBusService<object>]>): FactoryProvider => {
+export const ServiceBusFactories = Object.values(ServiceBuses).map((ServiceBus: Constructable<MessageBusService<any>, [RedisService]>): FactoryProvider => {
 	return {
 		provide: ServiceBus,
-		useFactory: async (messageBusService: MessageBusService<object>) => {
-			const serviceBusInstance = new ServiceBus(messageBusService);
+		useFactory: async (redisService: RedisService) => {
+			const serviceBusInstance = new ServiceBus(redisService);
 			await serviceBusInstance.registerServiceBus();
 
 			return serviceBusInstance;
 		},
-		inject: [MessageBusService],
+		inject: [RedisService],
 	};
 });

@@ -3,12 +3,13 @@ import type { Nullable } from "@sca-shared/utils";
 import { AllowNull, AutoIncrement, BelongsTo, Column, CreatedAt, DataType, Default, DeletedAt, ForeignKey, HasMany, HasOne, PrimaryKey, Scopes, Table, Unique, UpdatedAt } from "sequelize-typescript";
 import { ProjectDefaultEntity, type ProjectDefaultEntity as ProjectDefaultEntityType, ProjectUserEntity, type ProjectUserEntity as ProjectUserEntityType } from "../../project";
 import { UserTypeEntity, type UserTypeEntity as UserTypeEntityType } from "./user-type.entity";
+import type { IUser } from "@sca-shared/dto";
 
 @Scopes(() => ({
 	...BaseEntityScopes.commonScopes(() => UserEntity),
 }))
 @Table({ tableName: UserEntity.entityTableName })
-export class UserEntity extends SequelizeBaseEntity<UserEntity> {
+export class UserEntity extends SequelizeBaseEntity<UserEntity> implements IUser {
 	public static override entityTableName = "users";
 	public static override uuidColumnName = "userUuid";
 	public static override isActiveColumnName = "userIsActive";

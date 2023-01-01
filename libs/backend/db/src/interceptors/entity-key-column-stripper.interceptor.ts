@@ -9,16 +9,16 @@ export class EntityKeyColumnStripperInterceptor implements NestInterceptor {
 		return next.handle().pipe(
 			// Operators
 
-			map((data: any) => this.filterPrimaryKeysFromResponse(data)),
+			map((data) => this.filterPrimaryKeysFromResponse(data)),
 		);
 	}
 
-	public filterPrimaryKeysFromResponse(data: any): any {
+	public filterPrimaryKeysFromResponse<T>(data: T): T {
 		if (this.dataIsAbsent(data)) return data;
 
-		if (Array.isArray(data)) return this.filterArrayData(data);
+		if (Array.isArray(data)) return this.filterArrayData(data) as T;
 
-		if (this.isSequelizeEntity(data)) return this.stripPrimaryAndForeignKeysFromEntity(data);
+		if (this.isSequelizeEntity(data)) return this.stripPrimaryAndForeignKeysFromEntity(data) as T;
 
 		if (typeof data === "object") return this.filterObjectData(data);
 

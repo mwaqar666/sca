@@ -17,12 +17,20 @@ export abstract class BaseRedisRepository<TEntity extends BaseRedisEntity<TEntit
 		await this.storageRepository.initializeRepository(this.redisSchema);
 	}
 
-	public async fetchEntity<K extends Key<TEntity>, V extends TEntity[K]>(whereField: K, equalsValue: V): Promise<Nullable<TEntity>> {
+	public async fetchEntity<K extends Key<IRedisEntitySchemaProperties<TEntity>>, V extends TEntity[K]>(whereField: K, equalsValue: V): Promise<Nullable<TEntity>> {
 		return await this.storageRepository.repository
 			.search()
 			.where(<IRedisEntityField>whereField)
 			.equals(<IRedisEntityValue>equalsValue)
 			.return.first();
+	}
+
+	public async fetchEntities<K extends Key<IRedisEntitySchemaProperties<TEntity>>, V extends TEntity[K]>(whereField: K, equalsValue: V): Promise<Array<TEntity>> {
+		return await this.storageRepository.repository
+			.search()
+			.where(<IRedisEntityField>whereField)
+			.equals(<IRedisEntityValue>equalsValue)
+			.return.all();
 	}
 
 	public async persistEntity(entityId: string): Promise<boolean> {

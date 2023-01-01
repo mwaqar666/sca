@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import type { UserTypeEnum } from "../types";
+import type { UserTypeEnum } from "@sca-shared/dto";
 import type { UserTypeEntity } from "../entities";
 import { UserTypeRepository } from "../repositories";
 import { SequelizeScopeConst } from "@sca-backend/db";

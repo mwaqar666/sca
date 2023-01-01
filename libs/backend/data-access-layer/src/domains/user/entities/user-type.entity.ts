@@ -2,13 +2,13 @@ import { BaseEntityScopes, SequelizeBaseEntity } from "@sca-backend/db";
 import type { Nullable } from "@sca-shared/utils";
 import { AllowNull, AutoIncrement, Column, CreatedAt, DataType, Default, DeletedAt, HasMany, PrimaryKey, Scopes, Table, UpdatedAt } from "sequelize-typescript";
 import { UserEntity, type UserEntity as UserEntityType } from "./user.entity";
-import type { UserTypeEnum } from "../types";
+import type { IUserType, UserTypeEnum } from "@sca-shared/dto";
 
 @Scopes(() => ({
 	...BaseEntityScopes.commonScopes(() => UserTypeEntity),
 }))
 @Table({ tableName: UserTypeEntity.entityTableName })
-export class UserTypeEntity extends SequelizeBaseEntity<UserTypeEntity> {
+export class UserTypeEntity extends SequelizeBaseEntity<UserTypeEntity> implements IUserType {
 	public static override entityTableName = "userTypes";
 	public static override uuidColumnName = "userTypeUuid";
 	public static override isActiveColumnName = "userTypeIsActive";

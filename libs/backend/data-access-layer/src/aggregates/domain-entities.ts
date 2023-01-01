@@ -7,10 +7,13 @@ export const DomainEntities: Array<Constructable<SequelizeBaseEntity<any>>> = [
 
 	UserEntity,
 	UserTypeEntity,
+
 	ProjectEntity,
 	ProjectDefaultEntity,
 	ProjectUserEntity,
 	ProjectCustomerEntity,
+
 	CustomerEntity,
+
 	TrackerEntity,
 ];

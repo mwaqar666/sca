@@ -7,10 +7,13 @@ export const DomainRepositories: Array<Constructable<BaseRepository<any>>> = [
 
 	UserRepository,
 	UserTypeRepository,
+
 	ProjectRepository,
 	ProjectDefaultRepository,
 	ProjectUserRepository,
 	ProjectCustomerRepository,
+
 	CustomerRepository,
+
 	TrackerRepository,
 ];

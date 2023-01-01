@@ -1,5 +1,16 @@
 import type { Nullable } from "@sca-shared/utils";
 
+export interface ICustomer {
+	customerId: number;
+	customerUuid: string;
+	customerPersonalInfo: ICustomerPersonalInfo;
+	customerIpInfo: ICustomerIpInfo;
+	customerCookie: string;
+	customerCreatedAt: Date;
+	customerUpdatedAt: Date;
+	customerDeletedAt: Nullable<Date>;
+}
+
 export interface ICustomerPersonalInfo {
 	customerName: string;
 	customerContact: string;

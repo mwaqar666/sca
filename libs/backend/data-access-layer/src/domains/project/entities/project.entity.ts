@@ -5,12 +5,13 @@ import { ProjectCustomerEntity, type ProjectCustomerEntity as ProjectCustomerEnt
 import { ProjectDefaultEntity, type ProjectDefaultEntity as ProjectDefaultEntityType } from "./project-default.entity";
 import { ProjectUserEntity, type ProjectUserEntity as ProjectUserEntityType } from "./project-user.entity";
 import { TrackerEntity, type TrackerEntity as TrackerEntityType } from "../../tracker";
+import type { IProject } from "@sca-shared/dto";
 
 @Scopes(() => ({
 	...BaseEntityScopes.commonScopes(() => ProjectEntity),
 }))
 @Table({ tableName: ProjectEntity.entityTableName })
-export class ProjectEntity extends SequelizeBaseEntity<ProjectEntity> {
+export class ProjectEntity extends SequelizeBaseEntity<ProjectEntity> implements IProject {
 	public static override entityTableName = "projects";
 	public static override uuidColumnName = "projectUuid";
 	public static override isActiveColumnName = "projectIsActive";

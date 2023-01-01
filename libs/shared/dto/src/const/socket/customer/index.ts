@@ -1,1 +1,1 @@
-export * from "./handle-incoming-customer";
+export * from "./incoming-customer";

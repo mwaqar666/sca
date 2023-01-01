@@ -3,14 +3,14 @@ import type { Nullable } from "@sca-shared/utils";
 import { JsonHelper } from "@sca-shared/utils";
 import { AllowNull, AutoIncrement, Column, CreatedAt, DataType, Default, DeletedAt, HasMany, HasOne, PrimaryKey, Scopes, Table, Unique, UpdatedAt } from "sequelize-typescript";
 import { ProjectCustomerEntity, type ProjectCustomerEntity as ProjectCustomerEntityType } from "../../project";
-import type { ICustomerIpInfo, ICustomerPersonalInfo } from "../types";
+import type { ICustomer, ICustomerIpInfo, ICustomerPersonalInfo } from "@sca-shared/dto";
 import { TrackerEntity, type TrackerEntity as TrackerEntityType } from "../../tracker";
 
 @Scopes(() => ({
 	...BaseEntityScopes.commonScopes(() => CustomerEntity),
 }))
 @Table({ tableName: CustomerEntity.entityTableName })
-export class CustomerEntity extends SequelizeBaseEntity<CustomerEntity> {
+export class CustomerEntity extends SequelizeBaseEntity<CustomerEntity> implements ICustomer {
 	public static override entityTableName = "customers";
 	public static override uuidColumnName = "customerUuid";
 	public static override createdAtColumnName = "customerCreatedAt";
@@ -90,4 +90,11 @@ export class CustomerEntity extends SequelizeBaseEntity<CustomerEntity> {
 		sourceKey: "customerId",
 	})
 	public customerTrackers: Array<TrackerEntityType>;
+
+	@HasOne(() => TrackerEntity, {
+		as: "customerCurrentTracker",
+		foreignKey: "trackerCustomerId",
+		sourceKey: "customerId",
+	})
+	public customerCurrentTracker: TrackerEntityType;
 }

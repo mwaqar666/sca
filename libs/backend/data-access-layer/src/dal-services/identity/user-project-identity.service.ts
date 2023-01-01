@@ -2,10 +2,11 @@ import { Inject, Injectable } from "@nestjs/common";
 import type { AggregateService } from "@sca-backend/aggregate";
 import type { RunningTransaction } from "@sca-backend/db";
 import type { ISignUpRequest } from "@sca-shared/dto";
-import { DomainExtensionsAggregateConst } from "../const";
-import { ProjectDefaultService, ProjectService, type ProjectUserEntity, ProjectUserService, type UserEntity, UserService, UserTypeEnum, UserTypeService } from "../domains";
-import type { FailedAuthReasonProject, FailedAuthReasonUser, SuccessfulAuthWithUserAndProject } from "../dto";
-import type { IDomainExtensionsAggregate } from "../types";
+import { UserTypeEnum } from "@sca-shared/dto";
+import { DomainExtensionsAggregateConst } from "../../const";
+import { ProjectDefaultService, ProjectService, type ProjectUserEntity, ProjectUserService, type UserEntity, UserService, UserTypeService } from "../../domains";
+import type { FailedAuthReasonProject, FailedAuthReasonUser, SuccessfulAuthWithUserAndProject } from "../../dto";
+import type { IDomainExtensionsAggregate } from "../../types";
 
 @Injectable()
 export class UserProjectIdentityService {

@@ -8,7 +8,7 @@ import type { IDomainExtensionsAggregate, IDomainUtilitiesAggregate } from "../.
 import { CustomerConst } from "../const";
 import type { CustomerEntity } from "../entities";
 import { CustomerRepository } from "../repositories";
-import type { ICustomerIpInfo, ICustomerPersonalInfo } from "../types";
+import type { ICustomerIpInfo, ICustomerPersonalInfo } from "@sca-shared/dto";
 
 @Injectable()
 export class CustomerService {

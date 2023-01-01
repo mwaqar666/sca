@@ -19,7 +19,11 @@ export class DispatcherService {
 		if (!clientsArePresent) return;
 
 		const emissionData: Array<T> = [];
-		if (withData) emissionData.push(this.entityKeyColumnStripperInterceptor.filterPrimaryKeysFromResponse(withData));
+
+		if (withData) {
+			withData = this.entityKeyColumnStripperInterceptor.filterPrimaryKeysFromResponse(withData);
+			emissionData.push(withData);
+		}
 
 		fromServer.to(clients).emit(message, ...emissionData);
 	}

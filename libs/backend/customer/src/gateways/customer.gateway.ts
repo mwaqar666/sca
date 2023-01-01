@@ -3,8 +3,8 @@ import { CustomerSocketConfig, CustomerSocketPort } from "../config";
 import type { Server, Socket } from "socket.io";
 import { UseGuards } from "@nestjs/common";
 import { AuthCustomerSocket, CustomerTokenSocketGuard } from "@sca-backend/auth";
-import { HandleIncomingCustomerEvent, HandleIncomingCustomerPayloadDto } from "@sca-shared/dto";
-import { CustomerSocketService } from "../services/socket";
+import { IncomingCustomer, IncomingCustomerRequestDto, IncomingCustomerResponseDto } from "@sca-shared/dto";
+import { CustomerConnectionService, CustomerNotificationService } from "../services/socket";
 
 @UseGuards(CustomerTokenSocketGuard)
 @WebSocketGateway(CustomerSocketPort, CustomerSocketConfig)
@@ -12,16 +12,21 @@ export class CustomerGateway implements OnGatewayInit<Server>, OnGatewayDisconne
 	public constructor(
 		// Dependencies
 
-		private readonly customerSocketService: CustomerSocketService,
+		private readonly customerConnectionService: CustomerConnectionService,
+		private readonly customerNotificationService: CustomerNotificationService,
 	) {}
 
-	@SubscribeMessage(HandleIncomingCustomerEvent)
-	public async handleIncomingCustomer(@ConnectedSocket() customerSocket: AuthCustomerSocket, @MessageBody() handleIncomingCustomerPayloadDto: HandleIncomingCustomerPayloadDto): Promise<void> {
-		return await this.customerSocketService.connectIncomingCustomer(customerSocket, handleIncomingCustomerPayloadDto);
+	@SubscribeMessage(IncomingCustomer)
+	public async handleIncomingCustomer(
+		@ConnectedSocket() customerSocket: AuthCustomerSocket,
+		@MessageBody() incomingCustomerRequestDto: IncomingCustomerRequestDto,
+	): Promise<IncomingCustomerResponseDto> {
+		return await this.customerConnectionService.handleIncomingConnection(customerSocket, incomingCustomerRequestDto);
 	}
 
 	public afterInit(server: Server) {
-		this.customerSocketService.setServer(server);
+		this.customerConnectionService.setServer(server);
+		this.customerNotificationService.setServer(server);
 	}
 
 	public handleDisconnect(socket: Socket): void {

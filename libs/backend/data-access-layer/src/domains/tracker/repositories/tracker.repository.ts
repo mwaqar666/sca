@@ -2,7 +2,7 @@ import { BaseRepository, type EntityType } from "@sca-backend/db";
 import { TrackerEntity } from "../entities";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import type { ICustomerTrackingInfo } from "../types";
+import type { ICustomerTrackingInfo } from "@sca-shared/dto";
 import type { Transaction } from "sequelize";
 
 @Injectable()

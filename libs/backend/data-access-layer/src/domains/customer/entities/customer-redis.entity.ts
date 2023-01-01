@@ -1,16 +1,15 @@
-import type { Nullable } from "@sca-shared/utils";
 import { Schema } from "redis-om";
 import { BaseRedisEntity } from "@sca-backend/db";
+import type { IOnlineCustomer } from "@sca-shared/dto";
+import type { Nullable } from "@sca-shared/utils";
 
-export interface CustomerRedisEntity {
-	agentUuid: Nullable<string>;
-	projectUuid: string;
-	customerUuid: string;
-	connectionIds: string[];
-	trackingNumber: string;
+export class CustomerRedisEntity extends BaseRedisEntity<CustomerRedisEntity> implements IOnlineCustomer {
+	public agentUuid: Nullable<string>;
+	public projectUuid: string;
+	public customerUuid: string;
+	public connectionIds: string[];
+	public trackingNumber: string;
 }
-
-export class CustomerRedisEntity extends BaseRedisEntity<CustomerRedisEntity> {}
 
 export const CustomerRedisSchema: Schema<CustomerRedisEntity> = new Schema(
 	CustomerRedisEntity,

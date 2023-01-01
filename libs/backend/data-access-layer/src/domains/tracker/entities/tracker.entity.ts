@@ -2,7 +2,7 @@ import { AllowNull, AutoIncrement, BelongsTo, Column, CreatedAt, DataType, Defau
 import { BaseEntityScopes, SequelizeBaseEntity } from "@sca-backend/db";
 import type { Nullable } from "@sca-shared/utils";
 import { JsonHelper } from "@sca-shared/utils";
-import type { ICustomerTrackingInfo } from "../types";
+import type { ICustomerTrackingInfo, ITracker } from "@sca-shared/dto";
 import { ProjectEntity, type ProjectEntity as ProjectEntityType } from "../../project";
 import { CustomerEntity, type CustomerEntity as CustomerEntityType } from "../../customer";
 
@@ -10,7 +10,7 @@ import { CustomerEntity, type CustomerEntity as CustomerEntityType } from "../..
 	...BaseEntityScopes.commonScopes(() => TrackerEntity),
 }))
 @Table({ tableName: TrackerEntity.entityTableName })
-export class TrackerEntity extends SequelizeBaseEntity<TrackerEntity> {
+export class TrackerEntity extends SequelizeBaseEntity<TrackerEntity> implements ITracker {
 	public static override entityTableName = "trackers";
 	public static override uuidColumnName = "trackerUuid";
 	public static override createdAtColumnName = "trackerCreatedAt";

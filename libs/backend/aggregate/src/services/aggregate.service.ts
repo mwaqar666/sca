@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import { type TResolvedInjectable } from "../types";
+import type { TInjectable, TResolvedInjectables } from "../types";
 
 @Injectable()
-export class AggregateService<TServices extends TResolvedInjectable> {
-	public constructor(public readonly services: TServices) {}
+export class AggregateService<TServices extends TInjectable> {
+	public constructor(public readonly services: TResolvedInjectables<TServices>) {}
 }

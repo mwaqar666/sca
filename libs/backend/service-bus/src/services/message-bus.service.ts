@@ -3,10 +3,8 @@ import { JsonHelper, type Nullable } from "@sca-shared/utils";
 import { filter, first, map, type Observable, Subject } from "rxjs";
 import { v4 } from "uuid";
 import type { IMessageWithData } from "../types";
-import { Injectable } from "@nestjs/common";
 
-@Injectable()
-export class MessageBusService<Bus extends object> {
+export abstract class MessageBusService<Bus extends MessageBusService<Bus>> {
 	private publisherChannel: string;
 	private subscriberChannel: string;
 
@@ -15,26 +13,28 @@ export class MessageBusService<Bus extends object> {
 
 	private readonly messageWithDataStream: Subject<string>;
 
-	public constructor(
+	protected constructor(
 		// Dependencies
 
-		private readonly redisService: RedisService,
+		private readonly redisBusService: RedisService,
 	) {
 		this.messageWithDataStream = new Subject<string>();
 	}
 
-	public async registerServiceBus(bus: Bus): Promise<void> {
-		const busName = bus.constructor.name;
+	public async registerServiceBus(this: Bus): Promise<void> {
+		const busName = this.constructor.name;
 
 		this.publisherChannel = this.channelName(busName, "pub");
 		this.subscriberChannel = this.channelName(busName, "sub");
 
-		this.publisherConnection = await this.redisService.getConnection(this.publisherChannel);
-		this.subscriberConnection = await this.redisService.getConnection(this.subscriberChannel);
+		this.publisherConnection = await this.redisBusService.getConnection(this.publisherChannel);
+		this.subscriberConnection = await this.redisBusService.getConnection(this.subscriberChannel);
 
 		await this.attachListenerToSubscriberChannel();
 	}
 
+	public async publishMessage(message: string): Promise<void>;
+	public async publishMessage<T>(message: string, data: Nullable<T>): Promise<void>;
 	public async publishMessage<T>(message: string, data?: Nullable<T>): Promise<void> {
 		const passengerData = JsonHelper.stringify<IMessageWithData<Nullable<T>>>({ message, data: data ?? null });
 
@@ -54,7 +54,7 @@ export class MessageBusService<Bus extends object> {
 	}
 
 	private async attachListenerToSubscriberChannel(): Promise<void> {
-		await this.subscriberConnection.redis.subscribe(this.subscriberChannel, (messageWithData: string) => {
+		return await this.subscriberConnection.redis.subscribe(this.subscriberChannel, (messageWithData: string) => {
 			this.messageWithDataStream.next(messageWithData);
 		});
 	}

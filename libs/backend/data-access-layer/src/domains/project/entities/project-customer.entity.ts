@@ -3,12 +3,13 @@ import type { Nullable } from "@sca-shared/utils";
 import { AllowNull, AutoIncrement, BelongsTo, Column, CreatedAt, DataType, Default, DeletedAt, ForeignKey, PrimaryKey, Scopes, Table, Unique, UpdatedAt } from "sequelize-typescript";
 import { CustomerEntity, type CustomerEntity as CustomerEntityType } from "../../customer";
 import { ProjectEntity, type ProjectEntity as ProjectEntityType } from "./project.entity";
+import type { IProjectCustomer } from "@sca-shared/dto";
 
 @Scopes(() => ({
 	...BaseEntityScopes.commonScopes(() => ProjectCustomerEntity),
 }))
 @Table({ tableName: ProjectCustomerEntity.entityTableName })
-export class ProjectCustomerEntity extends SequelizeBaseEntity<ProjectCustomerEntity> {
+export class ProjectCustomerEntity extends SequelizeBaseEntity<ProjectCustomerEntity> implements IProjectCustomer {
 	public static override entityTableName = "projectCustomers";
 	public static override uuidColumnName = "projectCustomerUuid";
 	public static override createdAtColumnName = "projectCustomerCreatedAt";

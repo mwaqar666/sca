@@ -1,2 +1,2 @@
 export * from "./customer-connection.service";
-export * from "./customer-socket.service";
+export * from "./customer-notification.service";
