@@ -41,6 +41,11 @@ export class ProjectUserEntity extends SequelizeBaseEntity<ProjectUserEntity> im
 	@Column({ type: DataType.INTEGER })
 	public projectUserParentId: Nullable<number>;
 
+	@Default(true)
+	@AllowNull(false)
+	@Column({ type: DataType.BOOLEAN })
+	public projectUserIsDefault: boolean;
+
 	@CreatedAt
 	public projectUserCreatedAt: Date;
 

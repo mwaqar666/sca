@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import type { ProjectEntity, ProjectUserEntity, UserEntity } from "@sca-backend/data-access-layer";
+import type { ProjectUserEntity, UserEntity } from "@sca-backend/data-access-layer";
 import { TokenService } from "@sca-backend/security";
 import type { IAccessTokenPayload, IAuthenticatedProject, IPurePayload, IRefreshTokenPayload } from "@sca-shared/dto";
 
@@ -18,7 +18,7 @@ export class AuthTokenService {
 			userMiddleName: userWithProject.userMiddleName,
 			userLastName: userWithProject.userLastName,
 			userEmail: userWithProject.userEmail,
-			userDefaultProject: this.prepareSingleProjectStructure(userWithProject.userDefaultProject.projectDefaultProject),
+			userCurrentProject: this.prepareSingleProjectStructure(userWithProject.userCurrentProject),
 			userProjects: this.prepareAllProjectStructure(userWithProject.userProjects),
 		};
 
@@ -28,20 +28,22 @@ export class AuthTokenService {
 	public async prepareRefreshToken(userWithProject: UserEntity): Promise<string> {
 		const payload: IPurePayload<IRefreshTokenPayload> = {
 			userUuid: userWithProject.userUuid,
+			projectUuid: userWithProject.userCurrentProject.projectUserProject.projectUuid,
 		};
 
 		return await this.tokenService.createRefreshToken(payload);
 	}
 
 	private prepareAllProjectStructure(projects: Array<ProjectUserEntity>): Array<IAuthenticatedProject> {
-		return projects.map((projectUser: ProjectUserEntity) => this.prepareSingleProjectStructure(projectUser.projectUserProject));
+		return projects.map((projectUser: ProjectUserEntity) => this.prepareSingleProjectStructure(projectUser));
 	}
 
-	private prepareSingleProjectStructure(project: ProjectEntity): IAuthenticatedProject {
+	private prepareSingleProjectStructure(projectUser: ProjectUserEntity): IAuthenticatedProject {
 		return {
-			projectUuid: project.projectUuid,
-			projectName: project.projectName,
-			projectDomain: project.projectDomain,
+			projectUuid: projectUser.projectUserProject.projectUuid,
+			projectName: projectUser.projectUserProject.projectName,
+			projectDomain: projectUser.projectUserProject.projectDomain,
+			projectIsDefault: projectUser.projectUserIsDefault,
 		};
 	}
 }

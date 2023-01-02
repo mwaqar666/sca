@@ -32,7 +32,7 @@ export class AccessTokenSocketGuard extends BaseGuard<AuthUserSocket, IAccessTok
 	}
 
 	protected async authenticatePayload(socket: AuthUserSocket, payload: IPurePayload<IAccessTokenPayload>): Promise<boolean> {
-		const { authEntity, authErrorReason } = await this.identityService.authenticateUserUsingUuidWithAllAndDefaultProjects(payload.userUuid);
+		const { authEntity, authErrorReason } = await this.identityService.authenticateUserUsingUuidWithAllAndCurrentProjects(payload.userUuid, payload.userCurrentProject.projectUuid);
 
 		if (authErrorReason) return false;
 

@@ -32,7 +32,7 @@ export class RefreshTokenHttpGuard extends BaseGuard<IAuthUserRefreshRequest, IR
 	}
 
 	protected async authenticatePayload(request: IAuthUserRefreshRequest, payload: IPurePayload<IRefreshTokenPayload>): Promise<boolean> {
-		const { authEntity, authErrorReason } = await this.identityService.authenticateUserUsingUuidWithAllAndDefaultProjects(payload.userUuid);
+		const { authEntity, authErrorReason } = await this.identityService.authenticateUserUsingUuidWithAllAndCurrentProjects(payload.userUuid, payload.projectUuid);
 
 		if (authErrorReason) return false;
 

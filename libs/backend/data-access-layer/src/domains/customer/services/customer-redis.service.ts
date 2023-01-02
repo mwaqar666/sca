@@ -12,8 +12,8 @@ export class CustomerRedisService {
 		private readonly customerRedisRepository: CustomerRedisRepository,
 	) {}
 
-	public async fetchCustomerFromUuid(customerUuid: string): Promise<Nullable<CustomerRedisEntity>> {
-		return await this.customerRedisRepository.fetchEntity("customerUuid", customerUuid);
+	public async fetchCustomerFromCustomerAndProjectUuid(customerUuid: string, projectUuid: string): Promise<Nullable<CustomerRedisEntity>> {
+		return await this.customerRedisRepository.fetchCustomerFromCustomerAndProjectUuid(customerUuid, projectUuid);
 	}
 
 	public async removeCustomerExpiry(customerRedisId: string): Promise<boolean> {
@@ -33,7 +33,7 @@ export class CustomerRedisService {
 		return { entity: redisCustomer, status: "Created" };
 	}
 
-	public async updateExistingCustomerConnection(customer: CustomerRedisEntity, connectionId: string): Promise<IEntityStatus<CustomerRedisEntity, TReconnected>> {
+	public async updateCustomerConnectionId(customer: CustomerRedisEntity, connectionId: string): Promise<IEntityStatus<CustomerRedisEntity, TReconnected>> {
 		customer.connectionIds = [connectionId];
 		customer = await this.customerRedisRepository.updateEntity(customer);
 

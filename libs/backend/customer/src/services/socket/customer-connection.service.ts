@@ -25,6 +25,7 @@ export class CustomerConnectionService extends SocketService {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async (): Promise<IncomingCustomerResponseDto> => {
 				const authenticatedCustomer = customerSocket.data[AuthCustomer];
+
 				const customer = await this.connectedCustomerService.connectAndTrackCustomer(authenticatedCustomer, customerSocket.id, incomingCustomerRequestDto);
 				const onlineAgents = await this.connectedAgentService.onlineAgentsOfProject(authenticatedCustomer.customerCurrentProject.projectCustomerProject.projectUuid);
 				const incomingCustomerResponse: IncomingCustomerResponseDto = { onlineAgents: onlineAgents.length, trackingNumber: authenticatedCustomer.customerCurrentTracker.trackerTrackingNumber };

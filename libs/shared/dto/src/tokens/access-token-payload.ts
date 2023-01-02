@@ -7,7 +7,7 @@ export interface IAccessTokenPayload extends ITokenIdentity {
 	userMiddleName: Nullable<string>;
 	userLastName: string;
 	userEmail: string;
-	userDefaultProject: IAuthenticatedProject;
+	userCurrentProject: IAuthenticatedProject;
 	userProjects: Array<IAuthenticatedProject>;
 }
 
@@ -15,4 +15,5 @@ export interface IAuthenticatedProject {
 	projectUuid: string;
 	projectName: string;
 	projectDomain: string;
+	projectIsDefault: boolean;
 }

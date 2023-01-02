@@ -36,6 +36,11 @@ export default class extends BaseMigration {
 				allowNull: false,
 				type: DataTypes.INTEGER,
 			},
+			projectUserIsDefault: {
+				defaultValue: true,
+				allowNull: false,
+				type: DataTypes.BOOLEAN,
+			},
 			projectUserCreatedAt: {
 				allowNull: false,
 				type: DataTypes.DATE,

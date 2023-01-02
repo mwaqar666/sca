@@ -16,15 +16,15 @@ export class AuthService {
 	) {}
 
 	public async signIn(signInRequest: ISignInRequest): Promise<ISignInResponse> {
-		const authUserWithDefaultAndAllProjects = await this.authenticateProjectUser(signInRequest);
+		const authUserWithAllAndCurrentProjects = await this.authenticateProjectUser(signInRequest);
 
-		return this.createAuthenticationTokens(authUserWithDefaultAndAllProjects);
+		return this.createAuthenticationTokens(authUserWithAllAndCurrentProjects);
 	}
 
 	public async signUp(signUpRequest: ISignUpRequest): Promise<ISignUpResponse> {
-		const authUserWithDefaultAndAllProjects = await this.identityService.registerUserWithProject(signUpRequest);
+		const authUserWithAllAndCurrentProjects = await this.identityService.registerUserWithProject(signUpRequest);
 
-		return this.createAuthenticationTokens(authUserWithDefaultAndAllProjects);
+		return this.createAuthenticationTokens(authUserWithAllAndCurrentProjects);
 	}
 
 	public async createAuthenticationTokens(user: UserEntity): Promise<ISignInResponse> {
@@ -35,7 +35,7 @@ export class AuthService {
 	}
 
 	private async authenticateProjectUser(signInRequest: ISignInRequest): Promise<UserEntity> {
-		const { authEntity, authErrorReason } = await this.identityService.authenticateUserUsingEmailWithAllAndDefaultProjects(signInRequest.userEmail);
+		const { authEntity, authErrorReason } = await this.identityService.authenticateUserUsingEmailWithAllAndCurrentProjects(signInRequest.userEmail);
 
 		if (authErrorReason) throw new UnauthorizedException(authErrorReason === "user" ? UnauthorizedExceptionMessage : ProjectUnavailableExceptionMessage);
 

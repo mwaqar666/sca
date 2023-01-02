@@ -30,6 +30,7 @@ export class ProjectUserService {
 						projectUserUserId: linkUserProjectDto.userId,
 						projectUserProjectId: linkUserProjectDto.projectId,
 						projectUserParentId: linkUserProjectDto.projectUserParentId ?? null,
+						projectUserIsDefault: !!linkUserProjectDto.projectIsDefault,
 					},
 				});
 			},

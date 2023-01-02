@@ -1,15 +1,4 @@
-import {
-	AgentRedisService,
-	CustomerRedisService,
-	CustomerService,
-	ProjectCustomerService,
-	ProjectDefaultService,
-	ProjectService,
-	ProjectUserService,
-	TrackerService,
-	UserService,
-	UserTypeService,
-} from "../domains";
+import { AgentRedisService, CustomerRedisService, CustomerService, ProjectCustomerService, ProjectService, ProjectUserService, TrackerService, UserService, UserTypeService } from "../domains";
 import type { Type } from "@nestjs/common";
 
 export const DomainServices: Array<Type> = [
@@ -20,7 +9,6 @@ export const DomainServices: Array<Type> = [
 	AgentRedisService,
 
 	ProjectService,
-	ProjectDefaultService,
 	ProjectUserService,
 	ProjectCustomerService,
 

@@ -24,7 +24,10 @@ export class ConnectedCustomerService {
 	): Promise<IEntityConnectionStatus<CustomerRedisEntity>> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async (): Promise<IEntityConnectionStatus<CustomerRedisEntity>> => {
-				const redisCustomer = await this.customerRedisService.fetchCustomerFromUuid(customer.customerUuid);
+				const redisCustomer = await this.customerRedisService.fetchCustomerFromCustomerAndProjectUuid(
+					customer.customerUuid,
+					customer.customerCurrentProject.projectCustomerProject.projectUuid,
+				);
 				if (!redisCustomer) return await this.createNewCustomerConnection(customer, connectionId, incomingCustomerRequestDto);
 
 				const customerPersisted = await this.customerRedisService.removeCustomerExpiry(redisCustomer.entityId);
@@ -52,7 +55,7 @@ export class ConnectedCustomerService {
 		incomingCustomerRequestDto: IncomingCustomerRequestDto,
 	): Promise<IEntityStatus<CustomerRedisEntity, TCreated>> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
-			operation: async () => {
+			operation: async (): Promise<IEntityStatus<CustomerRedisEntity, TCreated>> => {
 				customer.customerCurrentTracker = await this.trackerService.startTracker(
 					customer.customerId,
 					customer.customerCurrentProject.projectCustomerProjectId,
@@ -72,10 +75,10 @@ export class ConnectedCustomerService {
 		incomingCustomerRequestDto: IncomingCustomerRequestDto,
 	): Promise<IEntityStatus<CustomerRedisEntity, TReconnected>> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
-			operation: async () => {
+			operation: async (): Promise<IEntityStatus<CustomerRedisEntity, TReconnected>> => {
 				customer.customerCurrentTracker = await this.trackerService.addPageArrivalTrack(redisCustomer.trackingNumber, connectionId, incomingCustomerRequestDto.currentLocation);
 
-				return await this.customerRedisService.updateExistingCustomerConnection(redisCustomer, connectionId);
+				return await this.customerRedisService.updateCustomerConnectionId(redisCustomer, connectionId);
 			},
 		});
 	}
@@ -87,7 +90,7 @@ export class ConnectedCustomerService {
 		incomingCustomerRequestDto: IncomingCustomerRequestDto,
 	): Promise<IEntityStatus<CustomerRedisEntity, TPreConnected>> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
-			operation: async () => {
+			operation: async (): Promise<IEntityStatus<CustomerRedisEntity, TPreConnected>> => {
 				customer.customerCurrentTracker = await this.trackerService.addPageArrivalTrack(redisCustomer.trackingNumber, connectionId, incomingCustomerRequestDto.currentLocation);
 
 				return await this.customerRedisService.addAnotherCustomerConnection(redisCustomer, connectionId);

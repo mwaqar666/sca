@@ -1,7 +1,7 @@
 import { BaseEntityScopes, SequelizeBaseEntity } from "@sca-backend/db";
 import type { Nullable } from "@sca-shared/utils";
 import { AllowNull, AutoIncrement, BelongsTo, Column, CreatedAt, DataType, Default, DeletedAt, ForeignKey, HasMany, HasOne, PrimaryKey, Scopes, Table, Unique, UpdatedAt } from "sequelize-typescript";
-import { ProjectDefaultEntity, type ProjectDefaultEntity as ProjectDefaultEntityType, ProjectUserEntity, type ProjectUserEntity as ProjectUserEntityType } from "../../project";
+import { ProjectUserEntity, type ProjectUserEntity as ProjectUserEntityType } from "../../project";
 import { UserTypeEntity, type UserTypeEntity as UserTypeEntityType } from "./user-type.entity";
 import type { IUser } from "@sca-shared/dto";
 
@@ -76,12 +76,12 @@ export class UserEntity extends SequelizeBaseEntity<UserEntity> implements IUser
 	})
 	public userProjects: Array<ProjectUserEntityType>;
 
-	@HasOne(() => ProjectDefaultEntity, {
-		as: "userDefaultProject",
-		foreignKey: "projectDefaultUserId",
+	@HasOne(() => ProjectUserEntity, {
+		as: "userCurrentProject",
+		foreignKey: "projectUserUserId",
 		sourceKey: "userId",
 	})
-	public userDefaultProject: ProjectDefaultEntityType;
+	public userCurrentProject: ProjectUserEntityType;
 
 	@BelongsTo(() => UserTypeEntity, {
 		as: "userUserType",
