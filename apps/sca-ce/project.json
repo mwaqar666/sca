@@ -89,7 +89,10 @@
 		"serve": {
 			"executor": "@nrwl/angular:webpack-dev-server",
 			"options": {
-				"port": 4201
+				"port": 4201,
+				"allowedHosts": [
+					"customer.test"
+				]
 			},
 			"configurations": {
 				"dev": {

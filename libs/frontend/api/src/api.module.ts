@@ -18,7 +18,6 @@ export class ApiModule {
 		if (routes) {
 			const parsedApiRoutes = this.apiRouteLoaderService.loadRoutes(routes);
 			this.apiRouteService.registerRoutes(parsedApiRoutes);
-			console.log(this.apiRouteService);
 		}
 	}
 

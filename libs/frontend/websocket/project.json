@@ -12,8 +12,7 @@
 			],
 			"options": {
 				"tsConfig": "libs/frontend/websocket/tsconfig.json",
-				"project": "libs/frontend/websocket/ng-package.json",
-				"tailwindConfig": "libs/frontend/websocket/tailwind.config.js"
+				"project": "libs/frontend/websocket/ng-package.json"
 			}
 		},
 		"lint": {

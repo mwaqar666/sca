@@ -12,8 +12,7 @@
 			],
 			"options": {
 				"tsConfig": "libs/frontend/utils/tsconfig.json",
-				"project": "libs/frontend/utils/ng-package.json",
-				"tailwindConfig": "libs/frontend/utils/tailwind.config.js"
+				"project": "libs/frontend/utils/ng-package.json"
 			}
 		},
 		"lint": {

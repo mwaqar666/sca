@@ -12,8 +12,7 @@
 			],
 			"options": {
 				"tsConfig": "libs/frontend/auth/tsconfig.json",
-				"project": "libs/frontend/auth/ng-package.json",
-				"tailwindConfig": "libs/frontend/auth/tailwind.config.js"
+				"project": "libs/frontend/auth/ng-package.json"
 			}
 		},
 		"lint": {
