@@ -26,7 +26,7 @@ export class AgentGateway implements OnGatewayInit<Server>, OnGatewayDisconnect<
 		this.agentNotificationService.setServer(server);
 	}
 
-	public handleDisconnect(socket: Socket): void {
-		console.log(socket);
+	public async handleDisconnect(socket: Socket): Promise<void> {
+		await this.agentConnectionService.handleOutgoingConnection(socket);
 	}
 }

@@ -75,7 +75,7 @@ export class ConnectedCustomerService {
 		});
 	}
 
-	public prepareConnectedCustomerDto(redisCustomer: CustomerRedisEntity, customer: CustomerEntity): ConnectedCustomerDto {
+	public prepareSingleConnectedCustomerDto(redisCustomer: CustomerRedisEntity, customer: CustomerEntity): ConnectedCustomerDto {
 		return {
 			customer,
 			agentUuid: redisCustomer.agentUuid,
@@ -84,6 +84,31 @@ export class ConnectedCustomerService {
 			projectUuid: redisCustomer.projectUuid,
 			trackingNumber: redisCustomer.trackingNumber,
 		};
+	}
+
+	public async releaseCustomersFromAgentOfProject(agentUuid: string, projectUuid: string): Promise<Array<CustomerRedisEntity>> {
+		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
+			operation: async () => {
+				return await this.customerRedisService.releaseCustomersFromAgentOfProject(agentUuid, projectUuid);
+			},
+		});
+	}
+
+	public async prepareMultipleConnectedCustomerDto(redisCustomers: Array<CustomerRedisEntity>): Promise<Array<ConnectedCustomerDto>> {
+		return Promise.all(
+			redisCustomers.map((redisCustomer: CustomerRedisEntity) => {
+				return this.customerService.findOrFailCustomerUsingUuid(redisCustomer.customerUuid).then(
+					(customer: CustomerEntity): ConnectedCustomerDto => ({
+						customer,
+						agentUuid: redisCustomer.agentUuid,
+						connectionIds: redisCustomer.connectionIds,
+						customerUuid: redisCustomer.customerUuid,
+						projectUuid: redisCustomer.projectUuid,
+						trackingNumber: redisCustomer.trackingNumber,
+					}),
+				);
+			}),
+		);
 	}
 
 	private async postCustomerExpiryListener(expiredCustomer: CustomerRedisEntity): Promise<IEntityStatus<CustomerRedisEntity, TExpiryAdded> & IExpiryObserver<TPresent>> {

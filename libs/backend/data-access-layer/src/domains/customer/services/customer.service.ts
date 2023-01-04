@@ -41,6 +41,10 @@ export class CustomerService {
 		return await this.customerRepository.resolveEntity(customerUuid, [SequelizeScopeConst.isActive, SequelizeScopeConst.withoutTimestamps]);
 	}
 
+	public async findOrFailCustomerUsingUuid(customerUuid: string): Promise<CustomerEntity> {
+		return await this.customerRepository.resolveOrFailEntity(customerUuid, [SequelizeScopeConst.isActive, SequelizeScopeConst.withoutTimestamps]);
+	}
+
 	public customerPersonalInfoOrDefault(): ICustomerPersonalInfo;
 	public customerPersonalInfoOrDefault(customerPersonalInfo: Partial<ICustomerPersonalInfo>): ICustomerPersonalInfo;
 	public customerPersonalInfoOrDefault(customerPersonalInfo?: Partial<ICustomerPersonalInfo>): ICustomerPersonalInfo {

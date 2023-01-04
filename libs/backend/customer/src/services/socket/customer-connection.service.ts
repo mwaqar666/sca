@@ -35,7 +35,7 @@ export class CustomerConnectionService extends SocketService {
 
 				if (customer.status !== "Created") return incomingCustomerResponse;
 
-				const newConnectedCustomer = this.connectedCustomerService.prepareConnectedCustomerDto(customer.entity, authenticatedCustomer);
+				const newConnectedCustomer = this.connectedCustomerService.prepareSingleConnectedCustomerDto(customer.entity, authenticatedCustomer);
 				await this.socketBusService.publishMessage(SocketBusMessages.NotifyAllAgentsOfNewCustomer, newConnectedCustomer);
 
 				return incomingCustomerResponse;

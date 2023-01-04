@@ -1,9 +1,9 @@
 import { Inject, Injectable } from "@nestjs/common";
 import type { AggregateService } from "@sca-backend/aggregate";
 import { DomainUtilitiesAggregateConst } from "../../const";
-import type { IDomainUtilitiesAggregate } from "../../types";
 import { type AgentRedisEntity, AgentRedisService, type UserEntity } from "../../domains";
-import type { IEntityConnectionStatus, IEntityStatus, TCreated, TPreConnected, TReconnected } from "@sca-backend/db";
+import type { IDomainUtilitiesAggregate } from "../../types";
+import type { IEntityConnectionStatus, IEntityDisconnectionStatus, IEntityStatus, IExpiryObserver, TCreated, TExpiryAdded, TPreConnected, TPresent, TReconnected } from "@sca-backend/db";
 
 @Injectable()
 export class ConnectedAgentService {
@@ -28,10 +28,33 @@ export class ConnectedAgentService {
 		});
 	}
 
+	public async disconnectAgent(connectionId: string): Promise<IEntityDisconnectionStatus<AgentRedisEntity>> {
+		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
+			operation: async (): Promise<IEntityDisconnectionStatus<AgentRedisEntity>> => {
+				const redisAgent = await this.agentRedisService.fetchAgentFromConnectionId(connectionId);
+				if (!redisAgent) return { entity: null, postExpiryTasks: null, status: "Absent" };
+
+				const agentRemoval = await this.agentRedisService.removeOrExpireAgentConnection(redisAgent, connectionId);
+				if (agentRemoval.status === "ExpiryAdded") return await this.postAgentExpiryListener(agentRemoval.entity);
+
+				return { entity: agentRemoval.entity, postExpiryTasks: null, status: "Disconnected" };
+			},
+		});
+	}
+
 	public async onlineAgentsOfProject(projectUuid: string): Promise<Array<AgentRedisEntity>> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async (): Promise<Array<AgentRedisEntity>> => {
 				return await this.agentRedisService.fetchOnlineAgentsOfProject(projectUuid);
+			},
+		});
+	}
+
+	private async postAgentExpiryListener(expiredAgent: AgentRedisEntity): Promise<IEntityStatus<AgentRedisEntity, TExpiryAdded> & IExpiryObserver<TPresent>> {
+		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
+			operation: async (): Promise<IEntityStatus<AgentRedisEntity, TExpiryAdded> & IExpiryObserver<TPresent>> => {
+				const postExpiryTasks = this.agentRedisService.postAgentExpiryListener(expiredAgent.entityId);
+				return { entity: expiredAgent, postExpiryTasks, status: "ExpiryAdded" };
 			},
 		});
 	}

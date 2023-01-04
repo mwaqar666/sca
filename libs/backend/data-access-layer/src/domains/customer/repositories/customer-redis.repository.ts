@@ -14,11 +14,15 @@ export class CustomerRedisRepository extends BaseRedisRepository<CustomerRedisEn
 	}
 
 	public async fetchCustomerFromCustomerAndProjectUuid(customerUuid: string, projectUuid: string): Promise<Nullable<CustomerRedisEntity>> {
-		return this.redisStorageRepository.repository.search().where("customerUuid").equals(customerUuid).and("projectUuid").equals(projectUuid).return.first();
+		return await this.redisStorageRepository.repository.search().where("customerUuid").equals(customerUuid).and("projectUuid").equals(projectUuid).return.first();
 	}
 
 	public async fetchCustomerFromConnectionId(connectionId: string): Promise<Nullable<CustomerRedisEntity>> {
-		return this.redisStorageRepository.repository.search().where("connectionIds").contains(connectionId).return.first();
+		return await this.redisStorageRepository.repository.search().where("connectionIds").contains(connectionId).return.first();
+	}
+
+	public async fetchCustomersOfSpecificAgentForProject(agentUuid: string, projectUuid: string): Promise<Array<CustomerRedisEntity>> {
+		return await this.redisStorageRepository.repository.search().where("agentUuid").equals(agentUuid).and("projectUuid").equals(projectUuid).return.all();
 	}
 
 	public async removeConnectionIdFromCustomerConnection(customer: CustomerRedisEntity, connectionIdToRemove: string) {

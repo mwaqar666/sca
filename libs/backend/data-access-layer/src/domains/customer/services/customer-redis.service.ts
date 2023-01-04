@@ -1,7 +1,7 @@
+import { Injectable } from "@nestjs/common";
 import { CustomerRedisRepository } from "../repositories";
 import type { CustomerEntity, CustomerRedisEntity } from "../entities";
 import type { Nullable } from "@sca-shared/utils";
-import { Injectable } from "@nestjs/common";
 import type { IEntityRemovalStatus, IEntityStatus, IRedisEntitySchemaProperties, TCreated, TPreConnected, TReconnected } from "@sca-backend/db";
 import type { Observable } from "rxjs";
 
@@ -19,6 +19,18 @@ export class CustomerRedisService {
 
 	public async fetchCustomerFromConnectionId(connectionId: string): Promise<Nullable<CustomerRedisEntity>> {
 		return await this.customerRedisRepository.fetchCustomerFromConnectionId(connectionId);
+	}
+
+	public async releaseCustomersFromAgentOfProject(agentUuid: string, projectUuid: string): Promise<Array<CustomerRedisEntity>> {
+		const customers = await this.customerRedisRepository.fetchCustomersOfSpecificAgentForProject(agentUuid, projectUuid);
+
+		return Promise.all(
+			customers.map((customer: CustomerRedisEntity) => {
+				customer.agentUuid = null;
+
+				return this.customerRedisRepository.updateEntity(customer);
+			}),
+		);
 	}
 
 	public async removeOrExpireCustomerConnection(customer: CustomerRedisEntity, connectionId: string): Promise<IEntityRemovalStatus<CustomerRedisEntity>> {
