@@ -1,5 +1,5 @@
 import type { FilterWhereNot, Key } from "@sca-shared/utils";
-import type { BaseRedisEntity } from "./base-redis.entity";
+import type { BaseRedisEntity } from "../entities";
 
 export type TAbsent = "Absent"; // Entity not present
 export type TPresent = "Present"; // Entity present

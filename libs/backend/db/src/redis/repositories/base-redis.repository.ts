@@ -1,9 +1,10 @@
-import type { BaseRedisEntity } from "./base-redis.entity";
+import type { BaseRedisEntity } from "../entities";
 import type { RedisStorageRepository } from "./redis-storage.repository";
 import type { Key, Nullable } from "@sca-shared/utils";
-import type { IRedisEntityField, IRedisEntityValue, IRedisRepository } from "./redis-repository.types";
+import type { IRedisEntityField, IRedisEntitySchemaProperties, IRedisEntityValue, IRedisRepository } from "../types";
 import type { EntityData, Schema } from "redis-om";
-import type { IRedisEntitySchemaProperties } from "./redis-entity.types";
+import type { Observable } from "rxjs";
+import { RedisRepositoryConst } from "../const";
 
 export abstract class BaseRedisRepository<TEntity extends BaseRedisEntity<TEntity>> implements IRedisRepository {
 	protected constructor(
@@ -34,7 +35,15 @@ export abstract class BaseRedisRepository<TEntity extends BaseRedisEntity<TEntit
 	}
 
 	public async persistEntity(entityId: string): Promise<boolean> {
-		return await this.storageRepository.redisConnection.redis.persist(`${this.redisSchema.entityCtor.name}:${entityId}`);
+		return await this.storageRepository.redisStorageConnection.redis.persist(`${this.redisSchema.entityCtor.name}:${entityId}`);
+	}
+
+	public async expireEntity(entityId: string): Promise<void> {
+		return await this.storageRepository.repository.expire(entityId, RedisRepositoryConst.EntityExpiryTime);
+	}
+
+	public postExpiryListener(entityId: string): Observable<string> {
+		return this.storageRepository.postExpiryListener(this.redisSchema.entityCtor.name, entityId);
 	}
 
 	public async createEntity(entityProperties: IRedisEntitySchemaProperties<TEntity>): Promise<TEntity> {

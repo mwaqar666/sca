@@ -2,7 +2,8 @@ import { CustomerRedisRepository } from "../repositories";
 import type { CustomerEntity, CustomerRedisEntity } from "../entities";
 import type { Nullable } from "@sca-shared/utils";
 import { Injectable } from "@nestjs/common";
-import type { IEntityStatus, IRedisEntitySchemaProperties, TCreated, TPreConnected, TReconnected } from "@sca-backend/db";
+import type { IEntityRemovalStatus, IEntityStatus, IRedisEntitySchemaProperties, TCreated, TPreConnected, TReconnected } from "@sca-backend/db";
+import type { Observable } from "rxjs";
 
 @Injectable()
 export class CustomerRedisService {
@@ -14,6 +15,24 @@ export class CustomerRedisService {
 
 	public async fetchCustomerFromCustomerAndProjectUuid(customerUuid: string, projectUuid: string): Promise<Nullable<CustomerRedisEntity>> {
 		return await this.customerRedisRepository.fetchCustomerFromCustomerAndProjectUuid(customerUuid, projectUuid);
+	}
+
+	public async fetchCustomerFromConnectionId(connectionId: string): Promise<Nullable<CustomerRedisEntity>> {
+		return await this.customerRedisRepository.fetchCustomerFromConnectionId(connectionId);
+	}
+
+	public async removeOrExpireCustomerConnection(customer: CustomerRedisEntity, connectionId: string): Promise<IEntityRemovalStatus<CustomerRedisEntity>> {
+		if (customer.connectionIds.length > 1) {
+			customer = await this.customerRedisRepository.removeConnectionIdFromCustomerConnection(customer, connectionId);
+			return { entity: customer, status: "Disconnected" };
+		}
+
+		await this.customerRedisRepository.expireEntity(customer.entityId);
+		return { entity: customer, status: "ExpiryAdded" };
+	}
+
+	public postCustomerExpiryListener(customerRedisId: string): Observable<string> {
+		return this.customerRedisRepository.postExpiryListener(customerRedisId);
 	}
 
 	public async removeCustomerExpiry(customerRedisId: string): Promise<boolean> {

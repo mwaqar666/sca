@@ -1,11 +1,11 @@
 import { DispatcherService, SocketService } from "@sca-backend/socket";
 import { Inject, Injectable } from "@nestjs/common";
 import { AgentRedisEntity, ConnectedAgentService, type ConnectedCustomerDto } from "@sca-backend/data-access-layer";
-import { SocketBusMessages, SocketBusService } from "@sca-backend/service-bus";
+import { type CustomerExpiryDto, SocketBusMessages, SocketBusService } from "@sca-backend/service-bus";
 import type { AggregateService } from "@sca-backend/aggregate";
 import type { IAgentUtilitiesAggregate } from "../../types";
 import { AgentUtilitiesAggregateConst } from "../../const";
-import { IncomingCustomerNotification, IncomingCustomerNotificationPayloadDto } from "@sca-shared/dto";
+import { IncomingCustomerNotification, type IncomingCustomerNotificationPayloadDto, OutgoingCustomerNotification, type OutgoingCustomerNotificationPayloadDto } from "@sca-shared/dto";
 
 @Injectable()
 export class AgentNotificationService extends SocketService {
@@ -22,11 +22,12 @@ export class AgentNotificationService extends SocketService {
 		this.listenForServiceBusMessages();
 	}
 
-	public listenForServiceBusMessages(): void {
-		this.socketBusService.listenForMessage<ConnectedCustomerDto>(SocketBusMessages.NotifyAllAgentsOfNewCustomer).subscribe(this.sendNewCustomerNotificationToOnlineAgents);
+	private listenForServiceBusMessages(): void {
+		this.socketBusService.listenForMessage<ConnectedCustomerDto>(SocketBusMessages.NotifyAllAgentsOfNewCustomer).subscribe(this.sendNewCustomerNotificationToOnlineAgents.bind(this));
+		this.socketBusService.listenForMessage<CustomerExpiryDto>(SocketBusMessages.CustomerRemoved).subscribe(this.sendOutgoingCustomerNotificationToOnlineAgents.bind(this));
 	}
 
-	public async sendNewCustomerNotificationToOnlineAgents(newCustomer: ConnectedCustomerDto): Promise<void> {
+	private async sendNewCustomerNotificationToOnlineAgents(newCustomer: ConnectedCustomerDto): Promise<void> {
 		await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async () => {
 				const onlineAgents = await this.connectedAgentService.onlineAgentsOfProject(newCustomer.projectUuid);
@@ -34,6 +35,18 @@ export class AgentNotificationService extends SocketService {
 				const incomingCustomerNotificationPayload: IncomingCustomerNotificationPayloadDto = { incomingCustomer: newCustomer };
 
 				this.dispatcherService.dispatchMessage(IncomingCustomerNotification, this.server, onlineAgentsConnectionIds, incomingCustomerNotificationPayload);
+			},
+		});
+	}
+
+	private async sendOutgoingCustomerNotificationToOnlineAgents(customerExpiryDto: CustomerExpiryDto): Promise<void> {
+		await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
+			operation: async () => {
+				const onlineAgents = await this.connectedAgentService.onlineAgentsOfProject(customerExpiryDto.projectUuid);
+				const onlineAgentsConnectionIds = onlineAgents.map((onlineAgent: AgentRedisEntity) => onlineAgent.connectionIds).flat();
+				const outgoingCustomerNotificationPayload: OutgoingCustomerNotificationPayloadDto = { outgoingCustomerUuid: customerExpiryDto.customerUuid };
+
+				this.dispatcherService.dispatchMessage(OutgoingCustomerNotification, this.server, onlineAgentsConnectionIds, outgoingCustomerNotificationPayload);
 			},
 		});
 	}

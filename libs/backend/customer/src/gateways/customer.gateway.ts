@@ -29,7 +29,7 @@ export class CustomerGateway implements OnGatewayInit<Server>, OnGatewayDisconne
 		this.customerNotificationService.setServer(server);
 	}
 
-	public handleDisconnect(socket: Socket): void {
-		console.log(socket);
+	public async handleDisconnect(socket: Socket): Promise<void> {
+		await this.customerConnectionService.handleOutgoingConnection(socket);
 	}
 }

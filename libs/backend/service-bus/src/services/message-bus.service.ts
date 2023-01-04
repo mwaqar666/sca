@@ -1,6 +1,6 @@
 import { type IRedisConnection, RedisService } from "@sca-backend/redis";
 import { JsonHelper, type Nullable } from "@sca-shared/utils";
-import { filter, first, map, type Observable, Subject } from "rxjs";
+import { filter, map, type Observable, Subject } from "rxjs";
 import { v4 } from "uuid";
 import type { IMessageWithData } from "../types";
 
@@ -47,10 +47,6 @@ export abstract class MessageBusService<Bus extends MessageBusService<Bus>> {
 			filter(({ message }: IMessageWithData<T>) => message === messageName),
 			map(({ data }: IMessageWithData<T>) => data),
 		);
-	}
-
-	public listenForMessageOnce<T = null>(messageName: string): Observable<T> {
-		return this.listenForMessage<T>(messageName).pipe(first());
 	}
 
 	private async attachListenerToSubscriberChannel(): Promise<void> {

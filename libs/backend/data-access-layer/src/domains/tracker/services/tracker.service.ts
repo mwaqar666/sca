@@ -43,9 +43,16 @@ export class TrackerService {
 			withTransaction,
 			transactionCallback: async (runningTransaction: RunningTransaction) => {
 				const tracker = await this.findTrackingRecord(trackingNumber);
-
+				const departureTime = new Date().toISOString();
 				const trackingInfo = tracker.trackerTrackingInfo;
-				trackingInfo.departureTime = new Date().toISOString();
+
+				const customerTracks = Object.entries(trackingInfo.pageVisits).map(([connectionId, customerTracks]: [string, Array<ICustomerPageVisitInfo>]) => {
+					customerTracks[customerTracks.length - 1].pageDepartureTime = departureTime;
+
+					return [connectionId, customerTracks];
+				});
+				trackingInfo.pageVisits = Object.fromEntries(customerTracks);
+				trackingInfo.departureTime = departureTime;
 
 				return await this.trackerRepository.updateTrackerInfo(tracker, trackingInfo, runningTransaction.currentTransaction.transaction);
 			},
