@@ -1,11 +1,12 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { type CustomerEntity, type CustomerRedisEntity, CustomerRedisService, CustomerService, TrackerService } from "../../domains";
-import { DomainUtilitiesAggregateConst } from "../../const";
+import { type CustomerEntity, type CustomerRedisEntity, CustomerRedisService } from "../../../domains";
+import { DomainUtilitiesAggregateConst } from "../../../const";
 import type {
 	IEntityConnectionStatus,
 	IEntityDisconnectionStatus,
 	IEntityStatus,
 	IExpiryObserver,
+	IRedisEntitySchemaProperties,
 	TAbsent,
 	TCreated,
 	TDisconnected,
@@ -15,27 +16,21 @@ import type {
 	TReconnected,
 } from "@sca-backend/db";
 import type { AggregateService } from "@sca-backend/aggregate";
-import type { IDomainUtilitiesAggregate } from "../../types";
+import type { IDomainUtilitiesAggregate } from "../../../types";
 import type { IncomingCustomerRequestDto } from "@sca-shared/dto";
-import type { ConnectedCustomerDto } from "../../dto";
-import type { CustomerExpiryDto } from "@sca-backend/service-bus";
+import { CustomerTrackingDalService } from "../tracking";
 
 @Injectable()
-export class ConnectedCustomerService {
+export class CustomerConnectionDalService {
 	public constructor(
 		// Dependencies
 
-		private readonly trackerService: TrackerService,
-		private readonly customerService: CustomerService,
 		private readonly customerRedisService: CustomerRedisService,
+		private readonly customerTrackingDalService: CustomerTrackingDalService,
 		@Inject(DomainUtilitiesAggregateConst) private readonly utilitiesAggregateService: AggregateService<IDomainUtilitiesAggregate>,
 	) {}
 
-	public async connectAndTrackCustomer(
-		customer: CustomerEntity,
-		connectionId: string,
-		incomingCustomerRequestDto: IncomingCustomerRequestDto,
-	): Promise<IEntityConnectionStatus<CustomerRedisEntity>> {
+	public async connectCustomer(customer: CustomerEntity, connectionId: string, incomingCustomerRequestDto: IncomingCustomerRequestDto): Promise<IEntityConnectionStatus<CustomerRedisEntity>> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async (): Promise<IEntityConnectionStatus<CustomerRedisEntity>> => {
 				const redisCustomer = await this.customerRedisService.fetchCustomerFromCustomerAndProjectUuid(
@@ -52,7 +47,7 @@ export class ConnectedCustomerService {
 		});
 	}
 
-	public async disconnectAndTrackCustomer(connectionId: string): Promise<IEntityDisconnectionStatus<CustomerRedisEntity>> {
+	public async disconnectCustomer(connectionId: string): Promise<IEntityDisconnectionStatus<CustomerRedisEntity>> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async (): Promise<IEntityDisconnectionStatus<CustomerRedisEntity>> => {
 				const redisCustomer = await this.customerRedisService.fetchCustomerFromConnectionId(connectionId);
@@ -66,49 +61,12 @@ export class ConnectedCustomerService {
 		});
 	}
 
-	public async finishCustomerConversationsAndTrackers(customerExpiryDto: CustomerExpiryDto): Promise<void> {
-		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
-			operation: async () => {
-				// await this.customerChatService.closeConversations(customerDisconnection.entity, customerDisconnection.entity.agentUuid ?? undefined);
-				await this.trackerService.finishTracker(customerExpiryDto.trackingNumber);
-			},
-		});
-	}
-
-	public prepareSingleConnectedCustomerDto(redisCustomer: CustomerRedisEntity, customer: CustomerEntity): ConnectedCustomerDto {
-		return {
-			customer,
-			agentUuid: redisCustomer.agentUuid,
-			connectionIds: redisCustomer.connectionIds,
-			customerUuid: redisCustomer.customerUuid,
-			projectUuid: redisCustomer.projectUuid,
-			trackingNumber: redisCustomer.trackingNumber,
-		};
-	}
-
 	public async releaseCustomersFromAgentOfProject(agentUuid: string, projectUuid: string): Promise<Array<CustomerRedisEntity>> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async () => {
 				return await this.customerRedisService.releaseCustomersFromAgentOfProject(agentUuid, projectUuid);
 			},
 		});
-	}
-
-	public async prepareMultipleConnectedCustomerDto(redisCustomers: Array<CustomerRedisEntity>): Promise<Array<ConnectedCustomerDto>> {
-		return Promise.all(
-			redisCustomers.map((redisCustomer: CustomerRedisEntity) => {
-				return this.customerService.findOrFailCustomerUsingUuid(redisCustomer.customerUuid).then(
-					(customer: CustomerEntity): ConnectedCustomerDto => ({
-						customer,
-						agentUuid: redisCustomer.agentUuid,
-						connectionIds: redisCustomer.connectionIds,
-						customerUuid: redisCustomer.customerUuid,
-						projectUuid: redisCustomer.projectUuid,
-						trackingNumber: redisCustomer.trackingNumber,
-					}),
-				);
-			}),
-		);
 	}
 
 	private async postCustomerExpiryListener(expiredCustomer: CustomerRedisEntity): Promise<IEntityStatus<CustomerRedisEntity, TExpiryAdded> & IExpiryObserver<TPresent>> {
@@ -126,7 +84,7 @@ export class ConnectedCustomerService {
 	): Promise<IEntityStatus<CustomerRedisEntity, TDisconnected> & IExpiryObserver<TAbsent>> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async (): Promise<IEntityStatus<CustomerRedisEntity, TDisconnected> & IExpiryObserver<TAbsent>> => {
-				await this.trackerService.addPageDepartureTrack(disconnectedCustomer.trackingNumber, connectionId);
+				await this.customerTrackingDalService.completePageTrack(disconnectedCustomer.trackingNumber, connectionId);
 
 				return { entity: disconnectedCustomer, postExpiryTasks: null, status: "Disconnected" };
 			},
@@ -140,14 +98,18 @@ export class ConnectedCustomerService {
 	): Promise<IEntityStatus<CustomerRedisEntity, TCreated>> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async (): Promise<IEntityStatus<CustomerRedisEntity, TCreated>> => {
-				customer.customerCurrentTracker = await this.trackerService.startTracker(
-					customer.customerId,
-					customer.customerCurrentProject.projectCustomerProjectId,
-					connectionId,
-					incomingCustomerRequestDto.currentLocation,
-				);
+				const projectId = customer.customerCurrentProject.projectCustomerProject.projectId;
+				const projectUuid = customer.customerCurrentProject.projectCustomerProject.projectUuid;
+				customer.customerCurrentTracker = await this.customerTrackingDalService.startTracker(customer.customerId, projectId, connectionId, incomingCustomerRequestDto.currentLocation);
 
-				return await this.customerRedisService.createNewCustomerConnection(customer, customer.customerCurrentTracker.trackerTrackingNumber, connectionId);
+				const newCustomerProps: IRedisEntitySchemaProperties<CustomerRedisEntity> = {
+					agentUuid: null,
+					projectUuid,
+					customerUuid: customer.customerUuid,
+					connectionIds: [connectionId],
+					trackingNumber: customer.customerCurrentTracker.trackerTrackingNumber,
+				};
+				return await this.customerRedisService.createNewCustomerConnection(newCustomerProps);
 			},
 		});
 	}
@@ -160,7 +122,7 @@ export class ConnectedCustomerService {
 	): Promise<IEntityStatus<CustomerRedisEntity, TReconnected>> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async (): Promise<IEntityStatus<CustomerRedisEntity, TReconnected>> => {
-				customer.customerCurrentTracker = await this.trackerService.addPageArrivalTrack(redisCustomer.trackingNumber, connectionId, incomingCustomerRequestDto.currentLocation);
+				customer.customerCurrentTracker = await this.customerTrackingDalService.addPageTrack(redisCustomer.trackingNumber, connectionId, incomingCustomerRequestDto.currentLocation);
 
 				return await this.customerRedisService.updateCustomerConnectionId(redisCustomer, connectionId);
 			},
@@ -175,7 +137,7 @@ export class ConnectedCustomerService {
 	): Promise<IEntityStatus<CustomerRedisEntity, TPreConnected>> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async (): Promise<IEntityStatus<CustomerRedisEntity, TPreConnected>> => {
-				customer.customerCurrentTracker = await this.trackerService.addPageArrivalTrack(redisCustomer.trackingNumber, connectionId, incomingCustomerRequestDto.currentLocation);
+				customer.customerCurrentTracker = await this.customerTrackingDalService.addPageTrack(redisCustomer.trackingNumber, connectionId, incomingCustomerRequestDto.currentLocation);
 
 				return await this.customerRedisService.addAnotherCustomerConnection(redisCustomer, connectionId);
 			},

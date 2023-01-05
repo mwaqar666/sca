@@ -1,12 +1,12 @@
 import { Inject, Injectable } from "@nestjs/common";
-import type { AggregateService } from "@sca-backend/aggregate";
-import { DomainUtilitiesAggregateConst } from "../../const";
-import { type AgentRedisEntity, AgentRedisService, type UserEntity } from "../../domains";
-import type { IDomainUtilitiesAggregate } from "../../types";
+import { type AgentRedisEntity, AgentRedisService, type UserEntity } from "../../../domains";
 import type { IEntityConnectionStatus, IEntityDisconnectionStatus, IEntityStatus, IExpiryObserver, TCreated, TExpiryAdded, TPreConnected, TPresent, TReconnected } from "@sca-backend/db";
+import { DomainUtilitiesAggregateConst } from "../../../const";
+import type { AggregateService } from "@sca-backend/aggregate";
+import type { IDomainUtilitiesAggregate } from "../../../types";
 
 @Injectable()
-export class ConnectedAgentService {
+export class AgentConnectionDalService {
 	public constructor(
 		// Dependencies
 

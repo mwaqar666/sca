@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { CustomerRedisRepository } from "../repositories";
-import type { CustomerEntity, CustomerRedisEntity } from "../entities";
+import type { CustomerRedisEntity } from "../entities";
 import type { Nullable } from "@sca-shared/utils";
 import type { IEntityRemovalStatus, IEntityStatus, IRedisEntitySchemaProperties, TCreated, TPreConnected, TReconnected } from "@sca-backend/db";
 import type { Observable } from "rxjs";
@@ -51,13 +51,13 @@ export class CustomerRedisService {
 		return await this.customerRedisRepository.persistEntity(customerRedisId);
 	}
 
-	public async createNewCustomerConnection(customer: CustomerEntity, trackingNumber: string, connectionId: string): Promise<IEntityStatus<CustomerRedisEntity, TCreated>> {
+	public async createNewCustomerConnection(customerCreationProps: IRedisEntitySchemaProperties<CustomerRedisEntity>): Promise<IEntityStatus<CustomerRedisEntity, TCreated>> {
 		const creationData: IRedisEntitySchemaProperties<CustomerRedisEntity> = {
-			customerUuid: customer.customerUuid,
-			agentUuid: null,
-			projectUuid: customer.customerCurrentProject.projectCustomerProject.projectUuid,
-			connectionIds: [connectionId],
-			trackingNumber: trackingNumber,
+			customerUuid: customerCreationProps.customerUuid,
+			agentUuid: customerCreationProps.agentUuid,
+			projectUuid: customerCreationProps.projectUuid,
+			connectionIds: customerCreationProps.connectionIds,
+			trackingNumber: customerCreationProps.trackingNumber,
 		};
 
 		const redisCustomer = await this.customerRedisRepository.createEntity(creationData);
