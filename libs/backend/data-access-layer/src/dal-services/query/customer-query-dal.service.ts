@@ -1,9 +1,9 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { CustomerRedisService } from "../../../domains";
-import { DomainUtilitiesAggregateConst } from "../../../const";
+import { CustomerRedisService } from "../../domains";
+import { DomainUtilitiesAggregateConst } from "../../const";
 import type { AggregateService } from "@sca-backend/aggregate";
-import type { IDomainUtilitiesAggregate } from "../../../types";
-import type { ICustomerConnectionList } from "../../../interfaces";
+import type { IDomainUtilitiesAggregate } from "../../types";
+import type { ICustomerConnectionList } from "../../interfaces";
 
 @Injectable()
 export class CustomerQueryDalService {

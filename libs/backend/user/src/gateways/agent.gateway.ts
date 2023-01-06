@@ -1,10 +1,10 @@
-import { ConnectedSocket, type OnGatewayDisconnect, type OnGatewayInit, SubscribeMessage, WebSocketGateway } from "@nestjs/websockets";
+import { ConnectedSocket, MessageBody, type OnGatewayDisconnect, type OnGatewayInit, SubscribeMessage, WebSocketGateway } from "@nestjs/websockets";
 import { AgentSocketConfig, AgentSocketPort } from "../config";
 import type { Server, Socket } from "socket.io";
 import { UseGuards } from "@nestjs/common";
 import { AccessTokenSocketGuard, AuthUserSocket } from "@sca-backend/auth";
 import { AgentConnectionService, AgentNotificationService, AgentQueryService } from "../services/socket";
-import { IncomingAgent, type IProjectCustomersResponseDto, ProjectCustomers } from "@sca-shared/dto";
+import { AgentRequestEvents, type IProjectCustomersResponseDto } from "@sca-shared/dto";
 
 @UseGuards(AccessTokenSocketGuard)
 @WebSocketGateway(AgentSocketPort, AgentSocketConfig)
@@ -17,14 +17,19 @@ export class AgentGateway implements OnGatewayInit<Server>, OnGatewayDisconnect<
 		private readonly agentNotificationService: AgentNotificationService,
 	) {}
 
-	@SubscribeMessage(IncomingAgent)
+	@SubscribeMessage(AgentRequestEvents.IncomingAgent)
 	public async handleIncomingAgent(@ConnectedSocket() agentSocket: AuthUserSocket): Promise<void> {
 		return await this.agentConnectionService.handleIncomingAgent(agentSocket);
 	}
 
-	@SubscribeMessage(ProjectCustomers)
+	@SubscribeMessage(AgentRequestEvents.ProjectCustomers)
 	public async retrieveListOfCurrentProjectCustomers(@ConnectedSocket() agentSocket: AuthUserSocket): Promise<IProjectCustomersResponseDto> {
 		return await this.agentQueryService.fetchCustomersForAgentOfProject(agentSocket);
+	}
+
+	@SubscribeMessage(AgentRequestEvents.StartSessionWithCustomer)
+	public async startSessionWithCustomer(@ConnectedSocket() agentSocket: AuthUserSocket, @MessageBody() customerUuid: string): Promise<void> {
+		// return await this.agentSocketService.startSessionWithCustomer(agentSocket, customerUuid);
 	}
 
 	public afterInit(server: Server): void {

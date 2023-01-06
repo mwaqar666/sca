@@ -26,7 +26,7 @@ export class CustomerRepository extends BaseRepository<CustomerEntity> {
 	}
 
 	public async createCustomer(customerCookie: string, customerPersonalInfo: ICustomerPersonalInfo, customerIpInfo: ICustomerIpInfo, transaction: Transaction) {
-		return await this.createEntity({
+		return await this.createSingleEntity({
 			valuesToCreate: { customerCookie, customerPersonalInfo, customerIpInfo },
 			transaction,
 		});

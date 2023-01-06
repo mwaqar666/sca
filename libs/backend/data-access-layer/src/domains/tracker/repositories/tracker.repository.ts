@@ -16,13 +16,13 @@ export class TrackerRepository extends BaseRepository<TrackerEntity> {
 	}
 
 	public async createNewTracker(customerId: number, projectId: number, trackingInfo: ICustomerTrackingInfo, transaction: Transaction): Promise<TrackerEntity> {
-		return await this.createEntity({
+		return await this.createSingleEntity({
 			transaction,
 			valuesToCreate: { trackerCustomerId: customerId, trackerProjectId: projectId, trackerTrackingInfo: trackingInfo },
 		});
 	}
 
 	public async updateTrackerInfo(tracker: TrackerEntity, trackingInfo: ICustomerTrackingInfo, transaction: Transaction): Promise<TrackerEntity> {
-		return await this.updateEntity({ entity: tracker, transaction, valuesToUpdate: { trackerTrackingInfo: trackingInfo } });
+		return await this.updateSingleEntity({ entity: tracker, transaction, valuesToUpdate: { trackerTrackingInfo: trackingInfo } });
 	}
 }

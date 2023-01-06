@@ -4,7 +4,7 @@ import { DispatcherService, SocketService } from "@sca-backend/socket";
 import type { ICustomerUtilitiesAggregate } from "../../types";
 import type { AggregateService } from "@sca-backend/aggregate";
 import { SocketBusMessages, SocketBusService } from "@sca-backend/service-bus";
-import { type IConnectedCustomer, OutgoingAgent } from "@sca-shared/dto";
+import { CustomerNotificationEvents, type IConnectedCustomer } from "@sca-shared/dto";
 
 @Injectable()
 export class CustomerNotificationService extends SocketService {
@@ -29,7 +29,7 @@ export class CustomerNotificationService extends SocketService {
 			operation: async () => {
 				const customerConnectionIds = connectedCustomers.map((connectedCustomer: IConnectedCustomer) => connectedCustomer.connectionIds).flat();
 
-				this.dispatcherService.dispatchMessage(OutgoingAgent, this.server, customerConnectionIds);
+				this.dispatcherService.dispatchMessage(CustomerNotificationEvents.OutgoingAgentNotification, this.server, customerConnectionIds);
 			},
 		});
 	}

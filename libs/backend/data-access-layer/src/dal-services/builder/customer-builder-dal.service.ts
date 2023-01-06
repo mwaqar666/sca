@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import type { IConnectedCustomer } from "@sca-shared/dto";
-import { type CustomerEntity, type CustomerRedisEntity, CustomerService } from "../../../domains";
+import { type CustomerEntity, type CustomerRedisEntity, CustomerService } from "../../domains";
 
 @Injectable()
 export class CustomerBuilderDalService {

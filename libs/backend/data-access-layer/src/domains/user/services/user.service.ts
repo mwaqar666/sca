@@ -34,7 +34,7 @@ export class UserService {
 			transactionCallback: async (runningTransaction: RunningTransaction) => {
 				if (createUserData.userPassword) createUserData.userPassword = await this.utilitiesAggregateService.services.hash.hashString(createUserData.userPassword);
 
-				return await this.userRepository.createEntity({
+				return await this.userRepository.createSingleEntity({
 					transaction: runningTransaction.currentTransaction.transaction,
 					valuesToCreate: { ...createUserData, userUserTypeId },
 				});

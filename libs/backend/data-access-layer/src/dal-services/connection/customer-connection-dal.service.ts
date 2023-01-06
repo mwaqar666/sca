@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { type CustomerEntity, type CustomerRedisEntity, CustomerRedisService } from "../../../domains";
-import { DomainUtilitiesAggregateConst } from "../../../const";
+import { type CustomerEntity, type CustomerRedisEntity, CustomerRedisService } from "../../domains";
+import { DomainUtilitiesAggregateConst } from "../../const";
 import type {
 	IEntityConnectionStatus,
 	IEntityDisconnectionStatus,
@@ -16,7 +16,7 @@ import type {
 	TReconnected,
 } from "@sca-backend/db";
 import type { AggregateService } from "@sca-backend/aggregate";
-import type { IDomainUtilitiesAggregate } from "../../../types";
+import type { IDomainUtilitiesAggregate } from "../../types";
 import type { IIncomingCustomerRequestDto } from "@sca-shared/dto";
 import { CustomerTrackingDalService } from "../tracking";
 

@@ -3,7 +3,7 @@ import { CustomerSocketConfig, CustomerSocketPort } from "../config";
 import type { Server, Socket } from "socket.io";
 import { UseGuards } from "@nestjs/common";
 import { AuthCustomerSocket, CustomerTokenSocketGuard } from "@sca-backend/auth";
-import { type IIncomingCustomerRequestDto, type IIncomingCustomerResponseDto, IncomingCustomer } from "@sca-shared/dto";
+import { CustomerRequestEvents, type IIncomingCustomerRequestDto, type IIncomingCustomerResponseDto } from "@sca-shared/dto";
 import { CustomerConnectionService, CustomerNotificationService } from "../services/socket";
 
 @UseGuards(CustomerTokenSocketGuard)
@@ -16,7 +16,7 @@ export class CustomerGateway implements OnGatewayInit<Server>, OnGatewayDisconne
 		private readonly customerNotificationService: CustomerNotificationService,
 	) {}
 
-	@SubscribeMessage(IncomingCustomer)
+	@SubscribeMessage(CustomerRequestEvents.IncomingCustomer)
 	public async handleIncomingCustomer(
 		@ConnectedSocket() customerSocket: AuthCustomerSocket,
 		@MessageBody() incomingCustomerRequestDto: IIncomingCustomerRequestDto,

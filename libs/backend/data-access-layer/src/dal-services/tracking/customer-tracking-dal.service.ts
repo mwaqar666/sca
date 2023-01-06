@@ -1,8 +1,8 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { DomainUtilitiesAggregateConst } from "../../../const";
-import { type TrackerEntity, TrackerService } from "../../../domains";
+import { DomainUtilitiesAggregateConst } from "../../const";
+import { type TrackerEntity, TrackerService } from "../../domains";
 import type { AggregateService } from "@sca-backend/aggregate";
-import type { IDomainUtilitiesAggregate } from "../../../types";
+import type { IDomainUtilitiesAggregate } from "../../types";
 
 @Injectable()
 export class CustomerTrackingDalService {

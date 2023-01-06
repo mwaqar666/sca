@@ -27,7 +27,7 @@ export class ProjectService {
 		return await this.extensionsAggregateService.services.sequelize.executeTransactionalOperation({
 			withTransaction,
 			transactionCallback: async (runningTransaction: RunningTransaction) => {
-				return await this.projectRepository.createEntity({
+				return await this.projectRepository.createSingleEntity({
 					transaction: runningTransaction.currentTransaction.transaction,
 					valuesToCreate: createProjectData,
 				});
