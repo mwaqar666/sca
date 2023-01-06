@@ -2,7 +2,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import type { AggregateService } from "@sca-backend/aggregate";
 import type { RunningTransaction } from "@sca-backend/db";
 import { DomainExtensionsAggregateConst } from "../../../const";
-import type { LinkUserProjectDto } from "../../../dto";
+import type { ILinkUserProject } from "../../../interfaces";
 import type { IDomainExtensionsAggregate } from "../../../types";
 import type { ProjectUserEntity } from "../entities";
 import { ProjectUserRepository } from "../repositories";
@@ -20,7 +20,7 @@ export class ProjectUserService {
 		return await this.projectUserRepository.findAllProjectsForUser(userId);
 	}
 
-	public async linkProjectToUser(linkUserProjectDto: LinkUserProjectDto, withTransaction?: RunningTransaction): Promise<ProjectUserEntity> {
+	public async linkProjectToUser(linkUserProjectDto: ILinkUserProject, withTransaction?: RunningTransaction): Promise<ProjectUserEntity> {
 		return await this.extensionsAggregateService.services.sequelize.executeTransactionalOperation({
 			withTransaction,
 			transactionCallback: async (runningTransaction: RunningTransaction) => {

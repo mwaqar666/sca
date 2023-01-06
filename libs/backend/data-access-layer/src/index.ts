@@ -1,6 +1,6 @@
 export * from "./data-access-layer.module";
 export * from "./domains";
-export * from "./dto";
+export * from "./interfaces";
 export * from "./factories";
 export * from "./aggregates";
 export * from "./config";

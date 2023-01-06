@@ -4,7 +4,7 @@ import { CustomerUtilitiesAggregateConst } from "../../const";
 import type { ICustomerUtilitiesAggregate } from "../../types";
 import type { AggregateService } from "@sca-backend/aggregate";
 import { AgentConnectionDalService, CustomerBuilderDalService, CustomerConnectionDalService, CustomerTrackingDalService } from "@sca-backend/data-access-layer";
-import type { IncomingCustomerRequestDto, IncomingCustomerResponseDto } from "@sca-shared/dto";
+import type { IIncomingCustomerRequestDto, IIncomingCustomerResponseDto } from "@sca-shared/dto";
 import { AuthCustomer, type AuthCustomerSocket } from "@sca-backend/auth";
 import { type CustomerExpiryDto, SocketBusMessages, SocketBusService } from "@sca-backend/service-bus";
 import type { Socket } from "socket.io";
@@ -26,14 +26,17 @@ export class CustomerConnectionService extends SocketService {
 		this.listenForServiceBusMessages();
 	}
 
-	public async handleIncomingConnection(customerSocket: AuthCustomerSocket, incomingCustomerRequestDto: IncomingCustomerRequestDto): Promise<IncomingCustomerResponseDto> {
+	public async handleIncomingConnection(customerSocket: AuthCustomerSocket, incomingCustomerRequestDto: IIncomingCustomerRequestDto): Promise<IIncomingCustomerResponseDto> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
-			operation: async (): Promise<IncomingCustomerResponseDto> => {
+			operation: async (): Promise<IIncomingCustomerResponseDto> => {
 				const authenticatedCustomer = customerSocket.data[AuthCustomer];
 
 				const customer = await this.customerConnectionDalService.connectCustomer(authenticatedCustomer, customerSocket.id, incomingCustomerRequestDto);
 				const onlineAgents = await this.agentConnectionDalService.onlineAgentsOfProject(authenticatedCustomer.customerCurrentProject.projectCustomerProject.projectUuid);
-				const incomingCustomerResponse: IncomingCustomerResponseDto = { onlineAgents: onlineAgents.length, trackingNumber: authenticatedCustomer.customerCurrentTracker.trackerTrackingNumber };
+				const incomingCustomerResponse: IIncomingCustomerResponseDto = {
+					onlineAgents: onlineAgents.length,
+					trackingNumber: authenticatedCustomer.customerCurrentTracker.trackerTrackingNumber,
+				};
 
 				if (customer.status !== "Created") return incomingCustomerResponse;
 

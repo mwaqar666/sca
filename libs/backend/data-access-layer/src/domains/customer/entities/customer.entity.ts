@@ -11,11 +11,11 @@ import { TrackerEntity, type TrackerEntity as TrackerEntityType } from "../../tr
 }))
 @Table({ tableName: CustomerEntity.entityTableName })
 export class CustomerEntity extends SequelizeBaseEntity<CustomerEntity> implements ICustomer {
-	public static override entityTableName = "customers";
-	public static override uuidColumnName = "customerUuid";
-	public static override createdAtColumnName = "customerCreatedAt";
-	public static override updatedAtColumnName = "customerUpdatedAt";
-	public static override deletedAtColumnName = "customerDeletedAt";
+	public static override readonly entityTableName = "customers";
+	public static override readonly uuidColumnName = "customerUuid";
+	public static override readonly createdAtColumnName = "customerCreatedAt";
+	public static override readonly updatedAtColumnName = "customerUpdatedAt";
+	public static override readonly deletedAtColumnName = "customerDeletedAt";
 
 	@PrimaryKey
 	@AutoIncrement

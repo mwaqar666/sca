@@ -1,4 +1,4 @@
-export class LinkUserProjectDto {
+export interface ILinkUserProject {
 	userId: number;
 	projectId: number;
 	projectIsDefault?: boolean;

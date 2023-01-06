@@ -4,6 +4,7 @@ import type { CustomerRedisEntity } from "../entities";
 import type { Nullable } from "@sca-shared/utils";
 import type { IEntityRemovalStatus, IEntityStatus, IRedisEntitySchemaProperties, TCreated, TPreConnected, TReconnected } from "@sca-backend/db";
 import type { Observable } from "rxjs";
+import type { ICustomerConnectionList } from "../../../interfaces";
 
 @Injectable()
 export class CustomerRedisService {
@@ -21,8 +22,15 @@ export class CustomerRedisService {
 		return await this.customerRedisRepository.fetchCustomerFromConnectionId(connectionId);
 	}
 
+	public async fetchCustomersForAgentOfProject(agentUuid: string, projectUuid: string): Promise<ICustomerConnectionList> {
+		const assignedCustomers = await this.customerRedisRepository.fetchCustomersAssignedToAgentForProject(agentUuid, projectUuid);
+		const unassignedCustomers = await this.customerRedisRepository.fetchCustomersUnassignedForProject(projectUuid);
+
+		return { assignedCustomers, unassignedCustomers };
+	}
+
 	public async releaseCustomersFromAgentOfProject(agentUuid: string, projectUuid: string): Promise<Array<CustomerRedisEntity>> {
-		const customers = await this.customerRedisRepository.fetchCustomersOfSpecificAgentForProject(agentUuid, projectUuid);
+		const customers = await this.customerRedisRepository.fetchCustomersAssignedToAgentForProject(agentUuid, projectUuid);
 
 		return Promise.all(
 			customers.map((customer: CustomerRedisEntity) => {

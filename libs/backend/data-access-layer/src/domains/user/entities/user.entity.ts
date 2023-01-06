@@ -4,18 +4,19 @@ import { AllowNull, AutoIncrement, BelongsTo, Column, CreatedAt, DataType, Defau
 import { ProjectUserEntity, type ProjectUserEntity as ProjectUserEntityType } from "../../project";
 import { UserTypeEntity, type UserTypeEntity as UserTypeEntityType } from "./user-type.entity";
 import type { IUser } from "@sca-shared/dto";
+import { ConversationEntity, type ConversationEntity as ConversationEntityType } from "../../conversation";
 
 @Scopes(() => ({
 	...BaseEntityScopes.commonScopes(() => UserEntity),
 }))
 @Table({ tableName: UserEntity.entityTableName })
 export class UserEntity extends SequelizeBaseEntity<UserEntity> implements IUser {
-	public static override entityTableName = "users";
-	public static override uuidColumnName = "userUuid";
-	public static override isActiveColumnName = "userIsActive";
-	public static override createdAtColumnName = "userCreatedAt";
-	public static override updatedAtColumnName = "userUpdatedAt";
-	public static override deletedAtColumnName = "userDeletedAt";
+	public static override readonly entityTableName = "users";
+	public static override readonly uuidColumnName = "userUuid";
+	public static override readonly isActiveColumnName = "userIsActive";
+	public static override readonly createdAtColumnName = "userCreatedAt";
+	public static override readonly updatedAtColumnName = "userUpdatedAt";
+	public static override readonly deletedAtColumnName = "userDeletedAt";
 
 	@PrimaryKey
 	@AutoIncrement
@@ -89,4 +90,11 @@ export class UserEntity extends SequelizeBaseEntity<UserEntity> implements IUser
 		targetKey: "userTypeId",
 	})
 	public userUserType: UserTypeEntityType;
+
+	@HasMany(() => ConversationEntity, {
+		as: "userConversations",
+		foreignKey: "conversationAgentId",
+		sourceKey: "userId",
+	})
+	public userConversations: Array<ConversationEntityType>;
 }

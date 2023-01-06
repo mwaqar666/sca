@@ -3,8 +3,8 @@ import { AgentSocketConfig, AgentSocketPort } from "../config";
 import type { Server, Socket } from "socket.io";
 import { UseGuards } from "@nestjs/common";
 import { AccessTokenSocketGuard, AuthUserSocket } from "@sca-backend/auth";
-import { AgentConnectionService, AgentNotificationService } from "../services/socket";
-import { IncomingAgent } from "@sca-shared/dto";
+import { AgentConnectionService, AgentNotificationService, AgentQueryService } from "../services/socket";
+import { IncomingAgent, type IProjectCustomersResponseDto, ProjectCustomers } from "@sca-shared/dto";
 
 @UseGuards(AccessTokenSocketGuard)
 @WebSocketGateway(AgentSocketPort, AgentSocketConfig)
@@ -12,6 +12,7 @@ export class AgentGateway implements OnGatewayInit<Server>, OnGatewayDisconnect<
 	public constructor(
 		// Dependencies
 
+		private readonly agentQueryService: AgentQueryService,
 		private readonly agentConnectionService: AgentConnectionService,
 		private readonly agentNotificationService: AgentNotificationService,
 	) {}
@@ -21,7 +22,13 @@ export class AgentGateway implements OnGatewayInit<Server>, OnGatewayDisconnect<
 		return await this.agentConnectionService.handleIncomingAgent(agentSocket);
 	}
 
+	@SubscribeMessage(ProjectCustomers)
+	public async retrieveListOfCurrentProjectCustomers(@ConnectedSocket() agentSocket: AuthUserSocket): Promise<IProjectCustomersResponseDto> {
+		return await this.agentQueryService.fetchCustomersForAgentOfProject(agentSocket);
+	}
+
 	public afterInit(server: Server): void {
+		this.agentQueryService.setServer(server);
 		this.agentConnectionService.setServer(server);
 		this.agentNotificationService.setServer(server);
 	}

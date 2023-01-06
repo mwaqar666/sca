@@ -4,19 +4,19 @@ import type { EntityScope } from "./types";
 
 export abstract class BaseEntity<TEntity extends BaseEntity<TEntity>> extends Model<TEntity> {
 	// Table & Column Name Information
-	public static entityTableName: string;
-	public static entitySchemaName: string;
-	public static uuidColumnName: string;
-	public static isActiveColumnName: string;
+	public static readonly entityTableName: string;
+	public static readonly entitySchemaName: string;
+	public static readonly uuidColumnName: string;
+	public static readonly isActiveColumnName: string;
 
 	// Column Exposure Information
-	public static exposePrimaryKey = false;
-	public static exposeForeignKeys: Array<string> = [];
+	public static readonly exposePrimaryKey = false;
+	public static readonly exposeForeignKeys: Array<string> = [];
 
 	// Timestamps Information
-	public static createdAtColumnName: string;
-	public static updatedAtColumnName: string;
-	public static deletedAtColumnName: string;
+	public static readonly createdAtColumnName: string;
+	public static readonly updatedAtColumnName: string;
+	public static readonly deletedAtColumnName: string;
 
 	public static applyScopes<TEntityStatic extends BaseEntity<TEntityStatic>>(this: ModelStatic<TEntityStatic>, providedScopes?: EntityScope): ModelStatic<TEntityStatic> {
 		let scopesToApply: EntityScope = ["defaultScope"];

@@ -1,5 +1,5 @@
 export const OutgoingCustomerNotification = "OutgoingCustomerNotification";
 
-export class OutgoingCustomerNotificationPayloadDto {
+export interface IOutgoingCustomerNotificationPayloadDto {
 	outgoingCustomerUuid: string;
 }

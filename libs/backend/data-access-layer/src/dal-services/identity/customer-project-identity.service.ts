@@ -4,7 +4,7 @@ import type { RunningTransaction } from "@sca-backend/db";
 import type { ICustomerIpInfo, IHandleCustomerRequest } from "@sca-shared/dto";
 import { DomainExtensionsAggregateConst } from "../../const";
 import { type CustomerEntity, CustomerService, type ProjectCustomerEntity, ProjectCustomerService, ProjectService } from "../../domains";
-import type { FailedAuthReasonCustomer, FailedAuthReasonProject, SuccessfulAuthWithCustomerAndProject } from "../../dto";
+import type { IFailedAuthReasonCustomer, IFailedAuthReasonProject, ISuccessfulAuthWithCustomerAndProject } from "../../interfaces";
 import type { IDomainExtensionsAggregate } from "../../types";
 
 @Injectable()
@@ -38,7 +38,7 @@ export class CustomerProjectIdentityService {
 	public async authenticateCustomerWithUuidWithAllProjects(
 		customerUuid: string,
 		projectUuid: string,
-	): Promise<FailedAuthReasonCustomer | FailedAuthReasonProject | SuccessfulAuthWithCustomerAndProject> {
+	): Promise<IFailedAuthReasonCustomer | IFailedAuthReasonProject | ISuccessfulAuthWithCustomerAndProject> {
 		const customer = await this.customerService.findCustomerUsingUuid(customerUuid);
 		if (!customer) return { authEntity: null, authErrorReason: "customer" };
 

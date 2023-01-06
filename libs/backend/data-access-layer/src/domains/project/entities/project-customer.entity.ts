@@ -10,11 +10,11 @@ import type { IProjectCustomer } from "@sca-shared/dto";
 }))
 @Table({ tableName: ProjectCustomerEntity.entityTableName })
 export class ProjectCustomerEntity extends SequelizeBaseEntity<ProjectCustomerEntity> implements IProjectCustomer {
-	public static override entityTableName = "projectCustomers";
-	public static override uuidColumnName = "projectCustomerUuid";
-	public static override createdAtColumnName = "projectCustomerCreatedAt";
-	public static override updatedAtColumnName = "projectCustomerUpdatedAt";
-	public static override deletedAtColumnName = "projectCustomerDeletedAt";
+	public static override readonly entityTableName = "projectCustomers";
+	public static override readonly uuidColumnName = "projectCustomerUuid";
+	public static override readonly createdAtColumnName = "projectCustomerCreatedAt";
+	public static override readonly updatedAtColumnName = "projectCustomerUpdatedAt";
+	public static override readonly deletedAtColumnName = "projectCustomerDeletedAt";
 
 	@PrimaryKey
 	@AutoIncrement

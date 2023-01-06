@@ -1,21 +1,22 @@
-import { AllowNull, AutoIncrement, BelongsTo, Column, CreatedAt, DataType, Default, DeletedAt, ForeignKey, PrimaryKey, Scopes, Table, Unique, UpdatedAt } from "sequelize-typescript";
+import { AllowNull, AutoIncrement, BelongsTo, Column, CreatedAt, DataType, Default, DeletedAt, ForeignKey, HasMany, PrimaryKey, Scopes, Table, Unique, UpdatedAt } from "sequelize-typescript";
 import { BaseEntityScopes, SequelizeBaseEntity } from "@sca-backend/db";
 import type { Nullable } from "@sca-shared/utils";
 import { JsonHelper } from "@sca-shared/utils";
 import type { ICustomerTrackingInfo, ITracker } from "@sca-shared/dto";
 import { ProjectEntity, type ProjectEntity as ProjectEntityType } from "../../project";
 import { CustomerEntity, type CustomerEntity as CustomerEntityType } from "../../customer";
+import { ConversationEntity, type ConversationEntity as ConversationEntityType } from "../../conversation";
 
 @Scopes(() => ({
 	...BaseEntityScopes.commonScopes(() => TrackerEntity),
 }))
 @Table({ tableName: TrackerEntity.entityTableName })
 export class TrackerEntity extends SequelizeBaseEntity<TrackerEntity> implements ITracker {
-	public static override entityTableName = "trackers";
-	public static override uuidColumnName = "trackerUuid";
-	public static override createdAtColumnName = "trackerCreatedAt";
-	public static override updatedAtColumnName = "trackerUpdatedAt";
-	public static override deletedAtColumnName = "trackerDeletedAt";
+	public static override readonly entityTableName = "trackers";
+	public static override readonly uuidColumnName = "trackerUuid";
+	public static override readonly createdAtColumnName = "trackerCreatedAt";
+	public static override readonly updatedAtColumnName = "trackerUpdatedAt";
+	public static override readonly deletedAtColumnName = "trackerDeletedAt";
 
 	@PrimaryKey
 	@AutoIncrement
@@ -81,4 +82,11 @@ export class TrackerEntity extends SequelizeBaseEntity<TrackerEntity> implements
 		targetKey: "customerId",
 	})
 	public trackerCustomer: CustomerEntityType;
+
+	@HasMany(() => ConversationEntity, {
+		as: "trackerConversations",
+		foreignKey: "conversationTrackerId",
+		sourceKey: "trackerId",
+	})
+	public trackerConversations: Array<ConversationEntityType>;
 }

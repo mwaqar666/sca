@@ -11,12 +11,12 @@ import type { IProject } from "@sca-shared/dto";
 }))
 @Table({ tableName: ProjectEntity.entityTableName })
 export class ProjectEntity extends SequelizeBaseEntity<ProjectEntity> implements IProject {
-	public static override entityTableName = "projects";
-	public static override uuidColumnName = "projectUuid";
-	public static override isActiveColumnName = "projectIsActive";
-	public static override createdAtColumnName = "projectCreatedAt";
-	public static override updatedAtColumnName = "projectUpdatedAt";
-	public static override deletedAtColumnName = "projectDeletedAt";
+	public static override readonly entityTableName = "projects";
+	public static override readonly uuidColumnName = "projectUuid";
+	public static override readonly isActiveColumnName = "projectIsActive";
+	public static override readonly createdAtColumnName = "projectCreatedAt";
+	public static override readonly updatedAtColumnName = "projectUpdatedAt";
+	public static override readonly deletedAtColumnName = "projectDeletedAt";
 
 	@PrimaryKey
 	@AutoIncrement

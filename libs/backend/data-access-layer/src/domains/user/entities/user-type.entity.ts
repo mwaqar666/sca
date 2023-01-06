@@ -9,12 +9,12 @@ import type { IUserType, UserTypeEnum } from "@sca-shared/dto";
 }))
 @Table({ tableName: UserTypeEntity.entityTableName })
 export class UserTypeEntity extends SequelizeBaseEntity<UserTypeEntity> implements IUserType {
-	public static override entityTableName = "userTypes";
-	public static override uuidColumnName = "userTypeUuid";
-	public static override isActiveColumnName = "userTypeIsActive";
-	public static override createdAtColumnName = "userTypeCreatedAt";
-	public static override updatedAtColumnName = "userTypeUpdatedAt";
-	public static override deletedAtColumnName = "userTypeDeletedAt";
+	public static override readonly entityTableName = "userTypes";
+	public static override readonly uuidColumnName = "userTypeUuid";
+	public static override readonly isActiveColumnName = "userTypeIsActive";
+	public static override readonly createdAtColumnName = "userTypeCreatedAt";
+	public static override readonly updatedAtColumnName = "userTypeUpdatedAt";
+	public static override readonly deletedAtColumnName = "userTypeDeletedAt";
 
 	@PrimaryKey
 	@AutoIncrement

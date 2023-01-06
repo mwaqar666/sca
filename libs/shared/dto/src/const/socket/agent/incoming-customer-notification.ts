@@ -1,12 +1,7 @@
-import type { IConnectedCustomer } from "../../../models";
+import type { IConnectedCustomer } from "../../../interfaces";
 
 export const IncomingCustomerNotification = "IncomingCustomerNotification";
-export const IncomingCustomersNotification = "IncomingCustomersNotification";
 
-export class IncomingCustomerNotificationPayloadDto {
+export interface IIncomingCustomerNotificationPayloadDto {
 	incomingCustomer: IConnectedCustomer;
-}
-
-export class IncomingCustomersNotificationPayloadDto {
-	incomingCustomers: Array<IConnectedCustomer>;
 }

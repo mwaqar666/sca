@@ -17,7 +17,7 @@ import type {
 } from "@sca-backend/db";
 import type { AggregateService } from "@sca-backend/aggregate";
 import type { IDomainUtilitiesAggregate } from "../../../types";
-import type { IncomingCustomerRequestDto } from "@sca-shared/dto";
+import type { IIncomingCustomerRequestDto } from "@sca-shared/dto";
 import { CustomerTrackingDalService } from "../tracking";
 
 @Injectable()
@@ -30,7 +30,7 @@ export class CustomerConnectionDalService {
 		@Inject(DomainUtilitiesAggregateConst) private readonly utilitiesAggregateService: AggregateService<IDomainUtilitiesAggregate>,
 	) {}
 
-	public async connectCustomer(customer: CustomerEntity, connectionId: string, incomingCustomerRequestDto: IncomingCustomerRequestDto): Promise<IEntityConnectionStatus<CustomerRedisEntity>> {
+	public async connectCustomer(customer: CustomerEntity, connectionId: string, incomingCustomerRequestDto: IIncomingCustomerRequestDto): Promise<IEntityConnectionStatus<CustomerRedisEntity>> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async (): Promise<IEntityConnectionStatus<CustomerRedisEntity>> => {
 				const redisCustomer = await this.customerRedisService.fetchCustomerFromCustomerAndProjectUuid(
@@ -94,7 +94,7 @@ export class CustomerConnectionDalService {
 	private async createNewCustomerConnection(
 		customer: CustomerEntity,
 		connectionId: string,
-		incomingCustomerRequestDto: IncomingCustomerRequestDto,
+		incomingCustomerRequestDto: IIncomingCustomerRequestDto,
 	): Promise<IEntityStatus<CustomerRedisEntity, TCreated>> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async (): Promise<IEntityStatus<CustomerRedisEntity, TCreated>> => {
@@ -118,7 +118,7 @@ export class CustomerConnectionDalService {
 		redisCustomer: CustomerRedisEntity,
 		customer: CustomerEntity,
 		connectionId: string,
-		incomingCustomerRequestDto: IncomingCustomerRequestDto,
+		incomingCustomerRequestDto: IIncomingCustomerRequestDto,
 	): Promise<IEntityStatus<CustomerRedisEntity, TReconnected>> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async (): Promise<IEntityStatus<CustomerRedisEntity, TReconnected>> => {
@@ -133,7 +133,7 @@ export class CustomerConnectionDalService {
 		redisCustomer: CustomerRedisEntity,
 		customer: CustomerEntity,
 		connectionId: string,
-		incomingCustomerRequestDto: IncomingCustomerRequestDto,
+		incomingCustomerRequestDto: IIncomingCustomerRequestDto,
 	): Promise<IEntityStatus<CustomerRedisEntity, TPreConnected>> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async (): Promise<IEntityStatus<CustomerRedisEntity, TPreConnected>> => {

@@ -1,10 +1,10 @@
 export const IncomingCustomer = "IncomingCustomer";
 
-export class IncomingCustomerRequestDto {
+export interface IIncomingCustomerRequestDto {
 	currentLocation: string;
 }
 
-export class IncomingCustomerResponseDto {
+export interface IIncomingCustomerResponseDto {
 	onlineAgents: number;
 	trackingNumber: string;
 }

@@ -5,7 +5,7 @@ import type { ISignUpRequest } from "@sca-shared/dto";
 import { UserTypeEnum } from "@sca-shared/dto";
 import { DomainExtensionsAggregateConst } from "../../const";
 import { ProjectService, type ProjectUserEntity, ProjectUserService, type UserEntity, UserService, UserTypeService } from "../../domains";
-import type { FailedAuthReasonProject, FailedAuthReasonUser, SuccessfulAuthWithUserAndProject } from "../../dto";
+import type { IFailedAuthReasonProject, IFailedAuthReasonUser, ISuccessfulAuthWithUserAndProject } from "../../interfaces";
 import type { IDomainExtensionsAggregate } from "../../types";
 
 @Injectable()
@@ -20,14 +20,17 @@ export class UserProjectIdentityService {
 		@Inject(DomainExtensionsAggregateConst) private readonly extensionsAggregateService: AggregateService<IDomainExtensionsAggregate>,
 	) {}
 
-	public async authenticateUserUsingEmailWithAllAndCurrentProjects(userEmail: string): Promise<FailedAuthReasonUser | FailedAuthReasonProject | SuccessfulAuthWithUserAndProject> {
+	public async authenticateUserUsingEmailWithAllAndCurrentProjects(userEmail: string): Promise<IFailedAuthReasonUser | IFailedAuthReasonProject | ISuccessfulAuthWithUserAndProject> {
 		const user = await this.userService.findUserUsingEmail(userEmail);
 		if (!user) return { authEntity: null, authErrorReason: "user" };
 
 		return await this.authenticateUserWithAllAndCurrentProjects(user);
 	}
 
-	public async authenticateUserUsingUuidWithAllAndCurrentProjects(userUuid: string, projectUuid: string): Promise<FailedAuthReasonUser | FailedAuthReasonProject | SuccessfulAuthWithUserAndProject> {
+	public async authenticateUserUsingUuidWithAllAndCurrentProjects(
+		userUuid: string,
+		projectUuid: string,
+	): Promise<IFailedAuthReasonUser | IFailedAuthReasonProject | ISuccessfulAuthWithUserAndProject> {
 		const user = await this.userService.findUserUsingUuid(userUuid);
 		if (!user) return { authEntity: null, authErrorReason: "user" };
 
@@ -53,9 +56,9 @@ export class UserProjectIdentityService {
 		});
 	}
 
-	private async authenticateUserWithAllAndCurrentProjects(user: UserEntity): Promise<FailedAuthReasonUser | FailedAuthReasonProject | SuccessfulAuthWithUserAndProject>;
-	private async authenticateUserWithAllAndCurrentProjects(user: UserEntity, projectUuid: string): Promise<FailedAuthReasonUser | FailedAuthReasonProject | SuccessfulAuthWithUserAndProject>;
-	private async authenticateUserWithAllAndCurrentProjects(user: UserEntity, projectUuid?: string): Promise<FailedAuthReasonUser | FailedAuthReasonProject | SuccessfulAuthWithUserAndProject> {
+	private async authenticateUserWithAllAndCurrentProjects(user: UserEntity): Promise<IFailedAuthReasonUser | IFailedAuthReasonProject | ISuccessfulAuthWithUserAndProject>;
+	private async authenticateUserWithAllAndCurrentProjects(user: UserEntity, projectUuid: string): Promise<IFailedAuthReasonUser | IFailedAuthReasonProject | ISuccessfulAuthWithUserAndProject>;
+	private async authenticateUserWithAllAndCurrentProjects(user: UserEntity, projectUuid?: string): Promise<IFailedAuthReasonUser | IFailedAuthReasonProject | ISuccessfulAuthWithUserAndProject> {
 		let userCurrentProjectIndex = -1;
 
 		const projectUsersWithProjects = await this.projectUserService.findAllProjectsForUser(user.userId);
