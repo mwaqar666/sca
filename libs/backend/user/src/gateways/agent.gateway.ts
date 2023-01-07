@@ -3,8 +3,8 @@ import { AgentSocketConfig, AgentSocketPort } from "../config";
 import type { Server, Socket } from "socket.io";
 import { UseGuards } from "@nestjs/common";
 import { AccessTokenSocketGuard, AuthUserSocket } from "@sca-backend/auth";
-import { AgentConnectionService, AgentNotificationService, AgentQueryService } from "../services/socket";
-import { AgentRequestEvents, type IProjectCustomersResponseDto } from "@sca-shared/dto";
+import { AgentConnectionService, AgentNotificationService, AgentQueryService, AgentSessionService } from "../services/socket";
+import { AgentRequestEvents, type IProjectCustomersResponse } from "@sca-shared/dto";
 
 @UseGuards(AccessTokenSocketGuard)
 @WebSocketGateway(AgentSocketPort, AgentSocketConfig)
@@ -13,6 +13,7 @@ export class AgentGateway implements OnGatewayInit<Server>, OnGatewayDisconnect<
 		// Dependencies
 
 		private readonly agentQueryService: AgentQueryService,
+		private readonly agentSessionService: AgentSessionService,
 		private readonly agentConnectionService: AgentConnectionService,
 		private readonly agentNotificationService: AgentNotificationService,
 	) {}
@@ -23,17 +24,18 @@ export class AgentGateway implements OnGatewayInit<Server>, OnGatewayDisconnect<
 	}
 
 	@SubscribeMessage(AgentRequestEvents.ProjectCustomers)
-	public async retrieveListOfCurrentProjectCustomers(@ConnectedSocket() agentSocket: AuthUserSocket): Promise<IProjectCustomersResponseDto> {
+	public async retrieveListOfCurrentProjectCustomers(@ConnectedSocket() agentSocket: AuthUserSocket): Promise<IProjectCustomersResponse> {
 		return await this.agentQueryService.fetchCustomersForAgentOfProject(agentSocket);
 	}
 
 	@SubscribeMessage(AgentRequestEvents.StartSessionWithCustomer)
 	public async startSessionWithCustomer(@ConnectedSocket() agentSocket: AuthUserSocket, @MessageBody() customerUuid: string): Promise<void> {
-		// return await this.agentSocketService.startSessionWithCustomer(agentSocket, customerUuid);
+		return await this.agentSessionService.startSessionWithCustomer(agentSocket, customerUuid);
 	}
 
 	public afterInit(server: Server): void {
 		this.agentQueryService.setServer(server);
+		this.agentSessionService.setServer(server);
 		this.agentConnectionService.setServer(server);
 		this.agentNotificationService.setServer(server);
 	}

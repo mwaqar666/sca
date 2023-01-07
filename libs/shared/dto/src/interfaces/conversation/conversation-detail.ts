@@ -1,22 +1,31 @@
-import type { Key } from "@sca-shared/utils";
+import type { Key, Nullable } from "@sca-shared/utils";
 
 export interface IConversationDetails {
-	conversation: Array<IMessageFromCustomerToAgent | IMessageFromAgentToCustomer>;
+	conversation: Array<IMessage>;
 }
 
-export interface IMessage {
-	message?: string;
-	files?: string[];
+export interface IBaseMessage {
+	message: Nullable<string>;
+	files: Array<string>;
 }
 
-export interface IMessageFromCustomerToAgent extends IMessage {
+export interface IMessageFromCustomerToAgent extends IBaseMessage {
 	from: "Customer";
 	to: "Agent";
 }
 
-export interface IMessageFromAgentToCustomer extends IMessage {
+export interface IMessageFromCustomerToAllAgents extends IBaseMessage {
+	from: "Customer";
+	to: "AllAgents";
+}
+
+export interface IMessageFromAgentToCustomer extends IBaseMessage {
 	from: "Agent";
 	to: "Customer";
 }
 
-export type IMessageDirection = Omit<IMessageFromCustomerToAgent, Key<IMessage>> | Omit<IMessageFromAgentToCustomer, Key<IMessage>>;
+export type IMessage = IMessageFromCustomerToAgent | IMessageFromAgentToCustomer | IMessageFromCustomerToAllAgents;
+
+export type IDirection<M extends IBaseMessage> = Omit<M, Key<IBaseMessage>>;
+
+export type IMessageDirection = IDirection<IMessageFromCustomerToAgent> | IDirection<IMessageFromCustomerToAllAgents> | IDirection<IMessageFromAgentToCustomer>;

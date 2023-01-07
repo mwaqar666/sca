@@ -3,10 +3,10 @@ import { SocketService } from "@sca-backend/socket";
 import { CustomerUtilitiesAggregateConst } from "../../const";
 import type { ICustomerUtilitiesAggregate } from "../../types";
 import type { AggregateService } from "@sca-backend/aggregate";
-import { AgentConnectionDalService, CustomerBuilderDalService, CustomerConnectionDalService, CustomerTrackingDalService } from "@sca-backend/data-access-layer";
-import type { IIncomingCustomerRequestDto, IIncomingCustomerResponseDto } from "@sca-shared/dto";
+import { AgentQueryDalService, CustomerBuilderDalService, CustomerConnectionDalService, CustomerTrackingDalService } from "@sca-backend/data-access-layer";
+import type { IIncomingCustomerRequestDto, IIncomingCustomerResponse } from "@sca-shared/dto";
 import { AuthCustomer, type AuthCustomerSocket } from "@sca-backend/auth";
-import { type CustomerExpiryDto, SocketBusMessages, SocketBusService } from "@sca-backend/service-bus";
+import { type ICustomerExpiry, SocketBusMessages, SocketBusService } from "@sca-backend/service-bus";
 import type { Socket } from "socket.io";
 
 @Injectable()
@@ -15,9 +15,9 @@ export class CustomerConnectionService extends SocketService {
 		// Dependencies
 
 		private readonly socketBusService: SocketBusService,
+		private readonly agentQueryDalService: AgentQueryDalService,
 		private readonly customerBuilderDalService: CustomerBuilderDalService,
 		private readonly customerTrackingDalService: CustomerTrackingDalService,
-		private readonly agentConnectionDalService: AgentConnectionDalService,
 		private readonly customerConnectionDalService: CustomerConnectionDalService,
 		@Inject(CustomerUtilitiesAggregateConst) private readonly utilitiesAggregateService: AggregateService<ICustomerUtilitiesAggregate>,
 	) {
@@ -26,14 +26,14 @@ export class CustomerConnectionService extends SocketService {
 		this.listenForServiceBusMessages();
 	}
 
-	public async handleIncomingConnection(customerSocket: AuthCustomerSocket, incomingCustomerRequestDto: IIncomingCustomerRequestDto): Promise<IIncomingCustomerResponseDto> {
+	public async handleIncomingConnection(customerSocket: AuthCustomerSocket, incomingCustomerRequestDto: IIncomingCustomerRequestDto): Promise<IIncomingCustomerResponse> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
-			operation: async (): Promise<IIncomingCustomerResponseDto> => {
+			operation: async (): Promise<IIncomingCustomerResponse> => {
 				const authenticatedCustomer = customerSocket.data[AuthCustomer];
 
 				const customer = await this.customerConnectionDalService.connectCustomer(authenticatedCustomer, customerSocket.id, incomingCustomerRequestDto);
-				const onlineAgents = await this.agentConnectionDalService.onlineAgentsOfProject(authenticatedCustomer.customerCurrentProject.projectCustomerProject.projectUuid);
-				const incomingCustomerResponse: IIncomingCustomerResponseDto = {
+				const onlineAgents = await this.agentQueryDalService.onlineAgentsOfProject(authenticatedCustomer.customerCurrentProject.projectCustomerProject.projectUuid);
+				const incomingCustomerResponse: IIncomingCustomerResponse = {
 					onlineAgents: onlineAgents.length,
 					trackingNumber: authenticatedCustomer.customerCurrentTracker.trackerTrackingNumber,
 				};
@@ -69,17 +69,17 @@ export class CustomerConnectionService extends SocketService {
 					const { entity } = customerDisconnection;
 					const { customerUuid, projectUuid, agentUuid, trackingNumber } = entity;
 
-					await this.socketBusService.publishMessage<CustomerExpiryDto>(SocketBusMessages.CustomerRemoved, { customerUuid, projectUuid, agentUuid, trackingNumber });
+					await this.socketBusService.publishMessage<ICustomerExpiry>(SocketBusMessages.CustomerRemoved, { customerUuid, projectUuid, agentUuid, trackingNumber });
 				});
 			},
 		});
 	}
 
 	private listenForServiceBusMessages(): void {
-		this.socketBusService.listenForMessage<CustomerExpiryDto>(SocketBusMessages.CustomerRemoved).subscribe(this.postCustomerConnectionRemovalTasks.bind(this));
+		this.socketBusService.listenForMessage<ICustomerExpiry>(SocketBusMessages.CustomerRemoved).subscribe(this.postCustomerConnectionRemovalTasks.bind(this));
 	}
 
-	private async postCustomerConnectionRemovalTasks(customerExpiryDto: CustomerExpiryDto): Promise<void> {
+	private async postCustomerConnectionRemovalTasks(customerExpiryDto: ICustomerExpiry): Promise<void> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async () => {
 				// await this.customerChatService.closeConversations(customerDisconnection.entity, customerDisconnection.entity.agentUuid ?? undefined);

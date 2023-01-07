@@ -8,4 +8,6 @@ export class AgentNotificationEvents {
 	public static readonly IncomingCustomerNotification = "IncomingCustomerNotification";
 	public static readonly OutgoingCustomerNotification = "OutgoingCustomerNotification";
 	public static readonly ReleasedCustomersNotification = "ReleasedCustomersNotification";
+	public static readonly CustomerReservedNotification = "CustomerReservedNotification";
+	public static readonly CustomerAssignedNotification = "CustomerAssignedNotification";
 }

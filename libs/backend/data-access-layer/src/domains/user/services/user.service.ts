@@ -28,6 +28,10 @@ export class UserService {
 		return await this.userRepository.resolveEntity(userUuid, [SequelizeScopeConst.withoutTimestamps, SequelizeScopeConst.isActive]);
 	}
 
+	public async findOrFailUserUsingUuid(userUuid: string): Promise<UserEntity> {
+		return await this.userRepository.resolveOrFailEntity(userUuid, [SequelizeScopeConst.withoutTimestamps, SequelizeScopeConst.isActive]);
+	}
+
 	public async createUser(createUserData: Partial<EntityTableColumnProperties<UserEntity>>, userUserTypeId: number, withTransaction?: RunningTransaction): Promise<UserEntity> {
 		return await this.extensionsAggregateService.services.sequelize.executeTransactionalOperation({
 			withTransaction,

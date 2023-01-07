@@ -5,7 +5,7 @@ import type { IConnectedCustomer } from "@sca-shared/dto";
 import type { AggregateService } from "@sca-backend/aggregate";
 import { AuthUser, type AuthUserSocket } from "@sca-backend/auth";
 import { AgentConnectionDalService, CustomerBuilderDalService, CustomerConnectionDalService } from "@sca-backend/data-access-layer";
-import { type AgentExpiryDto, SocketBusMessages, SocketBusService } from "@sca-backend/service-bus";
+import { type IAgentExpiry, SocketBusMessages, SocketBusService } from "@sca-backend/service-bus";
 import { AgentUtilitiesAggregateConst } from "../../const";
 import type { IAgentUtilitiesAggregate } from "../../types";
 
@@ -56,17 +56,17 @@ export class AgentConnectionService extends SocketService {
 					const { entity } = agentDisconnection;
 					const { agentUuid, projectUuid } = entity;
 
-					await this.socketBusService.publishMessage<AgentExpiryDto>(SocketBusMessages.AgentRemoved, { agentUuid, projectUuid });
+					await this.socketBusService.publishMessage<IAgentExpiry>(SocketBusMessages.AgentRemoved, { agentUuid, projectUuid });
 				});
 			},
 		});
 	}
 
 	private listenForServiceBusMessages(): void {
-		this.socketBusService.listenForMessage<AgentExpiryDto>(SocketBusMessages.AgentRemoved).subscribe(this.postAgentConnectionRemovalTasks.bind(this));
+		this.socketBusService.listenForMessage<IAgentExpiry>(SocketBusMessages.AgentRemoved).subscribe(this.postAgentConnectionRemovalTasks.bind(this));
 	}
 
-	private async postAgentConnectionRemovalTasks(agentExpiryDto: AgentExpiryDto): Promise<void> {
+	private async postAgentConnectionRemovalTasks(agentExpiryDto: IAgentExpiry): Promise<void> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async () => {
 				const releasedCustomers = await this.customerConnectionDalService.releaseCustomersFromAgentOfProject(agentExpiryDto.agentUuid, agentExpiryDto.projectUuid);

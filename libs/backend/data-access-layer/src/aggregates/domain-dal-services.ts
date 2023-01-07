@@ -1,34 +1,33 @@
 import {
+	AgentBuilderDalService,
 	AgentConnectionDalService,
+	AgentQueryDalService,
 	ConversationDalService,
 	CustomerBuilderDalService,
 	CustomerConnectionDalService,
 	CustomerProjectIdentityService,
 	CustomerQueryDalService,
 	CustomerTrackingDalService,
+	SessionDalService,
 	UserProjectIdentityService,
 } from "../dal-services";
 import type { Type } from "@nestjs/common";
 
 export const DomainDalServices: Array<Type> = [
-	// 01. Identity
 	UserProjectIdentityService,
 	CustomerProjectIdentityService,
 
-	// 02. Socket
-	// 	02a. Builder
+	AgentBuilderDalService,
 	CustomerBuilderDalService,
 
-	// 	02b. Connection
-	CustomerConnectionDalService,
 	AgentConnectionDalService,
+	CustomerConnectionDalService,
 
-	// 	02c. Conversation
+	SessionDalService,
 	ConversationDalService,
 
-	// 	02d. Query
+	AgentQueryDalService,
 	CustomerQueryDalService,
 
-	// 	02e. Tracking
 	CustomerTrackingDalService,
 ];

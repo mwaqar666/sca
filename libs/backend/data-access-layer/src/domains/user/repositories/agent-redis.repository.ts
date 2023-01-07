@@ -17,6 +17,10 @@ export class AgentRedisRepository extends BaseRedisRepository<AgentRedisEntity> 
 		return await this.redisStorageRepository.repository.search().where("agentUuid").equals(agentUuid).and("projectUuid").equals(projectUuid).return.first();
 	}
 
+	public async fetchAgentsOfProjectUuidExceptAgentUuid(agentUuid: string, projectUuid: string): Promise<Array<AgentRedisEntity>> {
+		return await this.redisStorageRepository.repository.search().where("agentUuid").not.equals(agentUuid).and("projectUuid").equals(projectUuid).return.all();
+	}
+
 	public async fetchAgentFromConnectionId(connectionId: string): Promise<Nullable<AgentRedisEntity>> {
 		return await this.redisStorageRepository.repository.search().where("connectionIds").contains(connectionId).return.first();
 	}

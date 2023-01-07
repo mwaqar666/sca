@@ -4,4 +4,7 @@ export class SocketBusMessages {
 	public static readonly AgentRemoved = "AgentRemoved";
 	public static readonly NewMultipleCustomers = "NewMultipleCustomers";
 	public static readonly AgentUnavailable = "AgentUnavailable";
+	public static readonly CustomerReservedNotification = "CustomerReservedNotification";
+	public static readonly CustomerAssignedNotification = "CustomerAssignedNotification";
+	public static readonly AgentAssignedNotification = "AgentAssignedNotification";
 }

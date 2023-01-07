@@ -1,5 +1,5 @@
 import { type IRedisConnection, RedisService } from "@sca-backend/redis";
-import { JsonHelper, type Nullable } from "@sca-shared/utils";
+import { JsonHelper } from "@sca-shared/utils";
 import { filter, map, type Observable, Subject } from "rxjs";
 import { v4 } from "uuid";
 import type { IMessageWithData } from "../types";
@@ -33,10 +33,8 @@ export abstract class MessageBusService<Bus extends MessageBusService<Bus>> {
 		await this.attachListenerToSubscriberChannel();
 	}
 
-	public async publishMessage(message: string): Promise<void>;
-	public async publishMessage<T>(message: string, data: Nullable<T>): Promise<void>;
-	public async publishMessage<T>(message: string, data?: Nullable<T>): Promise<void> {
-		const passengerData = JsonHelper.stringify<IMessageWithData<Nullable<T>>>({ message, data: data ?? null });
+	public async publishMessage<T>(message: string, data: T): Promise<void> {
+		const passengerData = JsonHelper.stringify<IMessageWithData<T>>({ message, data });
 
 		await this.publisherConnection.redis.publish(this.publisherChannel, passengerData);
 	}

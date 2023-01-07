@@ -17,7 +17,7 @@ export class AgentConnectionDalService {
 	public async connectAgent(agent: UserEntity, connectionId: string): Promise<IEntityConnectionStatus<AgentRedisEntity>> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async (): Promise<IEntityConnectionStatus<AgentRedisEntity>> => {
-				const redisAgent = await this.agentRedisService.fetchAgentFromAgentAndProjectUuid(agent.userUuid, agent.userCurrentProject.projectUserProject.projectUuid);
+				const redisAgent = await this.agentRedisService.fetchAgentOfProject(agent.userUuid, agent.userCurrentProject.projectUserProject.projectUuid);
 				if (!redisAgent) return await this.createNewAgentConnection(agent, connectionId);
 
 				const agentPersisted = await this.agentRedisService.removeAgentExpiry(redisAgent.entityId);
@@ -38,14 +38,6 @@ export class AgentConnectionDalService {
 				if (agentRemoval.status === "ExpiryAdded") return await this.postAgentExpiryListener(agentRemoval.entity);
 
 				return { entity: agentRemoval.entity, postExpiryTasks: null, status: "Disconnected" };
-			},
-		});
-	}
-
-	public async onlineAgentsOfProject(projectUuid: string): Promise<Array<AgentRedisEntity>> {
-		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
-			operation: async (): Promise<Array<AgentRedisEntity>> => {
-				return await this.agentRedisService.fetchOnlineAgentsOfProject(projectUuid);
 			},
 		});
 	}

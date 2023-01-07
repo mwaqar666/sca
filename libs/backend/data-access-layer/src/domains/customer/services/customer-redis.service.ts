@@ -29,6 +29,12 @@ export class CustomerRedisService {
 		return { assignedCustomers, unassignedCustomers };
 	}
 
+	public async assignCustomerToAgent(customer: CustomerRedisEntity, agentUuid: string): Promise<CustomerRedisEntity> {
+		customer.agentUuid = agentUuid;
+
+		return await this.customerRedisRepository.updateEntity(customer);
+	}
+
 	public async releaseCustomersFromAgentOfProject(agentUuid: string, projectUuid: string): Promise<Array<CustomerRedisEntity>> {
 		const customers = await this.customerRedisRepository.fetchCustomersAssignedToAgentForProject(agentUuid, projectUuid);
 

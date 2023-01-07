@@ -13,8 +13,12 @@ export class AgentRedisService {
 		private readonly agentRedisRepository: AgentRedisRepository,
 	) {}
 
-	public async fetchAgentFromAgentAndProjectUuid(agentUuid: string, projectUuid: string): Promise<Nullable<AgentRedisEntity>> {
+	public async fetchAgentOfProject(agentUuid: string, projectUuid: string): Promise<Nullable<AgentRedisEntity>> {
 		return await this.agentRedisRepository.fetchAgentFromAgentAndProjectUuid(agentUuid, projectUuid);
+	}
+
+	public async fetchAgentsOfProjectExcept(agentUuid: string, projectUuid: string): Promise<Array<AgentRedisEntity>> {
+		return await this.agentRedisRepository.fetchAgentsOfProjectUuidExceptAgentUuid(agentUuid, projectUuid);
 	}
 
 	public async fetchAgentFromConnectionId(connectionId: string): Promise<Nullable<AgentRedisEntity>> {
