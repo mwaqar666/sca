@@ -1,6 +1,6 @@
 import type { IOnlineCustomer } from "@sca-shared/dto";
 
-export interface ICustomerAssigned {
+export interface ICustomerAssignment {
 	toAgentUuid: string;
 	customer: IOnlineCustomer;
 }

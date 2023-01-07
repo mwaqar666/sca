@@ -33,6 +33,11 @@ export class AgentGateway implements OnGatewayInit<Server>, OnGatewayDisconnect<
 		return await this.agentSessionService.startSessionWithCustomer(agentSocket, customerUuid);
 	}
 
+	@SubscribeMessage(AgentRequestEvents.EndSessionWithCustomer)
+	public async endSessionWithCustomer(@ConnectedSocket() agentSocket: AuthUserSocket, @MessageBody() customerUuid: string): Promise<void> {
+		return await this.agentSessionService.endSessionWithCustomer(agentSocket, customerUuid);
+	}
+
 	public afterInit(server: Server): void {
 		this.agentQueryService.setServer(server);
 		this.agentSessionService.setServer(server);

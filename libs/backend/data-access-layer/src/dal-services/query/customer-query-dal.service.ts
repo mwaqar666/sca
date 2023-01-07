@@ -15,7 +15,7 @@ export class CustomerQueryDalService {
 		@Inject(DomainUtilitiesAggregateConst) private readonly utilitiesAggregateService: AggregateService<IDomainUtilitiesAggregate>,
 	) {}
 
-	public async fetchCustomerToStartSessionWith(customerUuid: string, projectUuid: string): Promise<Nullable<CustomerRedisEntity>> {
+	public async fetchCustomerForAgentSession(customerUuid: string, projectUuid: string): Promise<Nullable<CustomerRedisEntity>> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async () => {
 				return await this.customerRedisService.fetchCustomerFromCustomerAndProjectUuid(customerUuid, projectUuid);

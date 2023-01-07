@@ -4,7 +4,7 @@ import { SocketService } from "@sca-backend/socket";
 import type { IConnectedCustomer } from "@sca-shared/dto";
 import type { AggregateService } from "@sca-backend/aggregate";
 import { AuthUser, type AuthUserSocket } from "@sca-backend/auth";
-import { AgentConnectionDalService, CustomerBuilderDalService, CustomerConnectionDalService } from "@sca-backend/data-access-layer";
+import { AgentConnectionDalService, CustomerBuilderDalService, SessionDalService } from "@sca-backend/data-access-layer";
 import { type IAgentExpiry, SocketBusMessages, SocketBusService } from "@sca-backend/service-bus";
 import { AgentUtilitiesAggregateConst } from "../../const";
 import type { IAgentUtilitiesAggregate } from "../../types";
@@ -15,9 +15,9 @@ export class AgentConnectionService extends SocketService {
 		// Dependencies
 
 		private readonly socketBusService: SocketBusService,
+		private readonly sessionDalService: SessionDalService,
 		private readonly customerBuilderDalService: CustomerBuilderDalService,
 		private readonly agentConnectionDalService: AgentConnectionDalService,
-		private readonly customerConnectionDalService: CustomerConnectionDalService,
 		@Inject(AgentUtilitiesAggregateConst) private readonly utilitiesAggregateService: AggregateService<IAgentUtilitiesAggregate>,
 	) {
 		super();
@@ -69,7 +69,7 @@ export class AgentConnectionService extends SocketService {
 	private async postAgentConnectionRemovalTasks(agentExpiryDto: IAgentExpiry): Promise<void> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async () => {
-				const releasedCustomers = await this.customerConnectionDalService.releaseCustomersFromAgentOfProject(agentExpiryDto.agentUuid, agentExpiryDto.projectUuid);
+				const releasedCustomers = await this.sessionDalService.unAssignAgentFromAllItsProjectCustomers(agentExpiryDto.agentUuid, agentExpiryDto.projectUuid);
 				const releasedConnectedCustomers = await this.customerBuilderDalService.buildConnectedCustomer(releasedCustomers);
 
 				// await this.agentChatService.closeCustomersCurrentConversation(socket.data.agent, agentCustomers);

@@ -35,7 +35,13 @@ export class CustomerRedisService {
 		return await this.customerRedisRepository.updateEntity(customer);
 	}
 
-	public async releaseCustomersFromAgentOfProject(agentUuid: string, projectUuid: string): Promise<Array<CustomerRedisEntity>> {
+	public async unAssignCustomerFromAgent(customer: CustomerRedisEntity): Promise<CustomerRedisEntity> {
+		customer.agentUuid = null;
+
+		return await this.customerRedisRepository.updateEntity(customer);
+	}
+
+	public async unAssignAgentFromAllItsProjectCustomers(agentUuid: string, projectUuid: string): Promise<Array<CustomerRedisEntity>> {
 		const customers = await this.customerRedisRepository.fetchCustomersAssignedToAgentForProject(agentUuid, projectUuid);
 
 		return Promise.all(

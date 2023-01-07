@@ -20,4 +20,20 @@ export class SessionDalService {
 			},
 		});
 	}
+
+	public async unAssignAgentFromCustomer(redisCustomer: CustomerRedisEntity): Promise<CustomerRedisEntity> {
+		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
+			operation: async () => {
+				return await this.customerRedisService.unAssignCustomerFromAgent(redisCustomer);
+			},
+		});
+	}
+
+	public async unAssignAgentFromAllItsProjectCustomers(agentUuid: string, projectUuid: string): Promise<Array<CustomerRedisEntity>> {
+		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
+			operation: async () => {
+				return await this.customerRedisService.unAssignAgentFromAllItsProjectCustomers(agentUuid, projectUuid);
+			},
+		});
+	}
 }

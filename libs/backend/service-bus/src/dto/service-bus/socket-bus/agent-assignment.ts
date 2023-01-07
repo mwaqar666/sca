@@ -4,3 +4,7 @@ export interface IAgentAssigned {
 	toAgentUuid: string;
 	customer: IOnlineCustomer;
 }
+
+export interface IAgentUnAssigned {
+	customer: IOnlineCustomer;
+}

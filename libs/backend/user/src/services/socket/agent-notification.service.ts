@@ -1,13 +1,14 @@
 import { Inject, Injectable } from "@nestjs/common";
 import type { AggregateService } from "@sca-backend/aggregate";
 import { DispatcherService, SocketService } from "@sca-backend/socket";
-import { AgentQueryDalService, type AgentRedisEntity } from "@sca-backend/data-access-layer";
-import type { ICustomerAssigned, ICustomerExpiry, ICustomerReserved } from "@sca-backend/service-bus";
+import { AgentQueryDalService, type AgentRedisEntity, CustomerBuilderDalService } from "@sca-backend/data-access-layer";
+import type { ICustomerAssignment, ICustomerExpiry, ICustomerReservation } from "@sca-backend/service-bus";
 import { SocketBusMessages, SocketBusService } from "@sca-backend/service-bus";
 import type {
 	IConnectedCustomer,
-	ICustomerAssignedNotification,
+	ICustomerAssignmentNotification,
 	ICustomerReservedNotification,
+	ICustomerUnReservedNotification,
 	IIncomingCustomerNotification,
 	IOutgoingCustomerNotification,
 	IReleasedCustomersNotification,
@@ -24,6 +25,7 @@ export class AgentNotificationService extends SocketService {
 		private readonly socketBusService: SocketBusService,
 		private readonly dispatcherService: DispatcherService,
 		private readonly agentQueryDalService: AgentQueryDalService,
+		private readonly customerBuilderDalService: CustomerBuilderDalService,
 		@Inject(AgentUtilitiesAggregateConst) private readonly utilitiesAggregateService: AggregateService<IAgentUtilitiesAggregate>,
 	) {
 		super();
@@ -35,8 +37,10 @@ export class AgentNotificationService extends SocketService {
 		this.socketBusService.listenForMessage<IConnectedCustomer>(SocketBusMessages.NewCustomer).subscribe(this.sendNewCustomerNotificationToAgents.bind(this));
 		this.socketBusService.listenForMessage<ICustomerExpiry>(SocketBusMessages.CustomerRemoved).subscribe(this.sendOutgoingCustomerNotificationToAgents.bind(this));
 		this.socketBusService.listenForMessage<Array<IConnectedCustomer>>(SocketBusMessages.NewMultipleCustomers).subscribe(this.sendReleasedCustomersNotificationToAgents.bind(this));
-		this.socketBusService.listenForMessage<ICustomerReserved>(SocketBusMessages.CustomerReservedNotification).subscribe(this.sendCustomerReservedNotificationToAgents.bind(this));
-		this.socketBusService.listenForMessage<ICustomerAssigned>(SocketBusMessages.CustomerAssignedNotification).subscribe(this.sendCustomerAssignedNotificationToAgent.bind(this));
+		this.socketBusService.listenForMessage<ICustomerReservation>(SocketBusMessages.CustomerReservedNotification).subscribe(this.sendCustomerReservedNotificationToAgents.bind(this));
+		this.socketBusService.listenForMessage<ICustomerAssignment>(SocketBusMessages.CustomerAssignedNotification).subscribe(this.sendCustomerAssignedNotificationToAgent.bind(this));
+		this.socketBusService.listenForMessage<ICustomerReservation>(SocketBusMessages.CustomerUnReservedNotification).subscribe(this.sendCustomerUnReservedNotificationToAgents.bind(this));
+		this.socketBusService.listenForMessage<ICustomerAssignment>(SocketBusMessages.CustomerUnAssignedNotification).subscribe(this.sendCustomerUnAssignedNotificationToAgent.bind(this));
 	}
 
 	private async sendNewCustomerNotificationToAgents(newCustomer: IConnectedCustomer): Promise<void> {
@@ -78,10 +82,10 @@ export class AgentNotificationService extends SocketService {
 		});
 	}
 
-	private async sendCustomerReservedNotificationToAgents(customerReserved: ICustomerReserved): Promise<void> {
+	private async sendCustomerReservedNotificationToAgents(customerReservation: ICustomerReservation): Promise<void> {
 		await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async () => {
-				const { byAgentUuid, customer } = customerReserved;
+				const { byAgentUuid, customer } = customerReservation;
 				const agentsToNotify = await this.agentQueryDalService.fetchAgentOfProjectExcept(byAgentUuid, customer.projectUuid);
 				const agentsConnectionIds = agentsToNotify.map((agent: AgentRedisEntity) => agent.connectionIds).flat();
 
@@ -96,21 +100,43 @@ export class AgentNotificationService extends SocketService {
 		});
 	}
 
-	private async sendCustomerAssignedNotificationToAgent(customerAssigned: ICustomerAssigned): Promise<void> {
+	private async sendCustomerAssignedNotificationToAgent(customerAssignment: ICustomerAssignment): Promise<void> {
+		await this.sendCustomerAssignmentNotificationToAgent(customerAssignment, AgentNotificationEvents.CustomerAssignedNotification);
+	}
+
+	private async sendCustomerUnReservedNotificationToAgents(customerReservation: ICustomerReservation): Promise<void> {
 		await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async () => {
-				const { toAgentUuid, customer } = customerAssigned;
+				const { byAgentUuid, customer } = customerReservation;
+				const agentsToNotify = await this.agentQueryDalService.fetchAgentOfProjectExcept(byAgentUuid, customer.projectUuid);
+				const agentsConnectionIds = agentsToNotify.map((agent: AgentRedisEntity) => agent.connectionIds).flat();
+
+				const unreservedCustomer = await this.customerBuilderDalService.buildConnectedCustomer(customerReservation.customer);
+				const customerUnReservedNotification: ICustomerUnReservedNotification = { customer: unreservedCustomer };
+				this.dispatcherService.dispatchMessage<ICustomerUnReservedNotification>(
+					AgentNotificationEvents.CustomerUnReservedNotification,
+					this.server,
+					agentsConnectionIds,
+					customerUnReservedNotification,
+				);
+			},
+		});
+	}
+
+	private async sendCustomerUnAssignedNotificationToAgent(customerAssignment: ICustomerAssignment): Promise<void> {
+		await this.sendCustomerAssignmentNotificationToAgent(customerAssignment, AgentNotificationEvents.CustomerUnAssignedNotification);
+	}
+
+	private async sendCustomerAssignmentNotificationToAgent(customerAssignment: ICustomerAssignment, assignmentNotification: string): Promise<void> {
+		await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
+			operation: async () => {
+				const { toAgentUuid, customer } = customerAssignment;
 
 				const agentToNotify = await this.agentQueryDalService.fetchAgentOfProject(toAgentUuid, customer.projectUuid);
 				if (!agentToNotify) return;
 
-				const customerAssignedNotification: ICustomerAssignedNotification = { customerUuid: customer.customerUuid };
-				this.dispatcherService.dispatchMessage<ICustomerAssignedNotification>(
-					AgentNotificationEvents.CustomerAssignedNotification,
-					this.server,
-					agentToNotify.connectionIds,
-					customerAssignedNotification,
-				);
+				const customerAssignmentNotification: ICustomerAssignmentNotification = { customerUuid: customer.customerUuid };
+				this.dispatcherService.dispatchMessage<ICustomerAssignmentNotification>(assignmentNotification, this.server, agentToNotify.connectionIds, customerAssignmentNotification);
 			},
 		});
 	}

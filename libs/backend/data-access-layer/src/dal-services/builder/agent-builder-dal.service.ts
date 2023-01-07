@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { type AgentRedisEntity, type UserEntity, UserService } from "../../domains";
-import type { IConnectedAgent } from "@sca-shared/dto";
+import { UserService } from "../../domains";
+import type { IConnectedAgent, IOnlineAgent, IUser } from "@sca-shared/dto";
 import { DomainUtilitiesAggregateConst } from "../../const";
 import type { AggregateService } from "@sca-backend/aggregate";
 import type { IDomainUtilitiesAggregate } from "../../types";
@@ -14,10 +14,10 @@ export class AgentBuilderDalService {
 		@Inject(DomainUtilitiesAggregateConst) private readonly utilitiesAggregateService: AggregateService<IDomainUtilitiesAggregate>,
 	) {}
 
-	public async buildConnectedAgent(redisAgents: AgentRedisEntity): Promise<IConnectedAgent>;
-	public async buildConnectedAgent(redisAgents: Array<AgentRedisEntity>): Promise<Array<IConnectedAgent>>;
-	public async buildConnectedAgent(redisAgents: AgentRedisEntity, agent: UserEntity): Promise<IConnectedAgent>;
-	public async buildConnectedAgent(redisAgents: AgentRedisEntity | Array<AgentRedisEntity>, agent?: UserEntity): Promise<IConnectedAgent | Array<IConnectedAgent>> {
+	public async buildConnectedAgent(redisAgents: IOnlineAgent): Promise<IConnectedAgent>;
+	public async buildConnectedAgent(redisAgents: Array<IOnlineAgent>): Promise<Array<IConnectedAgent>>;
+	public async buildConnectedAgent(redisAgents: IOnlineAgent, agent: IUser): Promise<IConnectedAgent>;
+	public async buildConnectedAgent(redisAgents: IOnlineAgent | Array<IOnlineAgent>, agent?: IUser): Promise<IConnectedAgent | Array<IConnectedAgent>> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async () => {
 				if (!Array.isArray(redisAgents)) {
@@ -27,15 +27,15 @@ export class AgentBuilderDalService {
 				}
 
 				return Promise.all(
-					redisAgents.map((redisAgent: AgentRedisEntity) => {
-						return this.userService.findOrFailUserUsingUuid(redisAgent.agentUuid).then((agent: UserEntity) => this.mergeRedisAgentWithDbAgent(agent, redisAgent));
+					redisAgents.map((redisAgent: IOnlineAgent) => {
+						return this.userService.findOrFailUserUsingUuid(redisAgent.agentUuid).then((agent: IUser) => this.mergeRedisAgentWithDbAgent(agent, redisAgent));
 					}),
 				);
 			},
 		});
 	}
 
-	private mergeRedisAgentWithDbAgent(agent: UserEntity, redisAgent: AgentRedisEntity): Promise<IConnectedAgent> {
+	private mergeRedisAgentWithDbAgent(agent: IUser, redisAgent: IOnlineAgent): Promise<IConnectedAgent> {
 		return this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async () => {
 				const { agentUuid, connectionIds, projectUuid } = redisAgent;

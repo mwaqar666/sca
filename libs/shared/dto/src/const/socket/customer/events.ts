@@ -5,4 +5,5 @@ export class CustomerRequestEvents {
 export class CustomerNotificationEvents {
 	public static readonly OutgoingAgentNotification = "OutgoingAgentNotification";
 	public static readonly AgentAssignedNotification = "AgentAssignedNotification";
+	public static readonly AgentUnAssignedNotification = "AgentUnAssignedNotification";
 }

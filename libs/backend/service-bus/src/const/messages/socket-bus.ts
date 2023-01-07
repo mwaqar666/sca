@@ -7,4 +7,7 @@ export class SocketBusMessages {
 	public static readonly CustomerReservedNotification = "CustomerReservedNotification";
 	public static readonly CustomerAssignedNotification = "CustomerAssignedNotification";
 	public static readonly AgentAssignedNotification = "AgentAssignedNotification";
+	public static readonly CustomerUnReservedNotification = "CustomerUnReservedNotification";
+	public static readonly CustomerUnAssignedNotification = "CustomerUnAssignedNotification";
+	public static readonly AgentUnAssignedNotification = "AgentUnAssignedNotification";
 }

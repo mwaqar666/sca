@@ -17,10 +17,14 @@ export interface IReleasedCustomersNotification {
 	releasedCustomers: Array<IConnectedCustomer>;
 }
 
-export interface ICustomerAssignedNotification {
+export interface ICustomerAssignmentNotification {
 	customerUuid: string;
 }
 
 export interface ICustomerReservedNotification {
 	customerUuid: string;
+}
+
+export interface ICustomerUnReservedNotification {
+	customer: IConnectedCustomer;
 }

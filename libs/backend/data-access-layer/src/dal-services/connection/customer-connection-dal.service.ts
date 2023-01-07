@@ -61,14 +61,6 @@ export class CustomerConnectionDalService {
 		});
 	}
 
-	public async releaseCustomersFromAgentOfProject(agentUuid: string, projectUuid: string): Promise<Array<CustomerRedisEntity>> {
-		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
-			operation: async () => {
-				return await this.customerRedisService.releaseCustomersFromAgentOfProject(agentUuid, projectUuid);
-			},
-		});
-	}
-
 	private async postCustomerExpiryListener(expiredCustomer: CustomerRedisEntity): Promise<IEntityStatus<CustomerRedisEntity, TExpiryAdded> & IExpiryObserver<TPresent>> {
 		return await this.utilitiesAggregateService.services.exceptionHandler.executeExceptionHandledOperation({
 			operation: async (): Promise<IEntityStatus<CustomerRedisEntity, TExpiryAdded> & IExpiryObserver<TPresent>> => {
